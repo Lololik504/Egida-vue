@@ -14,10 +14,10 @@ export default {
     }
   },
   mounted() {
-    fetch('http://192.168.0.2:8000/api/dist/')
+    fetch('http://192.168.0.2:8000/api/districts/')
         .then(response => response.json())
         .then(json => {
-          this.districts = json
+          this.districts = json['districts']
         })
   },
   name: "Districts"
