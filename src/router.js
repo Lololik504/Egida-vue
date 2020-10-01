@@ -13,7 +13,14 @@ export default new Router({
         },
         {
             path: '/districts',
+            name: 'districts',
             component: () => import('./views/Districts')
+        },
+        {
+            path: '/districts/:district',
+            name: 'one_district',
+            component: () => import('./views/OneDistrict'),
+            props: true
         }
-    ]
+    ],
 })
