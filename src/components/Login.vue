@@ -21,17 +21,21 @@ export default {
   methods: {
     setLogin() {
         $.ajax({
-          url: "http://192.168.0.2:8000/auth/login/",
+          url: "http://192.168.0.2:8000/auth/token/login/",
           type: "POST",
           data:{
             username: this.login,
             password: this.password
           },
           success: (response) => {
-            console.log(response)
+            sessionStorage.setItem("auth_token", response.data.attributes.auth_token)
+            sessionStorage.setItem("username", this.password)
+            this.$router.push({name: "home"})
           },
           error: (response) => {
             console.log(response)
+            this.password = ''
+            alert('Введёт неправильный логин и/или пароль')
           }
         })
     },

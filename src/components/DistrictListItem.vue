@@ -1,6 +1,6 @@
 <template>
   <li class="rounded">
-    <router-link :to="{name: 'one_district', params: {district: district.name}}" :counter="counter"> {{district.name}}</router-link>
+    <router-link :to="{name: 'one_district', params: {district: district.attributes.name}}" :counter="counter"> {{district.attributes.name}}</router-link>
   </li>
 </template>
 

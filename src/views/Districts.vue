@@ -6,19 +6,37 @@
 
 <script>
 import DistrictList from "@/components/DistrictList";
+import $ from "jquery";
 export default {
   components: {DistrictList},
   data() {
+    let user_name = ''
+    if (sessionStorage.getItem('username') != null){
+      user_name = sessionStorage.getItem('username')
+    }
     return {
-      districts: []
+      districts: [],
+      "username": user_name
     }
   },
   mounted() {
-    fetch('http://192.168.0.2:8000/api/districts/')
-        .then(response => response.json())
-        .then(json => {
-          this.districts = json['districts']
-        })
+    $.ajax({
+      url: "http://192.168.0.2:8000/api/districts/",
+      type: "GET",
+      headers: { "Authorization": "Token " + sessionStorage.getItem("auth_token") },
+      dataType: 'json',
+      data:{
+        username: this.username,
+      },
+      success: (response) => {
+        this.districts = response.data
+        console.log(this.districts)
+      },
+      error: (response) => {
+        alert("У вас нет доступа!")
+        console.log(response)
+      }
+    })
   },
   name: "Districts"
 }
