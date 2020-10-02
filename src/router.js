@@ -21,6 +21,11 @@ export default new Router({
             name: 'one_district',
             component: () => import('./views/OneDistrict'),
             props: true
+        },
+        {
+            path: '/login',
+            name: 'login',
+            component: () => import('./components/Login'),
         }
     ],
 })
