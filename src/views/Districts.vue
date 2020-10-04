@@ -7,6 +7,7 @@
 <script>
 import DistrictList from "@/components/DistrictList";
 import $ from "jquery";
+import {server_path} from "@/local_settings";
 export default {
   components: {DistrictList},
   data() {
@@ -21,7 +22,7 @@ export default {
   },
   mounted() {
     $.ajax({
-      url: "http://192.168.0.2:8000/api/districts/",
+      url: server_path + "api/districts/",
       type: "GET",
       headers: { "Authorization": "Token " + sessionStorage.getItem("auth_token") },
       dataType: 'json',

@@ -9,19 +9,20 @@
 
 <script>
 import $ from 'jquery'
-
+import * as sp from "@/local_settings"
 export default {
   name: "Login",
   data() {
     return {
       login: '',
       password: '',
+      serverp: sp.server_path,
     }
   },
   methods: {
     setLogin() {
         $.ajax({
-          url: "http://192.168.0.2:8000/auth/token/login/",
+          url: sp.server_path + 'auth/token/login/',
           type: "POST",
           data:{
             username: this.login,

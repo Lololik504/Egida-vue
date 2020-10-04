@@ -7,6 +7,8 @@
 
 <script>
 import SchoolList from "@/components/SchoolList";
+import {server_path} from "@/local_settings";
+import $ from "jquery";
 export default {
 name: "OneDistrict",
   components: {SchoolList},
@@ -16,11 +18,23 @@ name: "OneDistrict",
     }
   },
   mounted() {
-    fetch('http://192.168.0.2:8000/api/districts/'+this.district)
-        .then(response => response.json())
-        .then(json => {
-          this.schools = json['schools']
-        })
+    $.ajax({
+      url: server_path +'api/districts/'+this.district,
+      type: "GET",
+      headers: { "Authorization": "Token " + sessionStorage.getItem("auth_token") },
+      dataType: 'json',
+      data:{
+        username: this.username,
+      },
+      success: (response) => {
+        this.schools = response.data
+        console.log(this.districts)
+      },
+      error: (response) => {
+        alert("Что-то пошло не так")
+        console.log(response)
+      }
+    })
   },
   props: ['district']
 }
