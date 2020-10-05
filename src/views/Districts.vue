@@ -1,5 +1,6 @@
 <template>
   <div>
+    <Header/>
     <DistrictList v-bind:districts="districts"/>
   </div>
 </template>
@@ -8,8 +9,9 @@
 import DistrictList from "@/components/DistrictList";
 import $ from "jquery";
 import {server_path} from "@/local_settings";
+import Header from "@/components/Header";
 export default {
-  components: {DistrictList},
+  components: {Header, DistrictList},
   data() {
     let user_name = ''
     if (sessionStorage.getItem('username') != null){
@@ -35,6 +37,7 @@ export default {
       },
       error: (response) => {
         alert("У вас нет доступа!")
+        this.$router.push({name: "home"})
         console.log(response)
       }
     })

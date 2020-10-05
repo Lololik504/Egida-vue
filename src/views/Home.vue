@@ -1,14 +1,70 @@
 <template>
-  <q-page class="flex flex-center">
-    <img alt="Quasar logo" src="../assets/logo.png">
-  </q-page>
+  <div>
+    <Header/>
+    <ul>
+      <li class="rounded">
+        <router-link to="/districts">Районы</router-link>
+      </li>
+    </ul>
+  </div>
 </template>
 
-<style>
-</style>
-
 <script>
+import Header from "@/components/Header";
+
 export default {
-  name: 'PageHome'
+  name: "Home",
+  components: {Header},
 }
 </script>
+
+<style scoped>
+
+
+.rounded {
+  width: 300px;
+  counter-reset: rr;
+  list-style: none;
+  font: 14px "Trebuchet MS", "Lucida Sans";
+  padding: 0;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, .5);
+}
+
+.rounded a {
+  position: relative;
+  display: block;
+  padding: .4em .4em .4em 2em;
+  margin: .5em 0;
+  background: #DAD2CA;
+  color: #444;
+  text-decoration: none;
+  border-radius: .3em;
+  transition: .3s ease-out;
+}
+
+.rounded a:hover {
+  background: #E9E4E0;
+}
+
+.rounded a:hover:before {
+  transform: rotate(360deg);
+}
+
+.rounded a:before {
+  content: counter(rr);
+  counter-increment: rr;
+  position: absolute;
+  left: -1.3em;
+  top: 0%;
+  /*margin-top: 1.3em;*/
+  background: #8FD4C1;
+  height: 2em;
+  width: 2em;
+  line-height: 2em;
+  border: .3em solid white;
+  text-align: center;
+  font-weight: bold;
+  border-radius: 2em;
+  transition: all .3s ease-out;
+}
+</style>

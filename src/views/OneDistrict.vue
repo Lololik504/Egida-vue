@@ -1,5 +1,6 @@
 <template>
   <div>
+    <Header/>
     <h2>District {{district}}</h2>
     <SchoolList v-bind:schools="schools"/>
   </div>
@@ -9,9 +10,10 @@
 import SchoolList from "@/components/SchoolList";
 import {server_path} from "@/local_settings";
 import $ from "jquery";
+import Header from "@/components/Header";
 export default {
 name: "OneDistrict",
-  components: {SchoolList},
+  components: {Header, SchoolList},
   data() {
     return {
       schools: []
