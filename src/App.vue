@@ -1,6 +1,6 @@
 <template>
   <div id="app" class="wrapper">
-    <Header class="header"/>
+    <Header class="header" :key="key"/>
     <router-view class="content"/>
     <Footer class="footer"/>
   </div>
@@ -10,7 +10,17 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 export default {
-  components: {Footer, Header}
+  components: {Footer, Header},
+  data(){
+    return{
+      key: 0
+    }
+  },
+  methods: {
+    update(){
+      this.key += 1
+    }
+  }
 }
 </script>
 

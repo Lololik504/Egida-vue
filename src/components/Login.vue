@@ -21,6 +21,7 @@ export default {
   },
   methods: {
     setLogin() {
+      let vueObj = this;
         $.ajax({
           url: sp.server_path + 'auth/token/login/',
           type: "POST",
@@ -31,7 +32,8 @@ export default {
           success: (response) => {
             sessionStorage.setItem("auth_token", response.data.attributes.auth_token)
             sessionStorage.setItem("username", this.password)
-            this.$router.push({name: "home"})
+            vueObj.$root.$emit("logined", vueObj.login)
+            this.$router.push({name: "home"}).catch(()=>{});
           },
           error: (response) => {
             console.log(response)

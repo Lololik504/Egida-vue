@@ -14,7 +14,6 @@
       <div class="second-row">
         <div class="btn-container">
           <q-btn color="white" text-color="black" label="Log in" @click="goLogin" class="login-but"/>
-          <q-btn color="white" text-color="black" label="L123" @click="update" class="login-but"/>
           <q-btn v-if="username!==''" color='blue-10' text-color="white" label="Logout" @click="Logout"
                  class="login-but"/>
         </div>
@@ -32,6 +31,9 @@
 
 <script>
 // import ToolBar from "@/components/ToolBar";
+import $ from "jquery";
+import * as sp from "@/local_settings";
+
 export default {
   name: "Header",
   // components: {ToolBar},
@@ -48,15 +50,25 @@ export default {
       } else return ''
     },
   },
-
+  mounted() {
+  this.$root.$on('logined', (new_username)=>{
+    this.authed=!this.authed
+    this.username=new_username
+  })
+    },
   methods: {
     goLogin() {
-      this.$router.push({name: "login"})
+      this.$router.push({name: "login"}).catch(() => {
+      });
     },
     Logout() {
       sessionStorage.clear()
-      this.update()
-      this.$router.push({name: "home"})
+      $.ajax({
+        url: sp.server_path + 'auth/token/login/',
+        type: "POST",
+        data: {
+        }
+      })
     },
     update() {
       this.authed = !this.authed
