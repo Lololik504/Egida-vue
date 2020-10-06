@@ -1,20 +1,30 @@
 <template>
   <div>
-  <div class="main-header">
-    <div class="welcome-header">
-      <img data-entity-type="file" src="@/assets/gerb.png" class="image">
-      <div class="text-header">
-      <h2 class="welcome-header" style="margin: 0">Home page</h2>
-        <br>
-      <h4 v-if="username!==''" class="welcome-header" style="margin: 0">Вы вошли как {{ username }} </h4>
+    <div class="main-header">
+      <div class="welcome-header">
+        <img data-entity-type="file" src="@/assets/gerb.png" class="image">
+        <div class="text-header">
+          <p class="welcome-header" style="margin: 0">МЭРИЯ ГОРОДА НОВОСИБИРСКА<br>
+            ДЕПАРТАМЕНТ ОБРАЗОВАНИЯ</p>
+          <br>
+          <h4 v-if="username!==''" class="welcome-header" style="margin: 0">Вы вошли как {{ username }} </h4>
+        </div>
+        <img data-entity-type="file" src="@/assets/gerb-2.png" class="image">
       </div>
-      <img data-entity-type="file" src="@/assets/gerb-2.png" class="image">
+      <div class="second-row">
+        <div class="btn-container">
+          <q-btn color="white" text-color="black" label="Log in" @click="goLogin" class="login-but"/>
+          <q-btn color='blue-10' text-color="white" label="Logout" @click="Logout" class="login-but"/>
+        </div>
+        <div class="to-home-text">
+          <router-link to="/" class="router-text">Управление обеспечения бюджетного процесса и ресурсного сопровождения
+            учреждений в сфере
+            образования мэрии г. Новосибирска
+          </router-link>
+        </div>
+      </div>
     </div>
-    <q-btn color="white" text-color="black" label="Log in" @click="goLogin" class="login-but"/>
-    <q-btn color='blue-10' text-color="white" label="Logout" @click="Logout" class="login-but"/>
-  </div>
-<!--  <ToolBar/>-->
-  <hr>
+    <hr>
   </div>
 </template>
 
@@ -45,15 +55,31 @@ export default {
 </script>
 
 <style scoped>
-.main-header {
-  background-image: url("~@/assets/fon2.jpg");
+.router-text {
+  color: white;
+  text-decoration: none;
 }
 
-.login-but {
-  position: center;
-  left: 5%;
-  margin-right: 5px;
-  transform: translateY(-50%);
+.second-row{
+  display: inline-flex;
+  width: 100%;
+  min-height: 50px;
+}
+
+.to-home-text {
+  width: 40%;
+  margin: auto;
+  text-align: center;
+
+}
+
+.image {
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.main-header {
+  background-image: url("~@/assets/fon2.jpg");
 }
 
 .welcome-header {
@@ -61,10 +87,23 @@ export default {
   color: white;
   align-items: center;
   justify-content: center;
-  margin: 10px;
+  margin-top: 0px;
+  text-align: center;
+  font-size: large;
 }
-.text-header{
-  margin: 0px;
+
+.text-header {
+  margin-top: 15px;
+}
+
+.btn-container {
+  flex: 0 0 auto;
+  margin-left: 3%;
+}
+
+.login-but {
+  left: 5px;
+  margin-right: 5px;
 }
 
 </style>

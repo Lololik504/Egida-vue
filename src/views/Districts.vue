@@ -1,6 +1,5 @@
 <template>
   <div>
-    <Header/>
     <DistrictList v-bind:districts="districts"/>
   </div>
 </template>
@@ -9,9 +8,8 @@
 import DistrictList from "@/components/DistrictList";
 import $ from "jquery";
 import {server_path} from "@/local_settings";
-import Header from "@/components/Header";
 export default {
-  components: {Header, DistrictList},
+  components: {DistrictList},
   data() {
     let user_name = ''
     if (sessionStorage.getItem('username') != null){

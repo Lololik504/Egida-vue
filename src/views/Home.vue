@@ -1,7 +1,6 @@
 <template>
   <div>
-    <Header/>
-    <ul>
+    <ul class="list">
       <li class="rounded">
         <router-link to="/districts">Районы</router-link>
       </li>
@@ -10,15 +9,14 @@
 </template>
 
 <script>
-import Header from "@/components/Header";
 
 export default {
   name: "Home",
-  components: {Header},
 }
 </script>
 
 <style scoped>
+
 
 
 .rounded {
@@ -67,4 +65,13 @@ export default {
   border-radius: 2em;
   transition: all .3s ease-out;
 }
+
+div{
+  display: flex;
+}
+
+ul{
+  align-self: flex-start;
+}
+
 </style>
