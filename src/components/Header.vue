@@ -61,6 +61,7 @@ export default {
 }
 
 .second-row{
+  position: relative;
   display: inline-flex;
   width: 100%;
   min-height: 50px;
@@ -70,6 +71,10 @@ export default {
   width: 40%;
   margin: auto;
   text-align: center;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 
 }
 
