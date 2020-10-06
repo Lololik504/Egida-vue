@@ -28,7 +28,7 @@ name: "OneDistrict",
       },
       success: (response) => {
         this.schools = response.data
-        console.log(this.districts)
+        console.log(this.schools)
       },
       error: (response) => {
         alert("Что-то пошло не так")

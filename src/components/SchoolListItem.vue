@@ -1,6 +1,6 @@
 <template>
   <li class="rounded">
-    <router-link :to="school.name" :counter="counter">{{school.name}}</router-link>
+    <router-link :to="school.attributes.name" :counter="counter">{{school.attributes.name}}</router-link>
   </li>
 </template>
 
