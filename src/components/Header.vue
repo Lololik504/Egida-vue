@@ -14,7 +14,9 @@
       <div class="second-row">
         <div class="btn-container">
           <q-btn color="white" text-color="black" label="Log in" @click="goLogin" class="login-but"/>
-          <q-btn color='blue-10' text-color="white" label="Logout" @click="Logout" class="login-but"/>
+          <q-btn color="white" text-color="black" label="L123" @click="update" class="login-but"/>
+          <q-btn v-if="username!==''" color='blue-10' text-color="white" label="Logout" @click="Logout"
+                 class="login-but"/>
         </div>
         <div class="to-home-text">
           <router-link to="/" class="router-text">Управление обеспечения бюджетного процесса и ресурсного сопровождения
@@ -34,21 +36,30 @@ export default {
   name: "Header",
   // components: {ToolBar},
   data() {
-    let user_name = ''
-    if (sessionStorage.getItem('username') != null) {
-      user_name = sessionStorage.getItem('username')
-    }
     return {
-      "username": user_name
+      authed: false
     }
   },
+  computed: {
+    username: function () {
+      this.authed;
+      if (sessionStorage.getItem('username') !== null) {
+        return sessionStorage.getItem('username');
+      } else return ''
+    },
+  },
+
   methods: {
     goLogin() {
       this.$router.push({name: "login"})
     },
     Logout() {
       sessionStorage.clear()
+      this.update()
       this.$router.push({name: "home"})
+    },
+    update() {
+      this.authed = !this.authed
     }
   }
 }
@@ -60,7 +71,7 @@ export default {
   text-decoration: none;
 }
 
-.second-row{
+.second-row {
   position: relative;
   display: inline-flex;
   width: 100%;
@@ -92,7 +103,6 @@ export default {
   color: white;
   align-items: center;
   justify-content: center;
-  margin-top: 0px;
   text-align: center;
   font-size: large;
 }
