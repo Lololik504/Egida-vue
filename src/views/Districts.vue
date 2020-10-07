@@ -8,11 +8,12 @@
 import DistrictList from "@/components/DistrictList";
 import $ from "jquery";
 import {server_path} from "@/local_settings";
+
 export default {
   components: {DistrictList},
   data() {
     let user_name = ''
-    if (sessionStorage.getItem('username') != null){
+    if (sessionStorage.getItem('username') != null) {
       user_name = sessionStorage.getItem('username')
     }
     return {
@@ -24,9 +25,9 @@ export default {
     $.ajax({
       url: server_path + "api/districts/",
       type: "GET",
-      headers: { "Authorization": "Token " + sessionStorage.getItem("auth_token") },
+      headers: {"Authorization": "Token " + sessionStorage.getItem("auth_token")},
       dataType: 'json',
-      data:{
+      data: {
         username: this.username,
       },
       success: (response) => {

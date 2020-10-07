@@ -31,7 +31,7 @@ export default {
           },
           success: (response) => {
             sessionStorage.setItem("auth_token", response.data.attributes.auth_token)
-            sessionStorage.setItem("username", this.password)
+            sessionStorage.setItem("username", this.username)
             vueObj.$root.$emit("logined", vueObj.login)
             this.$router.push({name: "home"}).catch(()=>{});
           },
