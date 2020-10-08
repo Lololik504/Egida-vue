@@ -18,12 +18,8 @@ export default {
                         .then(resp => {
                             const dataInResponse = resp.data.data
                             const token = dataInResponse.token
-                            // console.log(token)
                             const user = dataInResponse.user
                             const permission = user['permission']
-                            // console.log(user)
-                            // console.log(permission)
-                            console.log(resp)
                             localStorage.setItem('token', token)
                             localStorage.setItem('inn', user['username'])
                             localStorage.setItem('permission', permission)
@@ -34,9 +30,7 @@ export default {
                         .catch(err => {
                             commit('auth_error')
                             console.log('remove')
-                            localStorage.removeItem('token')
-                            localStorage.removeItem('inn')
-                            localStorage.removeItem('permission')
+                            localStorage.clear()
                             reject(err)
                         })
                 })
@@ -47,9 +41,8 @@ export default {
         async logout({commit}) {
             return await new Promise((resolve) => {
                 commit('logout')
-                localStorage.removeItem('token')
-                localStorage.removeItem('inn')
-                localStorage.removeItem('permission')
+                console.log('logout')
+                localStorage.clear()
                 delete axios.defaults.headers.common['Authorization']
                 resolve()
             })
