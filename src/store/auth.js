@@ -17,13 +17,15 @@ export default {
                         })
                         .then(resp => {
                             const dataInResponse = resp.data.data
+                            console.log(resp)
+                            console.log(dataInResponse)
                             const token = dataInResponse.token
                             const user = dataInResponse.user
                             const permission = user['permission']
                             localStorage.setItem('token', token)
                             localStorage.setItem('inn', user['username'])
                             localStorage.setItem('permission', permission)
-                            axios.defaults.headers.common['Authorization'] = 'Token' + token
+                            axios.defaults.headers.common['Authorization'] = 'auth' + token
                             commit('auth_success', token, user)
                             resolve(resp)
                         })
