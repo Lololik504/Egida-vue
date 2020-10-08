@@ -1,5 +1,6 @@
 /* eslint-disable */
 import axios from "axios";
+import {server_path} from "@/local_settings";
 
 export default {
     state: {
@@ -11,14 +12,14 @@ export default {
         }
     },
     actions: {
-        async fetchInfo({dispatch, commit}) {
+        async fetchInfo({commit}) {
             try {
                 const token = localStorage.getItem('token')
                 console.log(token)
                 const inn = localStorage.getItem('inn')
                 console.log(inn)
                 return await new Promise((resolve, reject) => {
-                    axios.get("http://192.168.0.2:8000/api/school/1",
+                    axios.get(server_path + "/api/school/1",
                         {
                             headers: {
                                 "Authorization": "Token " + token,

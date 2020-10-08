@@ -1,4 +1,6 @@
 import axios from 'axios'
+import {server_path} from "@/local_settings";
+
 
 export default {
     actions: {
@@ -6,12 +8,7 @@ export default {
             try {
                 return await new Promise((resolve, reject) => {
                     commit('auth_request')
-                    // let Data = new FormData()
-                    // Data.append('username', data['username'])
-                    // Data.append('password', data['password'])
-                    // console.log(data['username'])
-                    // console.log(data['password'])
-                    axios.post("http://192.168.0.2:8000/accounts/login/",
+                    axios.post(server_path + "/accounts/login/",
                         data,
                         {
                             headers: {
