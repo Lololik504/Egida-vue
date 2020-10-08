@@ -8,6 +8,11 @@
 
 export default {
   name: "Home",
+  mounted() {
+    if (localStorage.getItem('permission') === '15') {
+      this.$router.push('/school')
+    }
+  }
 }
 </script>
 
