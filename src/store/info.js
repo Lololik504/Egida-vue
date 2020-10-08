@@ -20,9 +20,8 @@ export default {
                     axios.get(server_path + "/api/school/1",
                         {
                             headers: {
-                                "Authorization": "Token " + token,
+                                "Authorization": "auth " + token,
                                 'Content-Type': 'application/json',
-                                "username": inn,
                                 "INN": inn
                             }
                         })
