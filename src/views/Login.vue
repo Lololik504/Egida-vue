@@ -34,30 +34,6 @@ export default {
     }
   },
   methods: {
-    // setLogin() {
-    //   let vueObj = this;
-    //   $.ajax({
-    //     url: sp.server_path + 'auth/token/login/',
-    //     type: "POST",
-    //     data: {
-    //       username: this.username,
-    //       password: this.password
-    //     },
-    //     success: (response) => {
-    //       sessionStorage.setItem("auth_token", response.data.attributes.auth_token)
-    //       sessionStorage.setItem("username", this.username)
-    //       console.log(response.data.attributes.auth_token)
-    //       vueObj.$root.$emit("logined", vueObj.login)
-    //       this.$router.push({name: "home"}).catch(() => {
-    //       });
-    //     },
-    //     error: (response) => {
-    //       console.log(response)
-    //       this.password = ''
-    //       alert('Введёт неправильный логин и/или пароль')
-    //     }
-    //   })
-    // },
     login: async function () {
       const formData = {
         username: this.username,

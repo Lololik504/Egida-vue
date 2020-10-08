@@ -15,9 +15,7 @@ export default {
         async fetchInfo({commit}) {
             try {
                 const token = localStorage.getItem('token')
-                console.log(token)
                 const inn = localStorage.getItem('inn')
-                console.log(inn)
                 return await new Promise((resolve, reject) => {
                     axios.get(server_path + "/api/school/1",
                         {
@@ -28,10 +26,8 @@ export default {
                                 "INN": inn
                             }
                         })
-                        // axios.get("http://192.168.0.2:8000/accounts/login/", data, {headers: {'Content-Type': 'application/json;'}})
                         .then(resp => {
                             console.log('check')
-                            console.log(resp)
                             const infoSchool = resp.data.data.school
                             console.log(infoSchool)
                             commit('setInfo', infoSchool)
@@ -47,6 +43,6 @@ export default {
         }
     },
     getters: {
-        info: s => s.info
+        info: state => state.info
     }
 }
