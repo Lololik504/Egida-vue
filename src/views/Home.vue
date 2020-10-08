@@ -1,10 +1,6 @@
 <template>
   <div>
-    <ul class="list">
-      <li class="rounded">
-        <router-link to="/districts">Районы</router-link>
-      </li>
-    </ul>
+
   </div>
 </template>
 

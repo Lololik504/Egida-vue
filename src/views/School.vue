@@ -1,0 +1,52 @@
+<template>
+  <div class="container">
+    <h5>Ваши данные</h5>
+    <p>
+      <span>ИНН: {{ inn }}</span>
+    </p>
+    <p>
+      <span>Район: {{district}}</span>
+    </p>
+    <p>
+      <span>Краткое наименование: {{shortname}}</span>
+    </p>
+    <p>
+      <span>Полное наименование: {{ fullname }}</span>
+    </p>
+    <p>
+      <span>Телефон: {{ phone }}</span>
+    </p>
+    <p>
+      <span>Адрес: {{ adress }}</span>
+    </p>
+
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'school',
+  data: () => ({
+    inn: '',
+    district: '',
+    shortname: '',
+    fullname: '',
+    phone: '',
+    adress: ''
+  }),
+  async mounted() {
+    if (!Object.keys(this.$store.getters.info).length) {
+      await this.$store.dispatch('fetchInfo')
+      const info = this.$store.getters.info
+      console.log('something')
+      console.log(info)
+      this.inn = info['INN']
+      this.fullname = info['name']
+      this.phone = info['phone']
+      this.shortname = info['shortname']
+      this.district = info['district']['name']
+      this.adress = info['adress']
+    }
+  }
+}
+</script>

@@ -7,14 +7,16 @@
           <p class="welcome-header" style="margin: 0">МЭРИЯ ГОРОДА НОВОСИБИРСКА<br>
             ДЕПАРТАМЕНТ ОБРАЗОВАНИЯ</p>
           <br>
-          <h4 v-if="username!==''" class="welcome-header" style="margin: 0">Вы вошли как {{ username }} </h4>
+          <!--          <h4 v-if="username!==''" class="welcome-header" style="margin: 0">Вы вошли как {{ username }} </h4>-->
         </div>
         <img data-entity-type="file" src="@/assets/gerb-2.png" class="image">
       </div>
       <div class="second-row">
         <div class="btn-container">
-          <q-btn color="white" text-color="black" label="Log in" @click="goLogin" class="login-but"/>
-          <q-btn v-if="username!==''" color='blue-10' text-color="white" label="Logout" @click="Logout"
+          <q-btn v-if="!isLoggedIn" color="white" text-color="black" label="Войти" @click.prevent="toLogin"
+                 class="login-but"/>
+          <q-btn v-if="isLoggedIn"
+                 color='blue-10' text-color="white" label="Выйти" @click.prevent="logout"
                  class="login-but"/>
         </div>
         <div class="to-home-text">
@@ -31,48 +33,51 @@
 
 <script>
 // import ToolBar from "@/components/ToolBar";
-import $ from "jquery";
-import * as sp from "@/local_settings";
+// import $ from "jquery";
+// import * as sp from "@/local_settings";
 
 export default {
   name: "Header",
   // components: {ToolBar},
-  data() {
-    return {
-      authed: false
-    }
-  },
   computed: {
-    username: function () {
-      this.authed;
-      if (sessionStorage.getItem('username') !== null) {
-        return sessionStorage.getItem('username');
-      } else return ''
-    },
-  },
-  mounted() {
-  this.$root.$on('logined', (new_username)=>{
-    this.authed=!this.authed
-    this.username=new_username
-  })
-    },
-  methods: {
-    goLogin() {
-      this.$router.push({name: "login"}).catch(() => {
-      });
-    },
-    Logout() {
-      sessionStorage.clear()
-      $.ajax({
-        url: sp.server_path + 'auth/token/login/',
-        type: "POST",
-        data: {
-        }
-      })
-    },
-    update() {
-      this.authed = !this.authed
+    isLoggedIn: function () {
+      return this.$store.getters.isLoggedIn
     }
+    // ,
+    // username: function () {
+    //   this.authed;
+    //   if (sessionStorage.getItem('username') !== null) {
+    //     return sessionStorage.getItem('username');
+    //   } else return ''
+    // },
+  },
+  // mounted() {
+  //   this.$root.$on('logined', (new_username) => {
+  //     this.authed = !this.authed
+  //     this.username = new_username
+  //   })
+  // },
+  methods: {
+    logout: async function () {
+      await this.$store.dispatch('logout')
+          .then(() => {
+            this.$router.push('/login')
+          })
+    },
+    toLogin() {
+      this.$router.push("/login");
+    }
+    // Logout() {
+    //   sessionStorage.clear()
+    //   $.ajax({
+    //     url: sp.server_path + 'auth/token/login/',
+    //     type: "POST",
+    //     data: {}
+    //   })
+    // },
+    // update() {
+    //   this.authed = !this.authed
+    // }
   }
 }
 </script>
