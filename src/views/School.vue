@@ -5,10 +5,10 @@
       <span>ИНН: {{ inn }}</span>
     </p>
     <p>
-      <span>Район: {{district}}</span>
+      <span>Район: {{ district }}</span>
     </p>
     <p>
-      <span>Краткое наименование: {{shortname}}</span>
+      <span>Краткое наименование: {{ shortname }}</span>
     </p>
     <p>
       <span>Полное наименование: {{ fullname }}</span>
@@ -35,10 +35,15 @@ export default {
     adress: ''
   }),
   async mounted() {
-    if (!Object.keys(this.$store.getters.info).length) {
-      await this.$store.dispatch('fetchInfo')
-      const info = this.$store.getters.info
-      console.log('something')
+    try {
+      let info = this.$store.getters.info
+      console.log(info)
+      if (!Object.keys(info).length || info['INN'] !== localStorage.getItem('inn')) {
+        await this.$store.dispatch('fetchInfo')
+        console.log('dispatch')
+      }
+      info = this.$store.getters.info
+      console.log('another')
       console.log(info)
       this.inn = info['INN']
       this.fullname = info['name']
@@ -46,7 +51,10 @@ export default {
       this.shortname = info['shortname']
       this.district = info['district']['name']
       this.adress = info['adress']
+    } catch (e) {
+      console.log(e)
     }
   }
+
 }
 </script>
