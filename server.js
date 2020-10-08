@@ -1,0 +1,12 @@
+const express = require("express");
+
+const app = express();
+
+app.use(express.static("dist"));
+app.get(/.*/, (req, res) => res.sendFile(__dirname + "/dist/index.html"));
+
+const port = process.env.PORT || 8080;
+app.listen(port);
+console.log("############################");
+console.log("### — SERVER STARTED — ###");
+console.log("## http://localhost:" + port + "/ ##");
