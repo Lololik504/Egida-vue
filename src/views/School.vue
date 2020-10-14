@@ -1,58 +1,86 @@
 <template>
   <div class="container">
-    <h5>Ваши данные</h5>
-    <p>
-      <span>ИНН: {{ inn }}</span>
-    </p>
-    <p>
-      <span>Район: {{ district }}</span>
-    </p>
-    <p>
-      <span>Краткое наименование: {{ shortname }}</span>
-    </p>
-    <p>
-      <span>Полное наименование: {{ fullname }}</span>
-    </p>
-    <p>
-      <span>Телефон: {{ phone }}</span>
-    </p>
-    <p>
-      <span>Адрес: {{ adress }}</span>
-    </p>
+    <Loader v-if="loading"/>
+    <div v-else class="card">
+      <h5>Учереждение <router-link :to="`/schoolcard/${this.$route.params['school']}`"> {{ shortname }}</router-link></h5>
+
+      <p>ИНН:
+        <span>{{ INN }}</span>
+      </p>
+      <p>
+        Район:
+        <span v-on:click="changeData">{{ district }}</span>
+      </p>
+      <p>
+        Краткое наименование:
+        <span v-on:click="changeData">{{ shortname }}</span>
+      </p>
+      <p>
+        Полное наименование:
+        <span v-on:click="changeData">{{ fullname }}</span>
+      </p>
+      <p>
+        Телефон:
+        <span v-on:click="changeData">{{ phone }}</span>
+      </p>
+      <p>
+        Адрес:
+        <span v-on:click="changeData">{{ address }}</span>
+      </p>
+    </div>
 
   </div>
+
 </template>
 
 <script>
 export default {
   name: 'school',
   data: () => ({
-    inn: '',
+    INN: '',
     district: '',
     shortname: '',
     fullname: '',
     phone: '',
-    adress: ''
+    address: '',
+    loading: true
   }),
   async mounted() {
     try {
       let info = this.$store.getters.info
-      console.log(info)
-      if (!Object.keys(info).length || info['INN'] !== localStorage.getItem('inn')) {
-        await this.$store.dispatch('fetchInfo')
-        console.log('dispatch')
+      const token = localStorage.getItem('token')
+      const inn = this.$route.params['school']
+      if (!Object.keys(info).length || info['INN'] !== inn) {
+        await this.$store.dispatch('fetchInfo', {token, inn})
       }
+      this.loading = false
       info = this.$store.getters.info
-      console.log('another')
-      console.log(info)
-      this.inn = info['INN']
+      this.INN = info['INN']
       this.fullname = info['name']
       this.phone = info['phone']
       this.shortname = info['shortname']
       this.district = info['district']['name']
-      this.adress = info['adress']
+      this.address = info['address']
     } catch (e) {
       console.log(e)
+    }
+  },
+  methods: {
+    async changeData(value) {
+      const newData = prompt("Введите новые данные:",value.toElement['textContent'])
+      const val = Object.values(this.$data)
+      const keys = Object.keys(this.$data)
+      var tmp = ''
+      for (let k in val) {
+        if (val[k] === value.toElement['textContent']) {
+          tmp = keys[k]
+        }
+      }
+      if (newData != null && newData !== '') {
+        this.$data[tmp] = newData
+        await this.$store.dispatch('updateInfo', this.$data)
+      }
+
     }
   }
 

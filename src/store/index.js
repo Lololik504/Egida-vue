@@ -10,16 +10,18 @@ export default new Vuex.Store({
         status: '',
         token: localStorage.getItem('token') || '',
         user: {},
-        error: null
+        error: null,
+        permission: ''
     },
     mutations: {
         auth_request(state) {
             state.status = 'loading'
         },
-        auth_success(state, token, user) {
+        auth_success(state, token, user, permission) {
             state.status = 'success'
             state.token = token
             state.user = user
+            state.permission = permission
         },
         auth_error(state) {
             state.status = 'error'
@@ -28,6 +30,7 @@ export default new Vuex.Store({
             state.status = ''
             state.token = ''
             state.user = {}
+            state.permission = ''
         },
         setError(state, error) {
             state.error = error
@@ -40,7 +43,8 @@ export default new Vuex.Store({
         isLoggedIn: state => !!state.token,
         authStatus: state => state.status,
         error: state => state.error,
-        username: state => state.user['username']
+        username: state => state.user['username'],
+        permission: state => state.permission
     },
     modules: {
         auth, info

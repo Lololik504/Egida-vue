@@ -1,31 +1,47 @@
 <template>
   <div>
     <ul>
-      <DistrictListItem
+      <li
           v-for="district in districts"
-          :district="district" :key="district.id" :counter="count+=1"
-      />
+          :key="district.name['id']"
+      >
+        <q-expansion-item
+            :label="district.name['name']"
+        >
+          <router-link
+                       v-for="school in district['schools']"
+                       :key="school['INN']"
+                       :to="`/schoolcard/${school['INN']}`"
+          >
+            {{school['shortname']}}
+            <br/>
+          </router-link>
+        </q-expansion-item>
+      </li>
     </ul>
   </div>
 </template>
 
 <script>
-import DistrictListItem from "@/components/DistrictListItem";
-
 export default {
-  data(){
-    return{
-      count: 0
+  data: () => ({
+    distrs: []
+  }),
+  props: {
+    districts:{
+      type: Array
     }
   },
   name: "DistrictList",
-  components: {DistrictListItem},
-  props: ['districts']
+  created() {
+    console.log(this.districts[0]['schools'][0]['INN'])
+    this.districts.forEach(dis => {
+      this.distrs.push(dis.name['name'])
+    })
+    // console.log(this.distrs)
+  }
 }
 </script>
 
 <style scoped>
-ul{
-  width: 300px;
-}
 </style>

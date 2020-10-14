@@ -15,8 +15,14 @@
         <div class="btn-container">
           <q-btn v-if="!isLoggedIn" color="white" text-color="black" label="Войти" @click.prevent="toLogin"
                  class="login-but"/>
-          <q-btn v-if="isLoggedIn"
+          <q-btn v-else-if="isLoggedIn"
                  color='blue-10' text-color="white" label="Выйти" @click.prevent="logout"
+                 class="login-but"/>
+          <q-btn v-if="isLoggedIn && getPermission === '15'"
+                 color='blue-10' text-color="white" label="Карточка" @click.prevent="toCard"
+                 class="login-but"/>
+          <q-btn v-else-if="isLoggedIn && getPermission === '5'"
+                 color='blue-10' text-color="white" label="Районы" @click.prevent="toDistr"
                  class="login-but"/>
         </div>
         <div class="to-home-text">
@@ -32,31 +38,18 @@
 </template>
 
 <script>
-// import ToolBar from "@/components/ToolBar";
-// import $ from "jquery";
-// import * as sp from "@/local_settings";
-
 export default {
   name: "Header",
   // components: {ToolBar},
   computed: {
     isLoggedIn: function () {
       return this.$store.getters.isLoggedIn
+    },
+    getPermission: function() {
+      console.log(localStorage.getItem('permission'))
+      return localStorage.getItem('permission')
     }
-    // ,
-    // username: function () {
-    //   this.authed;
-    //   if (sessionStorage.getItem('username') !== null) {
-    //     return sessionStorage.getItem('username');
-    //   } else return ''
-    // },
   },
-  // mounted() {
-  //   this.$root.$on('logined', (new_username) => {
-  //     this.authed = !this.authed
-  //     this.username = new_username
-  //   })
-  // },
   methods: {
     logout: async function () {
       await this.$store.dispatch('logout')
@@ -66,18 +59,18 @@ export default {
     },
     toLogin() {
       this.$router.push("/login");
+    },
+    toCard(){
+      if (this.$route.params['build'] !== undefined) {
+        this.$router.push(`/schoolcard/${this.$route.params['build']}`)
+      } else if (this.$route.params['school'] !== undefined) {
+        this.$router.push(`/schoolcard/${this.$route.params['school']}`)
+      }
+    },
+    toDistr(){
+      if (this.$route.name !== 'districts')
+      this.$router.push("/districts");
     }
-    // Logout() {
-    //   sessionStorage.clear()
-    //   $.ajax({
-    //     url: sp.server_path + 'auth/token/login/',
-    //     type: "POST",
-    //     data: {}
-    //   })
-    // },
-    // update() {
-    //   this.authed = !this.authed
-    // }
   }
 }
 </script>

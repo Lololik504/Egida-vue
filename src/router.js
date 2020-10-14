@@ -36,12 +36,36 @@ let router = new Router({
       component: () => import('./views/Login'),
     },
     {
-      path: '/school',
+      path: '/school/:school',
       name: 'school',
       meta: {
         requiresAuth: true
       },
       component: () => import('./views/School'),
+    },
+    {
+      path: '/schoolcard/:card',
+      name: 'schoolcard',
+      meta: {
+        requiresAuth: true
+      },
+      component: () => import('./views/SchoolCard'),
+    },
+    {
+      path: '/schoolbuilding/:build',
+      name: 'schoolbuilding',
+      meta: {
+        requiresAuth: true
+      },
+      component: () => import('./views/SchoolBuilding'),
+    },
+    {
+      path: '/create_building/:build',
+      name: 'CreateBuilding',
+      meta: {
+        requiresAuth: true
+      },
+      component: () => import('./views/CreateBuilding'),
     }
   ],
 })

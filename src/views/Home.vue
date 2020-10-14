@@ -1,6 +1,6 @@
 <template>
   <div>
-
+    <h2>Home</h2>
   </div>
 </template>
 
@@ -8,11 +8,6 @@
 
 export default {
   name: "Home",
-  mounted() {
-    if (localStorage.getItem('permission') === '15') {
-      this.$router.push('/school')
-    }
-  }
 }
 </script>
 

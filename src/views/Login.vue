@@ -21,7 +21,6 @@
 </template>
 
 <script>
-// import $ from 'jquery'
 import * as sp from "@/local_settings"
 
 export default {
@@ -40,12 +39,11 @@ export default {
         password: this.password
       }
       try {
-        await this.$store.dispatch('login', formData)
+        const resp = await this.$store.dispatch('login', formData)
         const permission = localStorage.getItem('permission')
-        console.log(permission)
         if (permission === '15') {
-          await this.$router.push('/school')
-        } else if (permission === '10'){
+          await this.$router.push(`/schoolcard/${resp.user['username']}`)
+        } else if (permission === '5'){
           await this.$router.push('/districts')
         } else await this.$router.push('/')
       } catch (e) {

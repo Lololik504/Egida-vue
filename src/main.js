@@ -2,6 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from "@/router";
 import store from './store/index'
+import Loader from "@/components/Loader"
 import './quasar'
 import 'materialize-css/dist/js/materialize.min.js'
 import Axios from 'axios'
@@ -16,6 +17,8 @@ if (token) {
 }
 
 Vue.config.productionTip = false
+Vue.component('Loader', Loader)
+
 
 new Vue({
   router,
