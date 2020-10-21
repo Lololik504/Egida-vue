@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import auth from './auth'
 import info from './info'
+import building from "./building";
 
 Vue.use(Vuex)
 
@@ -47,6 +48,6 @@ export default new Vuex.Store({
         permission: state => state.permission
     },
     modules: {
-        auth, info
+        auth, info, building
     }
 })

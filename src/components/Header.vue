@@ -13,6 +13,7 @@
       </div>
       <div class="second-row">
         <div class="btn-container">
+          <div class="q-pa-md q-gutter-sm">
           <q-btn v-if="!isLoggedIn" color="white" text-color="black" label="Войти" @click.prevent="toLogin"
                  class="login-but"/>
           <q-btn v-else-if="isLoggedIn"
@@ -21,9 +22,10 @@
           <q-btn v-if="isLoggedIn && getPermission === '15'"
                  color='blue-10' text-color="white" label="Карточка" @click.prevent="toCard"
                  class="login-but"/>
-          <q-btn v-else-if="isLoggedIn && getPermission === '5'"
+          <q-btn v-else-if="isLoggedIn && (getPermission === '5' || getPermission === '1')"
                  color='blue-10' text-color="white" label="Районы" @click.prevent="toDistr"
                  class="login-but"/>
+          </div>
         </div>
         <div class="to-home-text">
           <router-link to="/" class="router-text">Управление обеспечения бюджетного процесса и ресурсного сопровождения
@@ -54,6 +56,7 @@ export default {
     logout: async function () {
       await this.$store.dispatch('logout')
           .then(() => {
+            this.$emit('update')
             this.$router.push('/login')
           })
     },
@@ -65,6 +68,8 @@ export default {
         this.$router.push(`/schoolcard/${this.$route.params['build']}`)
       } else if (this.$route.params['school'] !== undefined) {
         this.$router.push(`/schoolcard/${this.$route.params['school']}`)
+      } else if (localStorage.getItem('inn') !== undefined) {
+        this.$router.push(`/schoolcard/${localStorage.getItem('inn')}`)
       }
     },
     toDistr(){

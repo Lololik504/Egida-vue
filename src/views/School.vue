@@ -2,7 +2,9 @@
   <div class="container">
     <Loader v-if="loading"/>
     <div v-else class="card">
-      <h5>Учереждение <router-link :to="`/schoolcard/${this.$route.params['school']}`"> {{ shortname }}</router-link></h5>
+      <h5>Учереждение
+        <router-link :to="`/schoolcard/${this.$route.params['school']}`"> {{ shortname }}</router-link>
+      </h5>
 
       <p>ИНН:
         <span>{{ INN }}</span>
@@ -28,7 +30,9 @@
         <span v-on:click="changeData">{{ address }}</span>
       </p>
     </div>
-
+    <button class="btn waves-effect waves-light" v-on:click="building">
+      Здания
+    </button>
   </div>
 
 </template>
@@ -51,10 +55,9 @@ export default {
       const token = localStorage.getItem('token')
       const inn = this.$route.params['school']
       if (!Object.keys(info).length || info['INN'] !== inn) {
-        await this.$store.dispatch('fetchInfo', {token, inn})
+        info = await this.$store.dispatch('fetchInfo', {token, inn})
       }
       this.loading = false
-      info = this.$store.getters.info
       this.INN = info['INN']
       this.fullname = info['name']
       this.phone = info['phone']
@@ -67,7 +70,7 @@ export default {
   },
   methods: {
     async changeData(value) {
-      const newData = prompt("Введите новые данные:",value.toElement['textContent'])
+      const newData = prompt("Введите новые данные:", value.toElement['textContent'])
       const val = Object.values(this.$data)
       const keys = Object.keys(this.$data)
       var tmp = ''
@@ -81,6 +84,9 @@ export default {
         await this.$store.dispatch('updateInfo', this.$data)
       }
 
+    },
+    building() {
+      this.$router.push(`/schoolbuilding/${this.$route.params['school']}`)
     }
   }
 

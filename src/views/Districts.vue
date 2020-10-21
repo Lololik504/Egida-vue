@@ -6,6 +6,12 @@
       <DistrictList
           :districts="districts"
       />
+      <br/>
+      <div class="btn-container">
+        <button class="btn waves-effect waves-light" v-on:click="exportData">
+          Экспорт данных
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -18,15 +24,33 @@ export default {
   components: {DistrictList},
   data: () => ({
     districts: [],
-    loading: true
+    loading: true,
+    error: false
   }),
+  methods: {
+    async exportData() {
+      try {
+        await this.$store.dispatch('exportInfo')
+      }catch (e) {
+        console.log(e)
+      }
+    }
+  },
+  beforeCreate() {
+    const per = localStorage.getItem('permission')
+    console.log('checkPerm')
+    if (!(per === '5' || per === '1' || per === '10')) {
+      alert("У вас недостаточно прав!")
+      this.$router.push('/')
+    }
+  },
   async mounted() {
     try {
       this.districts = await this.$store.dispatch('fetchDistricts')
-      console.log(this.districts)
       this.loading = false
     } catch (e) {
       console.log(e)
+      this.error = true
     }
   }
 }

@@ -34,7 +34,6 @@ export default {
   },
   name: "DistrictList",
   created() {
-    console.log(this.districts[0]['schools'][0]['INN'])
     this.districts.forEach(dis => {
       this.distrs.push(dis.name['name'])
     })

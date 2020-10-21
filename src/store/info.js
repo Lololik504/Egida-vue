@@ -89,18 +89,24 @@ export default {
                 console.log(e)
             }
         },
-        async fetchBuilding({commit}, {token, inn}) {
+        async exportInfo({commit}){
             try {
+                const token = localStorage.getItem('token')
                 return await new Promise((resolve, reject) => {
-                    axios.get(server_path + "/api/building",
+                    axios.get(server_path + "/api/export/",
                         {
                             headers: {
                                 "Authorization": "auth " + token,
-                                'Content-Type': 'application/json',
-                                "INN": inn
-                            }
+                            },
+                            responseType: 'blob'
                         })
                         .then(resp => {
+                            const url = window.URL.createObjectURL(new Blob([resp.data]));
+                            const link = document.createElement('a');
+                            link.href = url;
+                            link.setAttribute('download', 'export.xls'); //or any other extension
+                            document.body.appendChild(link);
+                            link.click();
                             resolve(resp)
                         })
                         .catch(err => {

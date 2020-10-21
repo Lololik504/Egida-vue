@@ -66,6 +66,14 @@ let router = new Router({
         requiresAuth: true
       },
       component: () => import('./views/CreateBuilding'),
+    },
+    {
+      path: '/building/:id',
+      name: 'Building',
+      meta: {
+        requiresAuth: true
+      },
+      component: () => import('./views/Building'),
     }
   ],
 })

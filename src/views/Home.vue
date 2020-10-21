@@ -1,28 +1,18 @@
 <template>
-  <div class="center">
-    <h3>Home</h3>
+  <div>
+  <HomeList/>
   </div>
 </template>
 
 <script>
-
+import HomeList from '@/components/HomeList'
 export default {
   name: "Home",
+  components: {HomeList}
 }
 </script>
 
 <style scoped>
-
-
-
-.rounded {
-  width: 300px;
-  counter-reset: rr;
-  list-style: none;
-  font: 14px "Trebuchet MS", "Lucida Sans";
-  padding: 0;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, .5);
-}
 
 .rounded a {
   position: relative;
@@ -62,9 +52,7 @@ export default {
   transition: all .3s ease-out;
 }
 
-div{
-  display: flex;
-}
+
 
 ul{
   align-self: flex-start;
