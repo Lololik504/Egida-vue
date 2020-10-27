@@ -36,7 +36,8 @@ export default {
                         })
                 })
             } catch (e) {
-                console.log(e)
+                commit('setError', e)
+                throw e
             }
         },
         async logout({commit}) {

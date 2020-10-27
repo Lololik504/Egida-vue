@@ -24,7 +24,7 @@ export default {
                         })
                 })
             } catch (e) {
-                console.log(e)
+                commit('setError', e)
                 throw e
             }
         },
@@ -48,33 +48,32 @@ export default {
                         })
                 })
             } catch (e) {
-                console.log(e)
+                commit('setError', e)
                 throw e
             }
         },
-        async fetchFieldsBuilding({commit}, {token, inn}) {
+        async fetchFieldsBuilding({commit}) {
             try {
                 return await new Promise((resolve, reject) => {
                     axios.get(server_path + "/api/fields/building",
                         {
                             headers: {
-                                "Authorization": "auth " + token,
-                                'Content-Type': 'application/json',
-                                "INN": inn
+                                'Content-Type': 'application/json'
                             }
                         })
                         .then(resp => {
-                            resolve(resp)
+                            resolve(resp.data.data)
                         })
                         .catch(err => {
                             reject(err)
                         })
                 })
             } catch (e) {
+                commit('setError', e)
                 throw e
             }
         },
-        async fetchBuildings({dispatch, commit}, {token, inn}){
+        async fetchBuildings({dispatch, commit}, {token, inn}) {
             try {
                 return await new Promise((resolve, reject) => {
                     axios.get(server_path + "/api/all_buildings",
@@ -84,15 +83,8 @@ export default {
                                 'Content-Type': 'application/json',
                                 "INN": inn
                             }
-                            // responseType: 'blob'
                         })
                         .then(resp => {
-                            // const url = window.URL.createObjectURL(new Blob([resp.data]));
-                            // const link = document.createElement('a');
-                            // link.href = url;
-                            // link.setAttribute('download', 'export.xls'); //or any other extension
-                            // document.body.appendChild(link);
-                            // link.click();
                             resolve(resp)
                         })
                         .catch(err => {
@@ -100,10 +92,11 @@ export default {
                         })
                 })
             } catch (e) {
+                commit('setError', e)
                 throw e
             }
         },
-        async fetchBuilding({dispatch, commit}, {token, id}){
+        async fetchBuilding({dispatch, commit}, {token, id}) {
             try {
                 return await new Promise((resolve, reject) => {
                     axios.get(server_path + "/api/building",
@@ -122,6 +115,31 @@ export default {
                         })
                 })
             } catch (e) {
+                commit('setError', e)
+                throw e
+            }
+        },
+        async deleteBuilding({commit}, id) {
+            try {
+                const token = localStorage.getItem('token')
+                return await new Promise((resolve, reject) => {
+                    axios.delete(server_path + "/api/building",
+                        {
+                            headers: {
+                                "Authorization": "auth " + token,
+                                'Content-Type': 'application/json',
+                                "id": id
+                            }
+                        })
+                        .then(resp => {
+                            resolve(resp)
+                        })
+                        .catch(err => {
+                            reject(err)
+                        })
+                })
+            } catch (e) {
+                commit('setError', e)
                 throw e
             }
         }

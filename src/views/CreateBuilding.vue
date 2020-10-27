@@ -3,9 +3,13 @@
     <h4>Добавление здания</h4>
     <form @submit.prevent="createBuild">
       <div class="q-pa-md">
-        <div class="input-field-address">
-          <label>Адрес</label>
-          <q-input outlined v-model="address"/>
+        <div class="input-field-street">
+          <label>Улица</label>
+          <q-input outlined placeholder="Введите улицу" v-model="street"/>
+        </div>
+        <div class="input-field-street-number">
+          <label>Номер дома</label>
+          <q-input outlined placeholder="Введите номер дома" v-model="street_number"/>
         </div>
         <div class="select-type-field">
           <label>Вид здания</label>
@@ -447,9 +451,10 @@ import {minValue, maxValue} from 'vuelidate/lib/validators'
 export default {
   data: () => ({
     data: {},
-    types: [],
+    types: ["Отдельно стоящее","Встроенное в многоквартирный дом","Пристроенное к многоквартирному дому"],
     purposes: ['Корпус школы', 'Корпус д/с', 'Подразделение доп. образования', 'Овощехранилище', 'Мастерская', 'Теплица', 'Гараж', 'Иное'],
-    address: null,
+    street: null,
+    street_number: null,
     unused_square: null,
     TECHNICAL_CONDITION: null,
     repair_need_square: null,
@@ -494,7 +499,8 @@ export default {
         this.purpose = this.choose_purpose
       }
       const dat = {
-        address: this.address,
+        street: this.street,
+        street_number: this.street_number,
         unused_square: this.unused_square,
         TECHNICAL_CONDITION: this.TECHNICAL_CONDITION,
         repair_need_square: this.repair_need_square,
@@ -526,13 +532,10 @@ export default {
     }
   },
   async mounted() {
-    const token = localStorage.getItem('token')
-    const inn = this.$route.params['build']
     try {
-      const resp = await this.$store.dispatch('fetchFieldsBuilding', {token, inn})
-      this.data = resp.data.data
-      this.types = resp.data.data['TYPE']
-      console.log(this.data)
+      const resp = await this.$store.dispatch('fetchFieldsBuilding')
+      this.data = resp
+      console.log(resp)
     } catch (e) {
       console.log(e)
     }

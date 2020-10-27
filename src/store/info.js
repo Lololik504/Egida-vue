@@ -86,7 +86,8 @@ export default {
                         })
                 })
             } catch (e) {
-                console.log(e)
+                commit('setError', e)
+                throw e
             }
         },
         async exportInfo({commit}){
@@ -114,6 +115,59 @@ export default {
                         })
                 })
             } catch (e) {
+                commit('setError', e)
+                throw e
+            }
+        }
+        ,
+        async fetchAllModels({commit}) {
+            try {
+                return await new Promise((resolve, reject) => {
+                    axios.get(server_path + "/api/fields/all_models",
+                        {
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                        })
+                        .then(resp => {
+                            resolve(resp.data.data)
+                        })
+                        .catch(err => {
+                            reject(err)
+                        })
+                })
+            } catch (e) {
+                commit('setError', e)
+                throw e
+            }
+        },
+        async sendMainInfo({commit}, data) {
+            try {
+                const token = localStorage.getItem('token')
+                return await new Promise((resolve, reject) => {
+                    axios.get(server_path + "/api/export/",
+                        {
+                            headers: {
+                                "Authorization": "auth " + token,
+                                "data": JSON.stringify(data)
+                            },
+                            responseType: 'blob'
+                        })
+                        .then(resp => {
+                            const url = window.URL.createObjectURL(new Blob([resp.data]));
+                            const link = document.createElement('a');
+                            link.href = url;
+                            link.setAttribute('download', `Export_${new Date().toUTCString()}.xls`); //or any other extension
+                            document.body.appendChild(link);
+                            link.click();
+                            resolve(resp)
+                        })
+                        .catch(err => {
+                            reject(err)
+                        })
+                })
+            } catch (e) {
+                commit('setError', e)
                 throw e
             }
         }

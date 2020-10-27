@@ -2,11 +2,15 @@
   <div class="container">
     <h4>Информация о здании</h4>
     <Loader v-if="loading"/>
-    <form v-else @submit.prevent="updateBuild">
+    <form v-else>
       <div class="q-pa-md">
-        <div class="input-field-address">
-          <label>Адрес</label>
-          <q-input outlined v-model="d.address"/>
+        <div class="input-field-street">
+          <label>Улица</label>
+          <q-input outlined placeholder="Введите улицу" v-model="d.street"/>
+        </div>
+        <div class="input-field-street-number">
+          <label>Номер дома</label>
+          <q-input outlined placeholder="Введите номер дома" v-model="d.street_number"/>
         </div>
         <div class="select-type-field">
           <label>Вид здания</label>
@@ -432,8 +436,13 @@
             </div>
           </div>
         </div>
-        <div class="b">
-          <q-btn color="primary" label="Изменить" type="submit"/>
+        <div class="q-gutter-md">
+          <button class="btn waves-effect waves-light" @click.prevent="updateBuild">
+            Изменить
+          </button>
+          <button class="btn waves-effect waves-light" @click.prevent="deleteBuilding">
+            Удалить здание
+          </button>
         </div>
       </div>
     </form>
@@ -442,6 +451,7 @@
 
 <script>
 import {maxValue, minValue} from "vuelidate/lib/validators";
+import {mapGetters} from 'vuex'
 
 export default {
   data: () => ({
@@ -450,7 +460,8 @@ export default {
     purposes: ['Корпус школы', 'Корпус д/с', 'Подразделение доп. образования', 'Овощехранилище', 'Мастерская', 'Теплица', 'Гараж', 'Иное'],
     loading: true,
     d:{
-      address: null,
+      street: null,
+      street_number: null,
       unused_square: null,
       TECHNICAL_CONDITION: null,
       repair_need_square: null,
@@ -478,6 +489,9 @@ export default {
       maxValue: maxValue(new Date().getFullYear())
     }
   },
+  computed: {
+    ...mapGetters(['info'])
+  },
   methods: {
     async updateBuild(){
       try {
@@ -485,6 +499,18 @@ export default {
         const data = this.d
         const resp = await this.$store.dispatch('updateBuilding', data)
         console.log(resp)
+        await this.$router.push(`/schoolbuilding/${this.info.INN}`)
+      } catch (e) {
+        console.log(e)
+      }
+    },
+    async deleteBuilding() {
+      try {
+        const id = this.$route.params['id']
+        const resp = await this.$store.dispatch('deleteBuilding', id)
+        console.log(resp)
+        console.log(this.info.INN)
+        await this.$router.push(`/schoolbuilding/${this.info.INN}`)
       } catch (e) {
         console.log(e)
       }
@@ -496,7 +522,6 @@ export default {
       const id = this.$route.params['id']
       const resp = await this.$store.dispatch('fetchBuilding', {token, id})
       this.data = resp.data.data[0]
-      console.log(this.data)
       this.d = resp.data.data[0]
       this.loading = false
     } catch (e) {
