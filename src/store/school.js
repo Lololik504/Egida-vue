@@ -23,6 +23,54 @@ export default {
                 commit('setError', e)
                 throw e
             }
+        },
+        async createSchool({commit}, data) {
+            try {
+                const token = localStorage.getItem('token')
+                return await new Promise((resolve, reject) => {
+                    axios.post(server_path + "/api/school/",
+                        data,
+                        {
+                            headers: {
+                                'Content-Type': 'application/json',
+                                "Authorization": "auth " + token,
+                            }
+                        })
+                        .then(resp => {
+                            resolve(resp)
+                        })
+                        .catch(err => {
+                            reject(err)
+                        })
+                })
+            } catch (e) {
+                commit('setError', e)
+                throw e
+            }
+        },
+        async deleteSchool({commit} , inn) {
+            try {
+                const token = localStorage.getItem('token')
+                return await new Promise((resolve, reject) => {
+                    axios.delete(server_path + "/api/school",
+                        {
+                            headers: {
+                                "Authorization": "auth " + token,
+                                'Content-Type': 'application/json',
+                                "inn": inn
+                            }
+                        })
+                        .then(resp => {
+                            resolve(resp)
+                        })
+                        .catch(err => {
+                            reject(err)
+                        })
+                })
+            } catch (e) {
+                commit('setError', e)
+                throw e
+            }
         }
     }
 }

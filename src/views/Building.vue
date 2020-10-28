@@ -455,32 +455,31 @@ import {mapGetters} from 'vuex'
 
 export default {
   data: () => ({
-    data: {},
     types: ["Отдельно стоящее","Встроенное в многоквартирный дом","Пристроенное к многоквартирному дому"],
     purposes: ['Корпус школы', 'Корпус д/с', 'Подразделение доп. образования', 'Овощехранилище', 'Мастерская', 'Теплица', 'Гараж', 'Иное'],
     loading: true,
     d:{
-      street: null,
-      street_number: null,
-      unused_square: null,
-      TECHNICAL_CONDITION: null,
-      repair_need_square: null,
-      occupancy_proj: null,
-      occupancy_fact: null,
-      arend_square: null,
-      construction_year: null,
-      arend_use_type: null,
-      land_square: null,
-      number_of_storeys: null,
-      building_square: null,
-      build_height: null,
-      type: null,
-      purpose: null,
-      choose_purpose: null,
-      current: null,
-      age: null,
-      last_repair_year: null,
-      id: null
+      // street: null,
+      // street_number: null,
+      // unused_square: null,
+      // TECHNICAL_CONDITION: null,
+      // repair_need_square: null,
+      // occupancy_proj: null,
+      // occupancy_fact: null,
+      // arend_square: null,
+      // construction_year: null,
+      // arend_use_type: null,
+      // land_square: null,
+      // number_of_storeys: null,
+      // building_square: null,
+      // build_height: null,
+      // type: null,
+      // purpose: null,
+      // choose_purpose: null,
+      // current: null,
+      // age: null,
+      // last_repair_year: null,
+      // id: null
     }
   }),
   validations: {
@@ -521,7 +520,6 @@ export default {
       const token = localStorage.getItem('token')
       const id = this.$route.params['id']
       const resp = await this.$store.dispatch('fetchBuilding', {token, id})
-      this.data = resp.data.data[0]
       this.d = resp.data.data[0]
       this.loading = false
     } catch (e) {

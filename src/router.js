@@ -74,6 +74,14 @@ let router = new Router({
         requiresAuth: true
       },
       component: () => import('./views/Building'),
+    },
+    {
+      path: '/create_school',
+      name: 'CreateSchool',
+      meta: {
+        requiresAuth: true
+      },
+      component: () => import('./views/CreateSchool'),
     }
   ],
 })

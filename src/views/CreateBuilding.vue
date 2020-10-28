@@ -5,24 +5,24 @@
       <div class="q-pa-md">
         <div class="input-field-street">
           <label>Улица</label>
-          <q-input outlined placeholder="Введите улицу" v-model="street"/>
+          <q-input outlined placeholder="Введите улицу" v-model="data.street"/>
         </div>
         <div class="input-field-street-number">
           <label>Номер дома</label>
-          <q-input outlined placeholder="Введите номер дома" v-model="street_number"/>
+          <q-input outlined placeholder="Введите номер дома" v-model="data.street_number"/>
         </div>
         <div class="select-type-field">
           <label>Вид здания</label>
           <div class="select">
-            <q-select outlined v-model="type" :options="types"/>
+            <q-select outlined v-model="data.type" :options="types"/>
           </div>
         </div>
 
-        <div v-if="type === types[0]">
+        <div v-if="data.type === types[0]">
           <div class="select-purpose-field">
             <label>Назначение школы</label>
             <div class="select">
-              <q-select outlined v-model="purpose" :options="purposes"/>
+              <q-select outlined v-model="data.purpose" :options="purposes"/>
             </div>
             <div v-if="purpose === purposes[7]">
               <label>Введите назначение школы</label>
@@ -30,36 +30,36 @@
             </div>
             <div class="input-field-year">
               <label>Год постройки здания</label>
-              <q-input outlined type="number" v-model.number="construction_year"
+              <q-input outlined type="number" v-model.number="data.construction_year"
                        :class="{invalid: $v.construction_year.$dirty && (!$v.construction_year.minValue || !$v.construction_year.maxValue)}"
                        @change="show"/>
               <span v-if="$v.construction_year.$dirty && (!$v.construction_year.minValue || !$v.construction_year.maxValue)">в формате гггг(начиная от 1900 г, не ранее)</span>
             </div>
             <div class="input-field-building-square">
               <label>Площадь здания, Кв. м.</label>
-              <q-input outlined type="number" v-model.number="building_square"/>
+              <q-input outlined type="number" v-model.number="data.building_square"/>
             </div>
             <div class="input-field-land-square">
               <label>Площадь земельного участка, Кв. м.</label>
-              <q-input outlined type="number" v-model.number="land_square"/>
+              <q-input outlined type="number" v-model.number="data.land_square"/>
             </div>
             <div class="input-field-number-of-storeys">
               <label>Этажность здания</label>
-              <q-input outlined type="number" v-model.number="number_of_storeys"/>
+              <q-input outlined type="number" v-model.number="data.number_of_storeys"/>
             </div>
             <div class="input-field-build-height">
               <label>Высота здания (м)</label>
-              <q-input outlined type="number" v-model.number="build_height"/>
+              <q-input outlined type="number" v-model.number="data.build_height"/>
             </div>
             <q-card flat bordered class="my-card">
               <label>Здания (помещения), сдаваемые в аренду или безвозмездное пользование:</label>
               <div class="input-field-arend-square">
                 <label>Площадь, Кв. м.</label>
-                <q-input outlined type="number" v-model.number="arend_square"/>
+                <q-input outlined type="number" v-model.number="data.arend_square"/>
               </div>
               <div class="input-field-arend-use-type">
                 <label>Вид использования</label>
-                <q-input outlined type="text" v-model="arend_use_type"/>
+                <q-input outlined type="text" v-model="data.arend_use_type"/>
               </div>
             </q-card>
             <br/>
@@ -67,11 +67,11 @@
               <label>Наполняемость:</label>
               <div class="input-field-occupancy-proj">
                 <label>Проектная</label>
-                <q-input outlined type="number" v-model.number="occupancy_proj"/>
+                <q-input outlined type="number" v-model.number="data.occupancy_proj"/>
               </div>
               <div class="input-field-arend-occupancy-fact">
                 <label>Фактическая</label>
-                <q-input outlined type="number" v-model.number="occupancy_fact"/>
+                <q-input outlined type="number" v-model.number="data.occupancy_fact"/>
               </div>
             </q-card>
             <br/>
@@ -79,11 +79,11 @@
               <label>Неиспользуемые здания (помещения):</label>
               <div class="input-field-unused-square">
                 <label>Общая площадь, Кв. м.</label>
-                <q-input outlined type="number" v-model.number="unused_square"/>
+                <q-input outlined type="number" v-model.number="data.unused_square"/>
               </div>
               <div class="input-field-arend-repair-need-square">
                 <label>Площадь, требующая ремонта, Кв. м.</label>
-                <q-input outlined type="number" v-model.number="repair_need_square"/>
+                <q-input outlined type="number" v-model.number="data.repair_need_square"/>
               </div>
             </q-card>
             <br/>
@@ -93,7 +93,7 @@
                 <q-list>
                   <q-item tag="label" v-ripple>
                     <q-item-section avatar top>
-                      <q-radio v-model="TECHNICAL_CONDITION" val="Исправное состояние"/>
+                      <q-radio v-model="data.TECHNICAL_CONDITION" val="Исправное состояние"/>
                     </q-item-section>
                     <q-item-section>
                       <q-item-label>Исправное состояние</q-item-label>
@@ -105,7 +105,7 @@
                   </q-item>
                   <q-item tag="label" v-ripple>
                     <q-item-section avatar top>
-                      <q-radio v-model="TECHNICAL_CONDITION" val="Работоспособное состояние"/>
+                      <q-radio v-model="data.TECHNICAL_CONDITION" val="Работоспособное состояние"/>
                     </q-item-section>
                     <q-item-section>
                       <q-item-label>Работоспособное состояние</q-item-label>
@@ -120,7 +120,7 @@
                   </q-item>
                   <q-item tag="label" v-ripple>
                     <q-item-section avatar top>
-                      <q-radio v-model="TECHNICAL_CONDITION" val="Ограниченно работоспособное состояние"/>
+                      <q-radio v-model="data.TECHNICAL_CONDITION" val="Ограниченно работоспособное состояние"/>
                     </q-item-section>
                     <q-item-section>
                       <q-item-label>Ограниченно работоспособное состояние</q-item-label>
@@ -133,7 +133,7 @@
                   </q-item>
                   <q-item tag="label" v-ripple>
                     <q-item-section avatar top>
-                      <q-radio v-model="TECHNICAL_CONDITION" val="Недопустимое состояние"/>
+                      <q-radio v-model="data.TECHNICAL_CONDITION" val="Недопустимое состояние"/>
                     </q-item-section>
                     <q-item-section>
                       <q-item-label>Недопустимое состояние</q-item-label>
@@ -146,7 +146,7 @@
                   </q-item>
                   <q-item tag="label" v-ripple>
                     <q-item-section avatar top>
-                      <q-radio v-model="TECHNICAL_CONDITION" val="Аварийное состояние"/>
+                      <q-radio v-model="data.TECHNICAL_CONDITION" val="Аварийное состояние"/>
                     </q-item-section>
                     <q-item-section>
                       <q-item-label>Аварийное состояние</q-item-label>
@@ -162,39 +162,39 @@
             <br/>
             <div class="input-field-construction-year">
               <label>Год проведения последнего капитального ремонта/реконструкции здания</label>
-              <q-input outlined type="number" v-model.number="last_repair_year"/>
+              <q-input outlined type="number" v-model.number="data.last_repair_year"/>
             </div>
           </div>
         </div>
 
-        <div v-else-if="type === types[1]">
+        <div v-else-if="data.type === types[1]">
           <div class="input-field-year">
             <label>Год постройки здания</label>
-            <q-input outlined type="number" v-model.number="construction_year"
+            <q-input outlined type="number" v-model.number="data.construction_year"
                    :class="{invalid: $v.construction_year.$dirty && (!$v.construction_year.minValue || !$v.construction_year.maxValue)}"/>
             <span v-if="$v.construction_year.$dirty && (!$v.construction_year.minValue || !$v.construction_year.maxValue)">в формате гггг(начиная от 1900 г, не ранее)</span>
           </div>
           <div class="input-field-building-square">
             <label>Площадь занимаемых помещений, Кв. м.</label>
-            <q-input outlined type="number" v-model.number="building_square"/>
+            <q-input outlined type="number" v-model.number="data.building_square"/>
           </div>
           <div class="input-field-land-square">
             <label>Площадь земельного участка, Кв. м.</label>
-            <q-input outlined type="number" v-model.number="land_square"/>
+            <q-input outlined type="number" v-model.number="data.land_square"/>
           </div>
           <div class="input-field-number-of-storeys">
             <label>Этажность всего здания</label>
-            <q-input outlined type="number" v-model.number="number_of_storeys"/>
+            <q-input outlined type="number" v-model.number="data.number_of_storeys"/>
           </div>
           <q-card flat bordered class="my-card">
             <label>Наполняемость:</label>
             <div class="input-field-occupancy-proj">
               <label>Проектная</label>
-              <q-input outlined type="number" v-model.number="occupancy_proj"/>
+              <q-input outlined type="number" v-model.number="data.occupancy_proj"/>
             </div>
             <div class="input-field-arend-occupancy-fact">
               <label>Фактическая</label>
-              <q-input outlined type="number" v-model.number="occupancy_fact"/>
+              <q-input outlined type="number" v-model.number="data.occupancy_fact"/>
             </div>
           </q-card>
           <br/>
@@ -202,11 +202,11 @@
             <label>Неиспользуемые здания (помещения):</label>
             <div class="input-field-unused-square">
               <label>Общая площадь, Кв. м.</label>
-              <q-input outlined type="number" v-model.number="unused_square"/>
+              <q-input outlined type="number" v-model.number="data.unused_square"/>
             </div>
             <div class="input-field-arend-repair-need-square">
               <label>Площадь, требующая ремонта, Кв. м.</label>
-              <q-input outlined type="number" v-model.number="repair_need_square"/>
+              <q-input outlined type="number" v-model.number="data.repair_need_square"/>
             </div>
           </q-card>
           <br/>
@@ -216,7 +216,7 @@
               <q-list>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="TECHNICAL_CONDITION" val="Исправное состояние"/>
+                    <q-radio v-model="data.TECHNICAL_CONDITION" val="Исправное состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Исправное состояние</q-item-label>
@@ -228,7 +228,7 @@
                 </q-item>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="TECHNICAL_CONDITION" val="Работоспособное состояние"/>
+                    <q-radio v-model="data.TECHNICAL_CONDITION" val="Работоспособное состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Работоспособное состояние</q-item-label>
@@ -243,7 +243,7 @@
                 </q-item>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="TECHNICAL_CONDITION" val="Ограниченно работоспособное состояние"/>
+                    <q-radio v-model="data.TECHNICAL_CONDITION" val="Ограниченно работоспособное состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Ограниченно работоспособное состояние</q-item-label>
@@ -256,7 +256,7 @@
                 </q-item>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="TECHNICAL_CONDITION" val="Недопустимое состояние"/>
+                    <q-radio v-model="data.TECHNICAL_CONDITION" val="Недопустимое состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Недопустимое состояние</q-item-label>
@@ -269,7 +269,7 @@
                 </q-item>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="TECHNICAL_CONDITION" val="Аварийное состояние"/>
+                    <q-radio v-model="data.TECHNICAL_CONDITION" val="Аварийное состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Аварийное состояние</q-item-label>
@@ -285,52 +285,52 @@
           <br/>
           <div class="input-field-construction-year">
             <label>Год проведения последнего капитального ремонта/реконструкции здания</label>
-            <q-input outlined type="number" v-model.number="last_repair_year"/>
+            <q-input outlined type="number" v-model.number="data.last_repair_year"/>
           </div>
         </div>
 
-        <div v-else-if="type === types[2]">
+        <div v-else-if="data.type === types[2]">
           <div class="select-purpose-field">
             <label>Назначение школы</label>
             <div class="select">
-              <q-select outlined v-model="purpose" :options="purposes"/>
+              <q-select outlined v-model="data.purpose" :options="purposes"/>
             </div>
-            <div v-if="purpose === purposes[7]">
+            <div v-if="data.purpose === purposes[7]">
               <label>Введите назначение школы</label>
               <q-input outlined v-model="choose_purpose"/>
             </div>
             <div class="input-field-year">
               <label>Год пристройки здания</label>
-              <q-input outlined type="number" v-model.number="construction_year"
+              <q-input outlined type="number" v-model.number="data.construction_year"
                        :class="{invalid: $v.construction_year.$dirty && (!$v.construction_year.minValue || !$v.construction_year.maxValue)}"
                        @change="show"/>
               <span v-if="$v.construction_year.$dirty && (!$v.construction_year.minValue || !$v.construction_year.maxValue)">в формате гггг(начиная от 1900 г, не ранее)</span>
             </div>
             <div class="input-field-building-square">
               <label>Площадь занимаемого помещения, Кв. м.</label>
-              <q-input outlined type="number" v-model.number="building_square"/>
+              <q-input outlined type="number" v-model.number="data.building_square"/>
             </div>
             <div class="input-field-land-square">
               <label>Площадь земельного участка, Кв. м.</label>
-              <q-input outlined type="number" v-model.number="land_square"/>
+              <q-input outlined type="number" v-model.number="data.land_square"/>
             </div>
             <div class="input-field-number-of-storeys">
               <label>Этажность пристройки</label>
-              <q-input outlined type="number" v-model.number="number_of_storeys"/>
+              <q-input outlined type="number" v-model.number="data.number_of_storeys"/>
             </div>
             <div class="input-field-build-height">
               <label>Высота пристройки (м)</label>
-              <q-input outlined type="number" v-model.number="build_height"/>
+              <q-input outlined type="number" v-model.number="data.build_height"/>
             </div>
             <q-card flat bordered class="my-card">
               <label>Здания (помещения), сдаваемые в аренду или безвозмездное пользование:</label>
               <div class="input-field-arend-square">
                 <label>Площадь, Кв. м.</label>
-                <q-input outlined type="number" v-model.number="arend_square"/>
+                <q-input outlined type="number" v-model.number="data.arend_square"/>
               </div>
               <div class="input-field-arend-use-type">
                 <label>Вид использования</label>
-                <q-input outlined type="text" v-model="arend_use_type"/>
+                <q-input outlined type="text" v-model="data.arend_use_type"/>
               </div>
             </q-card>
             <br/>
@@ -338,11 +338,11 @@
               <label>Наполняемость:</label>
               <div class="input-field-occupancy-proj">
                 <label>Проектная</label>
-                <q-input outlined type="number" v-model.number="occupancy_proj"/>
+                <q-input outlined type="number" v-model.number="data.occupancy_proj"/>
               </div>
               <div class="input-field-arend-occupancy-fact">
                 <label>Фактическая</label>
-                <q-input outlined type="number" v-model.number="occupancy_fact"/>
+                <q-input outlined type="number" v-model.number="data.occupancy_fact"/>
               </div>
             </q-card>
             <br/>
@@ -350,11 +350,11 @@
               <label>Неиспользуемые здания (помещения):</label>
               <div class="input-field-unused-square">
                 <label>Общая площадь, Кв. м.</label>
-                <q-input outlined type="number" v-model.number="unused_square"/>
+                <q-input outlined type="number" v-model.number="data.unused_square"/>
               </div>
               <div class="input-field-arend-repair-need-square">
                 <label>Площадь, требующая ремонта, Кв. м.</label>
-                <q-input outlined type="number" v-model.number="repair_need_square"/>
+                <q-input outlined type="number" v-model.number="data.repair_need_square"/>
               </div>
             </q-card>
             <br/>
@@ -364,7 +364,7 @@
                 <q-list>
                   <q-item tag="label" v-ripple>
                     <q-item-section avatar top>
-                      <q-radio v-model="TECHNICAL_CONDITION" val="Исправное состояние"/>
+                      <q-radio v-model="data.TECHNICAL_CONDITION" val="Исправное состояние"/>
                     </q-item-section>
                     <q-item-section>
                       <q-item-label>Исправное состояние</q-item-label>
@@ -376,7 +376,7 @@
                   </q-item>
                   <q-item tag="label" v-ripple>
                     <q-item-section avatar top>
-                      <q-radio v-model="TECHNICAL_CONDITION" val="Работоспособное состояние"/>
+                      <q-radio v-model="data.TECHNICAL_CONDITION" val="Работоспособное состояние"/>
                     </q-item-section>
                     <q-item-section>
                       <q-item-label>Работоспособное состояние</q-item-label>
@@ -391,7 +391,7 @@
                   </q-item>
                   <q-item tag="label" v-ripple>
                     <q-item-section avatar top>
-                      <q-radio v-model="TECHNICAL_CONDITION" val="Ограниченно работоспособное состояние"/>
+                      <q-radio v-model="data.TECHNICAL_CONDITION" val="Ограниченно работоспособное состояние"/>
                     </q-item-section>
                     <q-item-section>
                       <q-item-label>Ограниченно работоспособное состояние</q-item-label>
@@ -404,7 +404,7 @@
                   </q-item>
                   <q-item tag="label" v-ripple>
                     <q-item-section avatar top>
-                      <q-radio v-model="TECHNICAL_CONDITION" val="Недопустимое состояние"/>
+                      <q-radio v-model="data.TECHNICAL_CONDITION" val="Недопустимое состояние"/>
                     </q-item-section>
                     <q-item-section>
                       <q-item-label>Недопустимое состояние</q-item-label>
@@ -417,7 +417,7 @@
                   </q-item>
                   <q-item tag="label" v-ripple>
                     <q-item-section avatar top>
-                      <q-radio v-model="TECHNICAL_CONDITION" val="Аварийное состояние"/>
+                      <q-radio v-model="data.TECHNICAL_CONDITION" val="Аварийное состояние"/>
                     </q-item-section>
                     <q-item-section>
                       <q-item-label>Аварийное состояние</q-item-label>
@@ -433,7 +433,7 @@
             <br/>
             <div class="input-field-construction-year">
               <label>Год проведения последнего капитального ремонта/реконструкции здания</label>
-              <q-input outlined type="number" v-model.number="last_repair_year"/>
+              <q-input outlined type="number" v-model.number="data.last_repair_year"/>
             </div>
           </div>
         </div>
@@ -453,26 +453,26 @@ export default {
     data: {},
     types: ["Отдельно стоящее","Встроенное в многоквартирный дом","Пристроенное к многоквартирному дому"],
     purposes: ['Корпус школы', 'Корпус д/с', 'Подразделение доп. образования', 'Овощехранилище', 'Мастерская', 'Теплица', 'Гараж', 'Иное'],
-    street: null,
-    street_number: null,
-    unused_square: null,
-    TECHNICAL_CONDITION: null,
-    repair_need_square: null,
-    occupancy_proj: null,
-    occupancy_fact: null,
-    arend_square: null,
-    construction_year: null,
-    arend_use_type: null,
-    land_square: null,
-    number_of_storeys: null,
-    building_square: null,
-    build_height: null,
-    type: null,
-    purpose: null,
+    // street: null,
+    // street_number: null,
+    // unused_square: null,
+    // TECHNICAL_CONDITION: null,
+    // repair_need_square: null,
+    // occupancy_proj: null,
+    // occupancy_fact: null,
+    // arend_square: null,
+    // construction_year: null,
+    // arend_use_type: null,
+    // land_square: null,
+    // number_of_storeys: null,
+    // building_square: null,
+    // build_height: null,
+    // type: null,
+    // purpose: null,
     choose_purpose: null,
     current: null,
     loading: true,
-    last_repair_year: null
+
   }),
   validations: {
     construction_year: {
@@ -492,36 +492,37 @@ export default {
     async createBuild(){
       if (this.$v.$invalid) {
         this.$v.$touch()
-        console.log(new Date().getFullYear())
         return
       }
       if (this.choose_purpose !== null) {
-        this.purpose = this.choose_purpose
+        this.data.purpose = this.choose_purpose
       }
-      const dat = {
-        street: this.street,
-        street_number: this.street_number,
-        unused_square: this.unused_square,
-        TECHNICAL_CONDITION: this.TECHNICAL_CONDITION,
-        repair_need_square: this.repair_need_square,
-        occupancy_proj: this.occupancy_proj,
-        occupancy_fact: this.occupancy_proj,
-        arend_square: this.arend_square,
-        construction_year: this.construction_year,
-        arend_use_type: this.arend_use_type,
-        land_square: this.land_square,
-        number_of_storeys: this.number_of_storeys,
-        building_square: this.building_square,
-        build_height: this.build_height,
-        type: this.type,
-        purpose: this.purpose,
-        last_repair_year: this.last_repair_year,
-        age: this.age,
-        INN: this.$route.params['build']
-      }
-      console.log(dat)
+      // const dataForm = {
+      //   street: this.street,
+      //   street_number: this.street_number,
+      //   unused_square: this.unused_square,
+      //   TECHNICAL_CONDITION: this.TECHNICAL_CONDITION,
+      //   repair_need_square: this.repair_need_square,
+      //   occupancy_proj: this.occupancy_proj,
+      //   occupancy_fact: this.occupancy_proj,
+      //   arend_square: this.arend_square,
+      //   construction_year: this.construction_year,
+      //   arend_use_type: this.arend_use_type,
+      //   land_square: this.land_square,
+      //   number_of_storeys: this.number_of_storeys,
+      //   building_square: this.building_square,
+      //   build_height: this.build_height,
+      //   type: this.type,
+      //   purpose: this.purpose,
+      //   last_repair_year: this.last_repair_year,
+      //   age: this.age,
+      //   INN: this.$route.params['build']
+      // }
+      let dataForm = Object.assign({},this.data)
+      dataForm['INN'] = this.$route.params['build']
+      console.log(dataForm)
       try {
-        const resp = await this.$store.dispatch('createBuilding',dat)
+        const resp = await this.$store.dispatch('createBuilding',dataForm)
         console.log(resp)
       } catch (e) {
         console.log(e)
@@ -535,7 +536,7 @@ export default {
     try {
       const resp = await this.$store.dispatch('fetchFieldsBuilding')
       this.data = resp
-      console.log(resp)
+      Object.keys(this.data).forEach(key => (this.data[key] = null))
     } catch (e) {
       console.log(e)
     }

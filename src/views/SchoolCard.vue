@@ -2,11 +2,14 @@
   <div class="container">
     <Loader v-if="loading"/>
     <div v-else>
-    <h4> Карточка учреждения {{shortname}}</h4>
-      <div class="btn-container">
-    <button class="btn waves-effect waves-light" v-on:click="mainInfo">
-      Сведения о юридическом лице
-    </button>
+      <h4> Карточка учреждения {{ shortname }}</h4>
+      <div class="q-gutter-md">
+        <button class="btn waves-effect waves-light" v-on:click="mainInfo">
+          Сведения о юридическом лице
+        </button>
+        <button v-if="permission" class="btn waves-effect waves-light" v-on:click="deleteSchool">
+          Удалить учреждение
+        </button>
       </div>
     </div>
   </div>
@@ -17,11 +20,21 @@ export default {
   name: 'SchoolCard',
   data: () => ({
     loading: true,
-    shortname: ''
+    shortname: '',
+    permission: localStorage.getItem('permission') <= 10
   }),
   methods: {
     mainInfo() {
       this.$router.push(`/school/${this.$route.params['card']}`)
+    },
+    async deleteSchool() {
+      try {
+        const resp = await this.$store.dispatch('deleteSchool', this.$route.params['card'])
+        await this.$router.push('/districts')
+        console.log(resp)
+      } catch (e) {
+        console.log(e)
+      }
     }
   },
   async mounted() {

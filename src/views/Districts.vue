@@ -7,12 +7,15 @@
           :districts="districts"
       />
       <br/>
-      <div class="btn-container">
+      <div class="q-gutter-md">
         <button class="btn waves-effect waves-light" v-on:click="exportData">
           Экспорт данных
         </button>
         <button class="btn waves-effect waves-light" v-on:click="dialog = true">
           Мастер выгрузки
+        </button>
+        <button class="btn waves-effect waves-light" v-on:click="toCreateSchool">
+          Добавить учреждение
         </button>
       </div>
       <div class="q-pa-md q-gutter-sm">
@@ -121,7 +124,9 @@ export default {
       } catch (e) {
         console.log(e)
       }
-
+    },
+    toCreateSchool() {
+      this.$router.push('/create_school')
     }
   },
   beforeCreate() {
@@ -155,12 +160,4 @@ export default {
 </script>
 
 <style scoped>
-button {
-  margin: 0 20px;
-}
-
-.flex-break {
-  flex: 1 0 100% !important;
-  width: 0 !important;
-}
 </style>

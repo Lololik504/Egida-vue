@@ -12,7 +12,6 @@
         <input id="vpn_key" type="password" v-model="password">
         <label for="vpn_key">Пароль</label>
       </div>
-
       <br>
       <button class="btn waves-effect waves-light auth-submit" v-on:click="login">Войти</button>
     </div>
@@ -21,7 +20,6 @@
 </template>
 
 <script>
-import * as sp from "@/local_settings"
 
 export default {
   name: "Login",
@@ -29,11 +27,10 @@ export default {
     return {
       username: '',
       password: '',
-      serverp: sp.server_path,
     }
   },
   methods: {
-    login: async function () {
+     async login() {
       const formData = {
         username: this.username,
         password: this.password
@@ -43,7 +40,7 @@ export default {
         const permission = localStorage.getItem('permission')
         if (permission === '15') {
           await this.$router.push(`/schoolcard/${resp.user['username']}`)
-        } else if (permission === '5'){
+        } else if (permission === '5') {
           await this.$router.push('/districts')
         } else await this.$router.push('/')
       } catch (e) {
@@ -68,10 +65,12 @@ export default {
   justify-content: center;
   flex-direction: column;
 }
+
 .input-field {
   width: 400px;
   align-self: center;
 }
+
 h5 {
   margin: 20px auto;
 }
