@@ -67,9 +67,33 @@ export default {
         async updateInfo({commit}, data) {
             try {
                 const token = localStorage.getItem('token')
-
                 return await new Promise((resolve, reject) => {
                     axios.put(server_path + "/api/school/",
+                        data,
+                        {
+                            headers: {
+                                "Authorization": "auth " + token,
+                                'Content-Type': 'application/json'
+                            }
+                        })
+                        .then(resp => {
+                            console.log(resp)
+                            resolve(resp)
+                        })
+                        .catch(err => {
+                            reject(err)
+                        })
+                })
+            } catch (e) {
+                commit('setError', e)
+                throw e
+            }
+        },
+        async updatePersonal({commit}, data) {
+            try {
+                const token = localStorage.getItem('token')
+                return await new Promise((resolve, reject) => {
+                    axios.put(server_path + "/api/personal/",
                         data,
                         {
                             headers: {

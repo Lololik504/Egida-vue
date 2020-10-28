@@ -33,7 +33,8 @@
               <label>Год постройки здания</label>
               <q-input outlined type="number" v-model.number="d.construction_year"
                        :class="{invalid: $v.construction_year.$dirty && (!$v.construction_year.minValue || !$v.construction_year.maxValue)}"/>
-              <span v-if="$v.construction_year.$dirty && (!$v.construction_year.minValue || !$v.construction_year.maxValue)">в формате гггг(начиная от 1900 г, не ранее)</span>
+              <span
+                  v-if="$v.construction_year.$dirty && (!$v.construction_year.minValue || !$v.construction_year.maxValue)">в формате гггг(начиная от 1900 г, не ранее)</span>
             </div>
             <div class="input-field-building-square">
               <label>Площадь здания, Кв. м.</label>
@@ -172,7 +173,8 @@
             <label>Год постройки здания</label>
             <q-input outlined type="number" v-model.number="d.construction_year"
                      :class="{invalid: $v.construction_year.$dirty && (!$v.construction_year.minValue || !$v.construction_year.maxValue)}"/>
-            <span v-if="$v.construction_year.$dirty && (!$v.construction_year.minValue || !$v.construction_year.maxValue)">в формате гггг(начиная от 1900 г, не ранее)</span>
+            <span
+                v-if="$v.construction_year.$dirty && (!$v.construction_year.minValue || !$v.construction_year.maxValue)">в формате гггг(начиная от 1900 г, не ранее)</span>
           </div>
           <div class="input-field-building-square">
             <label>Площадь занимаемых помещений, Кв. м.</label>
@@ -303,7 +305,8 @@
               <label>Год пристройки здания</label>
               <q-input outlined type="number" v-model.number="d.construction_year"
                        :class="{invalid: $v.construction_year.$dirty && (!$v.construction_year.minValue || !$v.construction_year.maxValue)}"/>
-              <span v-if="$v.construction_year.$dirty && (!$v.construction_year.minValue || !$v.construction_year.maxValue)">в формате гггг(начиная от 1900 г, не ранее)</span>
+              <span
+                  v-if="$v.construction_year.$dirty && (!$v.construction_year.minValue || !$v.construction_year.maxValue)">в формате гггг(начиная от 1900 г, не ранее)</span>
             </div>
             <div class="input-field-building-square">
               <label>Площадь занимаемого помещения, Кв. м.</label>
@@ -455,10 +458,10 @@ import {mapGetters} from 'vuex'
 
 export default {
   data: () => ({
-    types: ["Отдельно стоящее","Встроенное в многоквартирный дом","Пристроенное к многоквартирному дому"],
+    types: ["Отдельно стоящее", "Встроенное в многоквартирный дом", "Пристроенное к многоквартирному дому"],
     purposes: ['Корпус школы', 'Корпус д/с', 'Подразделение доп. образования', 'Овощехранилище', 'Мастерская', 'Теплица', 'Гараж', 'Иное'],
     loading: true,
-    d:{
+    d: {
       // street: null,
       // street_number: null,
       // unused_square: null,
@@ -492,7 +495,7 @@ export default {
     ...mapGetters(['info'])
   },
   methods: {
-    async updateBuild(){
+    async updateBuild() {
       try {
         this.d.id = this.$route.params['id']
         const data = this.d

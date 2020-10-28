@@ -12,7 +12,7 @@
       </div>
       <div class="select-district">
         <label>Район</label>
-        <q-select outlined v-model="district" :options="districts"/>
+        <q-select outlined hint="Выберите район" v-model="district" :options="districts"/>
       </div>
       <button class="btn waves-effect waves-light" @click.prevent="clickHandler">
         Сохранить

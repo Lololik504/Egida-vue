@@ -24,7 +24,7 @@
             <div class="select">
               <q-select outlined v-model="data.purpose" :options="purposes"/>
             </div>
-            <div v-if="purpose === purposes[7]">
+            <div v-if="data.purpose === purposes[7]">
               <label>Введите назначение школы</label>
               <q-input outlined v-model="choose_purpose"/>
             </div>

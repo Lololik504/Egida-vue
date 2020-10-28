@@ -19,7 +19,7 @@
           </tr>
           <tr class="inn">
             <th>Полное название</th>
-            <td>{{ mainInfo.fullname }}</td>
+            <td>{{ mainInfo.name }}</td>
           </tr>
           <tr class="inn">
             <th>Вид организационно-правовой формы</th>
@@ -32,7 +32,7 @@
           </tbody>
         </table>
         <br>
-        <button class="btn waves-effect waves-light right">
+        <button class="btn waves-effect waves-light right" @click.prevent="toUpdateInfo">
           Редактировать основные сведения
         </button>
       </div>
@@ -45,15 +45,17 @@
             <tbody>
             <tr class="fio">
               <th>ФИО</th>
-              <td>{{ director.fio }}</td>
+              <td>{{ contactInfo.director.last_name }} {{ contactInfo.director.first_name }}
+                {{ contactInfo.director.patronymic }}
+              </td>
             </tr>
             <tr class="phone">
               <th>Телефон рабочий</th>
-              <td>{{ director.phone }}</td>
+              <td>{{ contactInfo.director.phone }}</td>
             </tr>
             <tr class="email">
               <th>Электронная почта</th>
-              <td>{{ director.email }}</td>
+              <td>{{ contactInfo.director.email }}</td>
             </tr>
             </tbody>
           </table>
@@ -64,15 +66,17 @@
             <tbody>
             <tr class="fio">
               <th>ФИО</th>
-              <td>{{ zavhoz.fio }}</td>
+              <td>{{ contactInfo.zavhoz.last_name }} {{ contactInfo.zavhoz.first_name }}
+                {{ contactInfo.zavhoz.patronymic }}
+              </td>
             </tr>
             <tr class="phone">
               <th>Телефон рабочий</th>
-              <td>{{ zavhoz.phone }}</td>
+              <td>{{ contactInfo.zavhoz.phone }}</td>
             </tr>
             <tr class="email">
               <th>Электронная почта</th>
-              <td>{{ zavhoz.email }}</td>
+              <td>{{ contactInfo.zavhoz.email }}</td>
             </tr>
             </tbody>
           </table>
@@ -83,19 +87,21 @@
             <tbody>
             <tr class="fio">
               <th>ФИО</th>
-              <td>{{ updater.fio }}</td>
+              <td>{{ contactInfo.updater.last_name }} {{ contactInfo.updater.first_name }}
+                {{ contactInfo.updater.patronymic }}
+              </td>
             </tr>
             <tr class="phone">
               <th>Телефон рабочий</th>
-              <td>{{ updater.phone }}</td>
+              <td>{{ contactInfo.updater.phone }}</td>
             </tr>
             <tr class="email">
               <th>Электронная почта</th>
-              <td>{{ updater.email }}</td>
+              <td>{{ contactInfo.updater.email }}</td>
             </tr>
             <tr class="prikaz">
               <th>Приказ о назначении ответственного</th>
-              <td>{{ updater.prikaz }}</td>
+              <td>{{ contactInfo.updater.prikaz }}</td>
             </tr>
             </tbody>
           </table>
@@ -107,21 +113,23 @@
             <tbody>
             <tr class="fio">
               <th>ФИО</th>
-              <td>{{ bookkeeper.fio }}</td>
+              <td>{{ contactInfo.bookkeeper.last_name }} {{ contactInfo.bookkeeper.first_name }}
+                {{ contactInfo.bookkeeper.patronymic }}
+              </td>
             </tr>
             <tr class="phone">
               <th>Телефон рабочий</th>
-              <td>{{ bookkeeper.phone }}</td>
+              <td>{{ contactInfo.bookkeeper.phone }}</td>
             </tr>
             <tr class="email">
               <th>Электронная почта</th>
-              <td>{{ bookkeeper.email }}</td>
+              <td>{{ contactInfo.bookkeeper.email }}</td>
             </tr>
             </tbody>
           </table>
         </div>
         <br>
-        <button class="btn waves-effect waves-light right">
+        <button class="btn waves-effect waves-light right" @click.prevent="toUpdateContacts">
           Редактировать контактные данные
         </button>
       </div>
@@ -131,55 +139,34 @@
           <tbody>
           <tr class="site">
             <th>Официальный сайт</th>
-            <td>{{ rekvizit.site }}</td>
+            <td>{{ requisites.site }}</td>
           </tr>
           <tr class="address">
             <th>Юридический адрес</th>
-            <td>{{ rekvizit.address }}</td>
+            <td>{{ requisites.street }}, {{requisites.street_number}}</td>
           </tr>
           <tr class="district">
             <th>Территориальная принадлежность</th>
-            <td>{{ rekvizit.district }}</td>
+            <td>{{ requisites.district }}</td>
           </tr>
           <tr class="date">
             <th>Дата образования юр.лица</th>
-            <td>{{ rekvizit.date }}</td>
+            <td>{{ requisites.date }}</td>
           </tr>
           </tbody>
         </table>
         <br>
-        <button class="btn waves-effect waves-light right">
+        <button class="btn waves-effect waves-light right" @click.prevent="toUpdateRequisites">
           Редактировать реквизиты
         </button>
       </div>
-
-      <!--      <p>ИНН:-->
-      <!--        <span>{{ INN }}</span>-->
-      <!--      </p>-->
-      <!--      <p>-->
-      <!--        Район:-->
-      <!--        <span v-on:click="changeData">{{ district }}</span>-->
-      <!--      </p>-->
-      <!--      <p>-->
-      <!--        Краткое наименование:-->
-      <!--        <span v-on:click="changeData">{{ shortname }}</span>-->
-      <!--      </p>-->
-      <!--      <p>-->
-      <!--        Полное наименование:-->
-      <!--        <span v-on:click="changeData">{{ fullname }}</span>-->
-      <!--      </p>-->
-      <!--      <p>-->
-      <!--        Телефон:-->
-      <!--        <span v-on:click="changeData">{{ phone }}</span>-->
-      <!--      </p>-->
-      <!--      <p>-->
-      <!--        Адрес:-->
-      <!--        <span v-on:click="changeData">{{ address }}</span>-->
-      <!--      </p>-->
+      <div class="q-gutter-md">
+        <button class="btn waves-effect waves-light" v-on:click="toBuilding">
+          Здания
+        </button>
+      </div>
     </div>
-    <button class="btn waves-effect waves-light" v-on:click="toBuilding">
-      Здания
-    </button>
+
   </div>
 
 </template>
@@ -193,78 +180,87 @@ export default {
       form_type: null,
       edu_type: null,
       shortname: null,
-      fullname: null,
+      name: null,
     },
-    rekvizit: {
-      address: null,
+    requisites: {
+      street: null,
+      street_number: null,
       district: null,
       site: null,
       date: null
     },
-    director: {
-      fio: null,
-      phone: null,
-      email: null
-    },
-    zavhoz: {
-      fio: null,
-      phone: null,
-      email: null
-    },
-    updater: {
-      fio: null,
-      phone: null,
-      email: null,
-      prikaz: null
-    },
-    bookkeeper: {
-      fio: null,
-      phone: null,
-      email: null
+    contactInfo: {
+      director: {
+        first_name: null,
+        last_name: null,
+        patronymic: null,
+        phone: null,
+        email: null
+      },
+      zavhoz: {
+        first_name: null,
+        last_name: null,
+        patronymic: null,
+        phone: null,
+        email: null
+      },
+      updater: {
+        first_name: null,
+        last_name: null,
+        patronymic: null,
+        phone: null,
+        email: null,
+        prikaz: null
+      },
+      bookkeeper: {
+        first_name: null,
+        last_name: null,
+        patronymic: null,
+        phone: null,
+        email: null
+      }
     },
     loading: true
   }),
   async mounted() {
     try {
-      let info = this.$store.getters.info
       const token = localStorage.getItem('token')
       const inn = this.$route.params['school']
-      if (!Object.keys(info).length || info['INN'] !== inn) {
-        info = await this.$store.dispatch('fetchInfo', {token, inn})
-        console.log(info)
-      }
+      const info = await this.$store.dispatch('fetchInfo', {token, inn})
+      const personal = await this.$store.dispatch('fetchPersonal', inn)
+      console.log(personal)
+
       this.mainInfo.INN = info['INN']
-      this.mainInfo.fullname = info['name']
-      this.phone = info['phone']
-      this.mainInfo.shortname = info['shortname']
-      this.rekvizit.district = info['district']
-      this.address = info['address']
+      this.mainInfo.name = info['name']
       this.mainInfo.edu_type = info['edu_type']
       this.mainInfo.form_type = info['form_type']
+      this.mainInfo.shortname = info['shortname']
+
+      this.contactInfo.director = personal['director']
+      this.contactInfo.zavhoz = personal['zavhoz']
+      this.contactInfo.updater = personal['updater']
+      this.contactInfo.bookkeeper = personal['bookkeeper']
+
+      this.requisites.district = info['district']
+
       this.loading = false
     } catch (e) {
       console.log(e)
     }
   },
   methods: {
-    async changeData(value) {
-      const newData = prompt("Введите новые данные:", value.toElement['textContent'])
-      const val = Object.values(this.$data)
-      const keys = Object.keys(this.$data)
-      var tmp = ''
-      for (let k in val) {
-        if (val[k] === value.toElement['textContent']) {
-          tmp = keys[k]
-        }
-      }
-      if (newData != null && newData !== '') {
-        this.$data[tmp] = newData
-        await this.$store.dispatch('updateInfo', this.$data)
-      }
-
-    },
     toBuilding() {
       this.$router.push(`/schoolbuilding/${this.$route.params['school']}`)
+    },
+    toUpdateInfo() {
+      this.$router.push(`/update_school_info/${this.$route.params['school']}`)
+    },
+    toUpdateContacts() {
+      this.$router.push(`/update_contact_info/${this.$route.params['school']}`)
+    },
+    toUpdateRequisites() {
+      this.$router.push(`/update_requisite_info/${this.$route.params['school']}`)
+
     }
   }
 

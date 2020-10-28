@@ -22,15 +22,6 @@ let router = new Router({
       component: () => import('./views/Districts')
     },
     {
-      path: '/districts/:district',
-      name: 'one_district',
-      meta: {
-        requiresAuth: true
-      },
-      component: () => import('./views/OneDistrict'),
-      props: true
-    },
-    {
       path: '/login',
       name: 'login',
       component: () => import('./views/Login'),
@@ -82,6 +73,30 @@ let router = new Router({
         requiresAuth: true
       },
       component: () => import('./views/CreateSchool'),
+    },
+    {
+      path: '/update_school_info/:inn',
+      name: 'UpdateInfo',
+      meta: {
+        requiresAuth: true
+      },
+      component: () => import('./views/UpdateInfo'),
+    },
+    {
+      path: '/update_contact_info/:inn',
+      name: 'UpdateContacts',
+      meta: {
+        requiresAuth: true
+      },
+      component: () => import('./views/UpdateContacts'),
+    },
+    {
+      path: '/update_requisite_info/:inn',
+      name: 'UpdateRequisites',
+      meta: {
+        requiresAuth: true
+      },
+      component: () => import('./views/UpdateRequisites'),
     }
   ],
 })

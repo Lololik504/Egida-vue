@@ -131,7 +131,7 @@ export default {
   },
   beforeCreate() {
     const per = localStorage.getItem('permission')
-    if (!(per === '5' || per === '1' || per === '10')) {
+    if (per > 10) {
       alert("У вас недостаточно прав!")
       this.$router.push('/')
     }
