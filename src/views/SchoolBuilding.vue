@@ -17,6 +17,7 @@
 </template>
 
 <script>
+
 export default {
   name: 'SchoolBuilding',
   data: () => ({
@@ -31,11 +32,15 @@ export default {
   async mounted() {
     const token = localStorage.getItem('token')
     const inn = this.$route.params['build']
-    this.shortname = this.$store.getters.info['shortname']
     try {
       const resp = await this.$store.dispatch('fetchBuildings', {token, inn})
+      let info = this.$store.getters.info
+      if (!Object.keys(info).length || info['INN'] !== inn) {
+        info = await this.$store.dispatch('fetchInfo', {token, inn})
+        console.log('info')
+      }
+      this.shortname = info['shortname']
       this.data = resp.data.data[0]
-      console.log(this.data)
     } catch (e) {
       console.log(e)
     }

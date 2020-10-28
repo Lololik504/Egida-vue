@@ -98,6 +98,9 @@ export default {
                         {
                             headers: {
                                 "Authorization": "auth " + token,
+                                "data": JSON.stringify({
+                                    full: true
+                                })
                             },
                             responseType: 'blob'
                         })

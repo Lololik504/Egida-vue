@@ -40,7 +40,7 @@ export default {
         const permission = localStorage.getItem('permission')
         if (permission === '15') {
           await this.$router.push(`/schoolcard/${resp.user['username']}`)
-        } else if (permission === '5') {
+        } else if (permission <= '10') {
           await this.$router.push('/districts')
         } else await this.$router.push('/')
       } catch (e) {

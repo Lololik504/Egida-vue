@@ -520,10 +520,8 @@ export default {
       // }
       let dataForm = Object.assign({},this.data)
       dataForm['INN'] = this.$route.params['build']
-      console.log(dataForm)
       try {
-        const resp = await this.$store.dispatch('createBuilding',dataForm)
-        console.log(resp)
+        await this.$store.dispatch('createBuilding',dataForm)
       } catch (e) {
         console.log(e)
         alert('Произошла ошибка!')
@@ -535,7 +533,7 @@ export default {
   async mounted() {
     try {
       const resp = await this.$store.dispatch('fetchFieldsBuilding')
-      this.data = resp
+      this.data = Object.assign({},resp)
       Object.keys(this.data).forEach(key => (this.data[key] = null))
     } catch (e) {
       console.log(e)
