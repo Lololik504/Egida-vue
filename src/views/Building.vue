@@ -10,7 +10,7 @@
         </div>
         <div class="input-field-street-number">
           <label>Номер дома</label>
-          <q-input outlined placeholder="Введите номер дома" v-model="d.street_number"/>
+          <q-input outlined placeholder="Введите номер дома" type="number" v-model="d.street_number"/>
         </div>
         <div class="select-type-field">
           <label>Вид здания</label>

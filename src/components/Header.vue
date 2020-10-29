@@ -14,23 +14,22 @@
       <div class="second-row">
         <div class="btn-container">
           <div class="q-pa-md q-gutter-sm">
-          <q-btn v-if="!isLoggedIn" color="white" text-color="black" label="Войти" @click.prevent="toLogin"
-                 class="login-but"/>
-          <q-btn v-else-if="isLoggedIn"
-                 color='blue-10' text-color="white" label="Выйти" @click.prevent="logout"
-                 class="login-but"/>
-          <q-btn v-if="isLoggedIn && getPermission === '15'"
-                 color='blue-10' text-color="white" label="Карточка" @click.prevent="toCard"
-                 class="login-but"/>
-          <q-btn v-else-if="isLoggedIn && (getPermission === '5' || getPermission === '1')"
-                 color='blue-10' text-color="white" label="Районы" @click.prevent="toDistr"
-                 class="login-but"/>
+            <q-btn v-if="!isLoggedIn" color="white" text-color="black" label="Войти" @click.prevent="toLogin"
+                   class="login-but"/>
+            <q-btn v-else-if="isLoggedIn"
+                   color='blue-10' text-color="white" label="Выйти" @click.prevent="logout"
+                   class="login-but"/>
+            <q-btn v-if="isLoggedIn && getPermission === '15'"
+                   color='blue-10' text-color="white" label="Карточка" @click.prevent="toCard"
+                   class="login-but"/>
+            <q-btn v-else-if="isLoggedIn && (getPermission === '5' || getPermission === '1')"
+                   color='blue-10' text-color="white" label="Районы" @click.prevent="toDistr"
+                   class="login-but"/>
           </div>
         </div>
         <div class="to-home-text">
-          <router-link to="/" class="router-text">Управление обеспечения бюджетного процесса и ресурсного сопровождения
-            учреждений в сфере
-            образования мэрии г. Новосибирска
+          <router-link to="/" class="router-text">УПРАВЛЕНИЕ ОБЕСПЕЧЕНИЯ БЮДЖЕТНОГО ПРОЦЕССА, МОНИТОРИНГА ОРГАНИЗАЦИИ
+            ПИТАНИЯ И РЕСУРСНОГО СОПРОВОЖДЕНИЯ УЧРЕЖДЕНИЙ В СФЕРЕ ОБРАЗОВАНИЯ
           </router-link>
         </div>
       </div>
@@ -47,7 +46,7 @@ export default {
     isLoggedIn: function () {
       return this.$store.getters.isLoggedIn
     },
-    getPermission: function() {
+    getPermission: function () {
       console.log(localStorage.getItem('permission'))
       return localStorage.getItem('permission')
     }
@@ -63,7 +62,7 @@ export default {
     toLogin() {
       this.$router.push("/login");
     },
-    toCard(){
+    toCard() {
       if (this.$route.params['build'] !== undefined) {
         this.$router.push(`/schoolcard/${this.$route.params['build']}`)
       } else if (this.$route.params['school'] !== undefined) {
@@ -72,9 +71,9 @@ export default {
         this.$router.push(`/schoolcard/${localStorage.getItem('inn')}`)
       }
     },
-    toDistr(){
+    toDistr() {
       if (this.$route.name !== 'districts')
-      this.$router.push("/districts");
+        this.$router.push("/districts");
     }
   }
 }

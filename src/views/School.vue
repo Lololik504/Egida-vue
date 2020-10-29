@@ -143,7 +143,7 @@
           </tr>
           <tr class="address">
             <th>Юридический адрес</th>
-            <td>{{ requisites.street }}, {{requisites.street_number}}</td>
+            <td>{{ requisites.street}} {{requisites.street_number}}</td>
           </tr>
           <tr class="district">
             <th>Территориальная принадлежность</th>

@@ -9,7 +9,7 @@
         <div class="q-pa-sm">
           <div class="input-field-shortname">
             <label>Официальный сайт учреждения</label>
-            <q-input outlined placeholder="Введите официальный сайт учреждения" v-model="requisites.site"/>
+            <q-input outlined placeholder="Введите официальный сайт учреждения" type="url" v-model="requisites.site"/>
           </div>
           <div class="row">
             <div class="col">

@@ -27,7 +27,7 @@
               <div class="input-field-phone">
                 <label>Телефон рабочий</label>
                 <q-input outlined placeholder="Введите телефон" v-model="contactInfo.director.phone"
-                         mask="8 (###) ### - ####"
+                         mask="# (###) ### - ####"
                          fill-mask
                          type="tel"
                 />
@@ -57,8 +57,8 @@
               </div>
               <div class="input-field-phone">
                 <label>Телефон рабочий</label>
-                <q-input outlined placeholder="Введите телефон" v-model.number="contactInfo.zavhoz.phone"
-                         mask="8 (###) ### - ####"
+                <q-input outlined placeholder="Введите телефон" v-model="contactInfo.zavhoz.phone"
+                         mask="# (###) ### - ####"
                          fill-mask
                          type="tel"
                 />
@@ -88,8 +88,8 @@
               </div>
               <div class="input-field-phone">
                 <label>Телефон рабочий</label>
-                <q-input outlined placeholder="Введите телефон" v-model.number="contactInfo.updater.phone"
-                         mask="8 (###) ### - ####"
+                <q-input outlined placeholder="Введите телефон" v-model="contactInfo.updater.phone"
+                         mask="# (###) ### - ####"
                          fill-mask
                          type="tel"
                 />
@@ -135,8 +135,8 @@
               <div class="input-field-phone">
                 <label>Телефон рабочий</label>
                 <q-input outlined placeholder="Введите телефон"
-                         v-model.number="contactInfo.bookkeeper.phone"
-                         mask="8 (###) ### - ####"
+                         v-model="contactInfo.bookkeeper.phone"
+                         mask="# (###) ### - ####"
                          fill-mask
                          type="tel"
                 />
@@ -210,6 +210,11 @@ export default {
       this.contactInfo.bookkeeper = personal['bookkeeper']
       this.contactInfo.INN = info['INN']
       this.shortname = info['shortname']
+      for (let i in this.contactInfo) {
+        if (this.contactInfo[i].phone === null) {
+          this.contactInfo[i].phone = 8383
+        }
+      }
 
       this.loading = false
     } catch (e) {
@@ -221,6 +226,11 @@ export default {
       try {
         console.log('contact')
         console.log(this.contactInfo)
+        for (let i in this.contactInfo) {
+          if (this.contactInfo[i].phone === '_ (___) ___ - ____' || this.contactInfo[i].phone === 8383) {
+            this.contactInfo[i].phone = null
+          }
+        }
         await this.$store.dispatch('updatePersonal', this.contactInfo)
         await this.$router.push(`/school/${this.contactInfo.INN}`)
       } catch (e) {

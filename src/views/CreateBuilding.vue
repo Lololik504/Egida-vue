@@ -9,7 +9,7 @@
         </div>
         <div class="input-field-street-number">
           <label>Номер дома</label>
-          <q-input outlined placeholder="Введите номер дома" v-model="data.street_number"/>
+          <q-input outlined placeholder="Введите номер дома" type="number" v-model="data.street_number"/>
         </div>
         <div class="select-type-field">
           <label>Вид здания</label>
@@ -30,10 +30,18 @@
             </div>
             <div class="input-field-year">
               <label>Год постройки здания</label>
-              <q-input outlined type="number" v-model.number="data.construction_year"
-                       :class="{invalid: $v.construction_year.$dirty && (!$v.construction_year.minValue || !$v.construction_year.maxValue)}"
-                       @change="show"/>
-              <span v-if="$v.construction_year.$dirty && (!$v.construction_year.minValue || !$v.construction_year.maxValue)">в формате гггг(начиная от 1900 г, не ранее)</span>
+              <q-input ref="y"
+                       outlined
+                       v-model.number="data.construction_year"
+                       placeholder="гггг"
+                       type="tel"
+                       hint="в формате гггг(начиная от 1900 г, не ранее)"
+                       mask="####"
+                       unmasked-value
+                       lazy-rules
+                       :rules="[val => val > 1899 && val <= new Date().getFullYear() || 'начиная от 1900 г, не ранее, до текущего']"
+              />
+
             </div>
             <div class="input-field-building-square">
               <label>Площадь здания, Кв. м.</label>
@@ -162,7 +170,16 @@
             <br/>
             <div class="input-field-construction-year">
               <label>Год проведения последнего капитального ремонта/реконструкции здания</label>
-              <q-input outlined type="number" v-model.number="data.last_repair_year"/>
+              <q-input outlined v-model.number="data.last_repair_year"
+                       placeholder="гггг"
+                       type="tel"
+                       hint="(если не было кап.ремонта или реконструкции, то оставлять год постройки)"
+                       mask="####"
+                       ref="year"
+                       unmasked-value
+                       lazy-rules
+                       :rules="[val => val > 1899 && val <= new Date().getFullYear() || 'начиная от 1900 г, не ранее, до текущего']"
+              />
             </div>
           </div>
         </div>
@@ -170,9 +187,17 @@
         <div v-else-if="data.type === types[1]">
           <div class="input-field-year">
             <label>Год постройки здания</label>
-            <q-input outlined type="number" v-model.number="data.construction_year"
-                   :class="{invalid: $v.construction_year.$dirty && (!$v.construction_year.minValue || !$v.construction_year.maxValue)}"/>
-            <span v-if="$v.construction_year.$dirty && (!$v.construction_year.minValue || !$v.construction_year.maxValue)">в формате гггг(начиная от 1900 г, не ранее)</span>
+            <q-input outlined v-model.number="data.construction_year"
+                     placeholder="гггг"
+                     type="tel"
+                     hint="в формате гггг(начиная от 1900 г, не ранее)"
+                     mask="####"
+                     ref="year"
+                     unmasked-value
+                     lazy-rules
+                     :rules="[val => val > 1899 && val <= new Date().getFullYear() || 'начиная от 1900 г, не ранее, до текущего']"
+            />
+
           </div>
           <div class="input-field-building-square">
             <label>Площадь занимаемых помещений, Кв. м.</label>
@@ -285,7 +310,16 @@
           <br/>
           <div class="input-field-construction-year">
             <label>Год проведения последнего капитального ремонта/реконструкции здания</label>
-            <q-input outlined type="number" v-model.number="data.last_repair_year"/>
+            <q-input outlined v-model.number="data.last_repair_year"
+                     placeholder="гггг"
+                     type="tel"
+                     hint="(если не было кап.ремонта или реконструкции, то оставлять год постройки)"
+                     mask="####"
+                     ref="year"
+                     unmasked-value
+                     lazy-rules
+                     :rules="[val => val > 1899 && val <= new Date().getFullYear() || 'начиная от 1900 г, не ранее, до текущего']"
+            />
           </div>
         </div>
 
@@ -301,10 +335,17 @@
             </div>
             <div class="input-field-year">
               <label>Год пристройки здания</label>
-              <q-input outlined type="number" v-model.number="data.construction_year"
-                       :class="{invalid: $v.construction_year.$dirty && (!$v.construction_year.minValue || !$v.construction_year.maxValue)}"
-                       @change="show"/>
-              <span v-if="$v.construction_year.$dirty && (!$v.construction_year.minValue || !$v.construction_year.maxValue)">в формате гггг(начиная от 1900 г, не ранее)</span>
+              <q-input outlined v-model.number="data.construction_year"
+                       placeholder="гггг"
+                       type="tel"
+                       hint="в формате гггг(начиная от 1900 г, не ранее)"
+                       mask="####"
+                       ref="year"
+                       unmasked-value
+                       lazy-rules
+                       :rules="[val => val > 1899 && val <= new Date().getFullYear() || 'начиная от 1900 г, не ранее, до текущего']"
+              />
+
             </div>
             <div class="input-field-building-square">
               <label>Площадь занимаемого помещения, Кв. м.</label>
@@ -433,12 +474,21 @@
             <br/>
             <div class="input-field-construction-year">
               <label>Год проведения последнего капитального ремонта/реконструкции здания</label>
-              <q-input outlined type="number" v-model.number="data.last_repair_year"/>
+              <q-input outlined v-model.number="data.last_repair_year"
+                       placeholder="гггг"
+                       type="tel"
+                       hint="(если не было кап.ремонта или реконструкции, то оставлять год постройки)"
+                       mask="####"
+                       ref="year"
+                       unmasked-value
+                       lazy-rules
+                       :rules="[val => val > 1899 && val <= new Date().getFullYear() || 'начиная от 1900 г, не ранее, до текущего']"
+              />
             </div>
           </div>
         </div>
         <div class="b">
-        <q-btn color="primary" label="Сохранить" type="submit"/>
+          <q-btn color="primary" label="Сохранить" type="submit"/>
         </div>
       </div>
     </form>
@@ -446,82 +496,60 @@
 </template>
 
 <script>
-import {minValue, maxValue} from 'vuelidate/lib/validators'
 
 export default {
   data: () => ({
-    data: {},
-    types: ["Отдельно стоящее","Встроенное в многоквартирный дом","Пристроенное к многоквартирному дому"],
+    types: ["Отдельно стоящее", "Встроенное в многоквартирный дом", "Пристроенное к многоквартирному дому"],
     purposes: ['Корпус школы', 'Корпус д/с', 'Подразделение доп. образования', 'Овощехранилище', 'Мастерская', 'Теплица', 'Гараж', 'Иное'],
-    // street: null,
-    // street_number: null,
-    // unused_square: null,
-    // TECHNICAL_CONDITION: null,
-    // repair_need_square: null,
-    // occupancy_proj: null,
-    // occupancy_fact: null,
-    // arend_square: null,
-    // construction_year: null,
-    // arend_use_type: null,
-    // land_square: null,
-    // number_of_storeys: null,
-    // building_square: null,
-    // build_height: null,
-    // type: null,
-    // purpose: null,
+    data: {
+      street: null,
+      street_number: null,
+      unused_square: null,
+      TECHNICAL_CONDITION: null,
+      repair_need_square: null,
+      occupancy_proj: null,
+      occupancy_fact: null,
+      arend_square: null,
+      construction_year: null,
+      arend_use_type: null,
+      land_square: null,
+      number_of_storeys: null,
+      building_square: null,
+      build_height: null,
+      type: null,
+      purpose: null,
+      last_repair_year: null,
+    },
     choose_purpose: null,
     current: null,
     loading: true,
 
   }),
-  validations: {
-    construction_year: {
-      minValue: minValue(1900),
-      maxValue: maxValue(new Date().getFullYear())
-    }
-  },
   name: 'CreateBuilding',
   methods: {
-    show() {
-      if (this.$v.$invalid) {
-        this.$v.$touch()
-        console.log(new Date().getFullYear())
-        return
-      }
-    },
-    async createBuild(){
-      if (this.$v.$invalid) {
-        this.$v.$touch()
-        return
-      }
+    async createBuild() {
+      this.$refs.y.validate()
+          .then(success => {
+            console.log(success)
+            return
+          })
+      // if (this.$ref.year.hasError) {
+      //   this.formHasError = true
+      // } else {
+      //   this.$q.notify({
+      //     icon: 'done',
+      //     color: 'positive',
+      //     message: 'Submitted'
+      //   })
+      // }
+
       if (this.choose_purpose !== null) {
         this.data.purpose = this.choose_purpose
       }
-      // const dataForm = {
-      //   street: this.street,
-      //   street_number: this.street_number,
-      //   unused_square: this.unused_square,
-      //   TECHNICAL_CONDITION: this.TECHNICAL_CONDITION,
-      //   repair_need_square: this.repair_need_square,
-      //   occupancy_proj: this.occupancy_proj,
-      //   occupancy_fact: this.occupancy_proj,
-      //   arend_square: this.arend_square,
-      //   construction_year: this.construction_year,
-      //   arend_use_type: this.arend_use_type,
-      //   land_square: this.land_square,
-      //   number_of_storeys: this.number_of_storeys,
-      //   building_square: this.building_square,
-      //   build_height: this.build_height,
-      //   type: this.type,
-      //   purpose: this.purpose,
-      //   last_repair_year: this.last_repair_year,
-      //   age: this.age,
-      //   INN: this.$route.params['build']
-      // }
-      let dataForm = Object.assign({},this.data)
+      let dataForm = Object.assign({}, this.data)
       dataForm['INN'] = this.$route.params['build']
       try {
-        await this.$store.dispatch('createBuilding',dataForm)
+        await this.$store.dispatch('createBuilding', dataForm)
       } catch (e) {
         console.log(e)
         alert('Произошла ошибка!')
@@ -533,7 +561,7 @@ export default {
   async mounted() {
     try {
       const resp = await this.$store.dispatch('fetchFieldsBuilding')
-      this.data = Object.assign({},resp)
+      this.data = Object.assign({}, resp)
       Object.keys(this.data).forEach(key => (this.data[key] = null))
     } catch (e) {
       console.log(e)

@@ -23,6 +23,10 @@
             <label>Вид образования</label>
             <q-select outlined v-model="mainInfo.edu_type" :options="edu_types"/>
           </div>
+          <div class="input-field-fullname" v-if="mainInfo.edu_type === 'Прочее'">
+            <label>Вид образования</label>
+            <q-input outlined hint="Формат: Аббревиатура - расшифровка" placeholder="Введите вид образования" v-model="other_edu_type"/>
+          </div>
         </div>
         <button class="btn waves-effect waves-light" type="submit">
           Сохранить
@@ -57,7 +61,9 @@ export default {
       'С(К)НШ - специальная (коррекционная) начальная школа',
       'д/с – детский сад',
       'ДО – дополнительное образование',
-      'ДПО – дополнительное профессиональное образование]'],
+      'ДПО – дополнительное профессиональное образование',
+      'Прочее'],
+    other_edu_type: null,
     loading: true,
     mainInfo: {
       INN: null,
@@ -90,11 +96,17 @@ export default {
   methods: {
     async submitHandler() {
       try {
-        if (this.mainInfo.edu_type.length > 10) {
+        if (this.mainInfo.edu_type.includes('-')) {
           this.mainInfo.edu_type = this.mainInfo.edu_type.slice(0, this.mainInfo.edu_type.indexOf(' '))
         }
-        if (this.mainInfo.form_type.length > 10) {
+        if (this.mainInfo.form_type.includes('-')) {
           this.mainInfo.form_type = this.mainInfo.form_type.slice(0, this.mainInfo.form_type.indexOf(' '))
+        }
+        if (this.other_edu_type) {
+          if (this.other_edu_type.includes('-')) {
+            this.mainInfo.edu_type = this.other_edu_type.slice(0, this.other_edu_type.indexOf(' '))
+          } else
+          this.mainInfo.edu_type = this.other_edu_type
         }
         console.log(this.mainInfo)
         await this.$store.dispatch('updateInfo', this.mainInfo)
