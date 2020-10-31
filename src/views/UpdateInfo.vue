@@ -88,6 +88,7 @@ export default {
       this.mainInfo.shortname = info['shortname']
 
 
+
       this.loading = false
     } catch (e) {
       console.log(e)

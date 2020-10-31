@@ -102,7 +102,6 @@ export default {
                             }
                         })
                         .then(resp => {
-                            console.log(resp)
                             resolve(resp)
                         })
                         .catch(err => {

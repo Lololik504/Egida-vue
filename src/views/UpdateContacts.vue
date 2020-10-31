@@ -34,7 +34,11 @@
               </div>
               <div class="input-field-email">
                 <label>Электронная почта</label>
-                <q-input outlined placeholder="Введите почту" type="email" v-model="contactInfo.director.email"/>
+                <q-input outlined placeholder="Введите почту" type="email" v-model="$v.contactInfo.director.email.$model"
+                         :class="{invalid: !$v.contactInfo.director.email.email && $v.contactInfo.director.email.$dirty}"
+                         error-message="Введите корректный Email"
+                         :error="(!$v.contactInfo.director.email.email && $v.contactInfo.director.email.$dirty)"
+                />
               </div>
             </div>
           </div>
@@ -65,7 +69,11 @@
               </div>
               <div class="input-field-email">
                 <label>Электронная почта</label>
-                <q-input outlined placeholder="Введите почту" type="email" v-model="contactInfo.zavhoz.email"/>
+                <q-input outlined placeholder="Введите почту" type="email" v-model="$v.contactInfo.zavhoz.email.$model"
+                         :class="{invalid: !$v.contactInfo.zavhoz.email.email && $v.contactInfo.zavhoz.email.$dirty}"
+                         error-message="Введите корректный Email"
+                         :error="(!$v.contactInfo.zavhoz.email.email && $v.contactInfo.zavhoz.email.$dirty)"
+                />
               </div>
             </div>
           </div>
@@ -97,7 +105,11 @@
               </div>
               <div class="input-field-email">
                 <label>Электронная почта</label>
-                <q-input outlined placeholder="Введите почту" type="email" v-model="contactInfo.updater.email"/>
+                <q-input outlined placeholder="Введите почту" type="email" v-model="$v.contactInfo.updater.email.$model"
+                         :class="{invalid: !$v.contactInfo.updater.email.email && $v.contactInfo.updater.email.$dirty}"
+                         error-message="Введите корректный Email"
+                         :error="(!$v.contactInfo.updater.email.email && $v.contactInfo.updater.email.$dirty)"
+                />
               </div>
               <div class="input-field-prikaz">
                 <label>Приказ о назначении ответственного</label>
@@ -143,7 +155,11 @@
               </div>
               <div class="input-field-email">
                 <label>Электронная почта</label>
-                <q-input outlined placeholder="Введите почту" type="email" v-model="contactInfo.bookkeeper.email"/>
+                <q-input outlined placeholder="Введите почту" type="email" v-model="$v.contactInfo.bookkeeper.email.$model"
+                         :class="{invalid: !$v.contactInfo.bookkeeper.email.email && $v.contactInfo.bookkeeper.email.$dirty}"
+                         error-message="Введите корректный Email"
+                         :error="(!$v.contactInfo.bookkeeper.email.email && $v.contactInfo.bookkeeper.email.$dirty)"
+                />
               </div>
             </div>
           </div>
@@ -157,6 +173,8 @@
 </template>
 
 <script>
+import {email} from 'vuelidate/lib/validators'
+
 export default {
   name: "UpdateContacts",
   data: () => ({
@@ -196,6 +214,22 @@ export default {
       }
     },
   }),
+  validations: {
+    contactInfo: {
+      director: {
+        email: {email}
+      },
+      updater: {
+        email: {email}
+      },
+      bookkeeper: {
+        email: {email}
+      },
+      zavhoz: {
+        email: {email}
+      }
+    }
+  },
   async mounted() {
     try {
       const token = localStorage.getItem('token')
@@ -224,8 +258,10 @@ export default {
   methods: {
     async submitHandler() {
       try {
-        console.log('contact')
-        console.log(this.contactInfo)
+        if (this.$v.$invalid) {
+          this.$v.$touch()
+          return
+        }
         for (let i in this.contactInfo) {
           if (this.contactInfo[i].phone === '_ (___) ___ - ____' || this.contactInfo[i].phone === 8383) {
             this.contactInfo[i].phone = null

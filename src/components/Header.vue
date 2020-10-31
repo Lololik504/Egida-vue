@@ -47,7 +47,6 @@ export default {
       return this.$store.getters.isLoggedIn
     },
     getPermission: function () {
-      console.log(localStorage.getItem('permission'))
       return localStorage.getItem('permission')
     }
   },

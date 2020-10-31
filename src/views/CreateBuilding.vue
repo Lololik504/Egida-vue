@@ -5,11 +5,19 @@
       <div class="q-pa-md">
         <div class="input-field-street">
           <label>Улица</label>
-          <q-input outlined placeholder="Введите улицу" v-model="data.street"/>
+          <q-input outlined placeholder="Введите улицу" v-model="$v.data.street.$model"
+                   :class="{invalid: (!$v.data.street.required && $v.data.street.$dirty)}"
+                   :error-message="!$v.data.street.required && $v.data.street.$dirty ? 'Поле не должно быть пустым': ''"
+                   :error="(!$v.data.street.required && $v.data.street.$dirty)"
+          />
         </div>
         <div class="input-field-street-number">
           <label>Номер дома</label>
-          <q-input outlined placeholder="Введите номер дома" type="number" v-model="data.street_number"/>
+          <q-input outlined placeholder="Введите номер дома" v-model="$v.data.street_number.$model"
+                   :class="{invalid: (!$v.data.street_number.required && $v.data.street_number.$dirty)}"
+                   :error-message="!$v.data.street_number.required && $v.data.street_number.$dirty ? 'Поле не должно быть пустым': ''"
+                   :error="(!$v.data.street_number.required && $v.data.street_number.$dirty)"
+          />
         </div>
         <div class="select-type-field">
           <label>Вид здания</label>
@@ -496,7 +504,7 @@
 </template>
 
 <script>
-
+import {required} from 'vuelidate/lib/validators'
 export default {
   data: () => ({
     types: ["Отдельно стоящее", "Встроенное в многоквартирный дом", "Пристроенное к многоквартирному дому"],
@@ -521,28 +529,25 @@ export default {
       last_repair_year: null,
     },
     choose_purpose: null,
-    current: null,
     loading: true,
-
   }),
+  validations: {
+    data: {
+      street: {
+        required
+      },
+      street_number: {
+        required
+      }
+    }
+  },
   name: 'CreateBuilding',
   methods: {
     async createBuild() {
-      this.$refs.y.validate()
-          .then(success => {
-            console.log(success)
-            return
-          })
-      // if (this.$ref.year.hasError) {
-      //   this.formHasError = true
-      // } else {
-      //   this.$q.notify({
-      //     icon: 'done',
-      //     color: 'positive',
-      //     message: 'Submitted'
-      //   })
-      // }
-
+      if (this.$v.$invalid) {
+        this.$v.$touch()
+        return
+      }
       if (this.choose_purpose !== null) {
         this.data.purpose = this.choose_purpose
       }
@@ -567,9 +572,6 @@ export default {
       console.log(e)
     }
 
-  },
-  created() {
-    this.current = this.types[0]
   }
 }
 </script>

@@ -29,9 +29,11 @@ export default {
     },
     async deleteSchool() {
       try {
-        const resp = await this.$store.dispatch('deleteSchool', this.$route.params['card'])
+        const isConfirmed = confirm('Удалить данное учреждение?')
+        if (isConfirmed) {
+        await this.$store.dispatch('deleteSchool', this.$route.params['card'])
         await this.$router.push('/districts')
-        console.log(resp)
+        }
       } catch (e) {
         console.log(e)
       }

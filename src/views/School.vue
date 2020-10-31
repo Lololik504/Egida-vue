@@ -228,7 +228,6 @@ export default {
       const inn = this.$route.params['school']
       const info = await this.$store.dispatch('fetchInfo', {token, inn})
       const personal = await this.$store.dispatch('fetchPersonal', inn)
-      console.log(personal)
 
       this.mainInfo.INN = info['INN']
       this.mainInfo.name = info['name']
