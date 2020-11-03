@@ -573,9 +573,12 @@ export default {
     },
     async deleteBuilding() {
       try {
-        const id = this.$route.params['id']
-        await this.$store.dispatch('deleteBuilding', id)
-        await this.$router.push(`/schoolbuilding/${this.info.INN}`)
+        const isConfirmed = confirm('Удалить данное здание?')
+        if (isConfirmed) {
+          const id = this.$route.params['id']
+          await this.$store.dispatch('deleteBuilding', id)
+          await this.$router.push(`/schoolbuilding/${this.info.INN}`)
+        }
       } catch (e) {
         console.log(e)
       }
