@@ -37,6 +37,7 @@
             <q-card-section class="q-pt-md-lg">
               <div class="q-pa-md">
                 <div class="q-gutter-xs row inline items-baseline">
+                  <div class="text">Поля</div>
                   <div class="column">
                     <q-checkbox class="col" v-model="isMainInfo" label="Основные сведения" color="orange"/>
                     <div class="col" style="height: 250px; width: 250px;" v-if="isMainInfo">
@@ -58,6 +59,22 @@
                                   :label="info"
                                   :value="buildStates[key]"
                                   v-model="buildStates[key]"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <br/>
+                <div class="q-gutter-xs row inline items-baseline">
+                  <div class="text">Фильтры</div>
+                  <div class="column inline items-baseline">
+                    <q-checkbox class="col" v-model="isDistrictInfo" label="Районы" color="orange"/>
+                    <div class="col" style="height: 250px; width: 250px" v-if="isDistrictInfo">
+                      <q-checkbox class="col" color="orange"
+                                  v-for="(info,key) in districtInfo"
+                                  :key="key"
+                                  :label="info"
+                                  :value="districtStates[key]"
+                                  v-model="districtStates[key]"
                       />
                     </div>
                   </div>
@@ -85,14 +102,16 @@ export default {
     test: [],
     mainInfo: {},
     buildInfo: {},
+    districtInfo: {},
     mainStates: {},
     buildStates: {},
+    districtStates: {},
     isMainInfo: false,
     isBuildInfo: false,
+    isDistrictInfo: false,
     loading: true,
     error: false,
     dialog: false,
-    maximizedToggle: false
   }),
   methods: {
     async exportData() {
@@ -101,10 +120,6 @@ export default {
       } catch (e) {
         console.log(e)
       }
-    },
-    show() {
-      console.log('nevizhy')
-      console.log(this.mainStates)
     },
     async sendInfo() {
       try {
@@ -115,8 +130,11 @@ export default {
         if (this.isMainInfo) {
           data['school'] = this.mainStates
         }
-        console.log(data)
-        if (!Object.keys(data).length) {
+        if (this.isDistrictInfo) {
+          data['filters'] = {}
+          data['filters']['district'] = this.districtStates
+        }
+        if (!Object.keys(data).length || (!this.isMainInfo && !this.isBuildInfo)) {
           alert('Для отправки выберите поля!')
         } else {
           await this.$store.dispatch('sendMainInfo', data)
@@ -140,8 +158,15 @@ export default {
     try {
       this.districts = await this.$store.dispatch('fetchDistricts')
       this.buildInfo = await this.$store.dispatch('fetchFieldsBuilding')
-      await this.$store.dispatch('fetchAllModels')
+      this.districtInfo = await this.$store.dispatch('fetchFieldsDistricts')
       this.mainInfo = await this.$store.dispatch('fetchFieldsSchool')
+      this.districtInfo = this.districtInfo['district']
+      this.districtStates = Object.assign({}, this.districtInfo)
+      for (let key in this.districtStates) {
+        this.districtStates[key] = true
+      }
+      await this.$store.dispatch('fetchAllModels')
+
       this.mainStates = Object.assign({}, this.mainInfo)
       for (let key in this.mainStates) {
         this.mainStates[key] = true

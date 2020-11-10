@@ -37,6 +37,7 @@ export default {
                         })
                 })
             } catch (e) {
+                commit('setError', e)
                 throw e
             }
         },
@@ -61,6 +62,29 @@ export default {
                         })
                 })
             } catch (e) {
+                commit('setError', e)
+                throw e
+            }
+        },
+        async fetchFieldsDistricts({commit}) {
+            try {
+                return await new Promise((resolve, reject) => {
+                    axios.get(server_path + "/api/filters",
+                        {
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                        })
+                        .then(resp => {
+                            const info = resp.data.data
+                            resolve(info)
+                        })
+                        .catch(err => {
+                            reject(err)
+                        })
+                })
+            } catch (e) {
+                commit('setError', e)
                 throw e
             }
         },
@@ -168,12 +192,15 @@ export default {
             }
         },
         async sendMainInfo({commit}, data) {
+
             try {
                 const token = localStorage.getItem('token')
                 return await new Promise((resolve, reject) => {
                     axios.get(server_path + "/api/export/",
                         {
                             headers: {
+                                'Content-Disposition': 'inline; filename*=UTF-8',
+                                'content-type': 'application/x-www-form-urlencoded;charset=utf-8',
                                 "Authorization": "auth " + token,
                                 "data": JSON.stringify(data)
                             },
