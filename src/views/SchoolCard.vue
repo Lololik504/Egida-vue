@@ -7,6 +7,9 @@
         <button class="btn waves-effect waves-light" v-on:click="mainInfo">
           Сведения о юридическом лице
         </button>
+        <button class="btn waves-effect waves-light" v-on:click="toBuilding">
+          Здания
+        </button>
         <button v-if="permission" class="btn waves-effect waves-light" v-on:click="deleteSchool">
           Удалить учреждение
         </button>
@@ -27,12 +30,15 @@ export default {
     mainInfo() {
       this.$router.push(`/school/${this.$route.params['card']}`)
     },
+    toBuilding() {
+      this.$router.push(`/schoolbuilding/${this.$route.params['card']}`)
+    },
     async deleteSchool() {
       try {
         const isConfirmed = confirm('Удалить данное учреждение?')
         if (isConfirmed) {
-        await this.$store.dispatch('deleteSchool', this.$route.params['card'])
-        await this.$router.push('/districts')
+          await this.$store.dispatch('deleteSchool', this.$route.params['card'])
+          await this.$router.push('/districts')
         }
       } catch (e) {
         console.log(e)
@@ -44,6 +50,7 @@ export default {
       let info = this.$store.getters.info
       const token = localStorage.getItem('token')
       const inn = this.$route.params['card']
+      localStorage.setItem('currentINN', inn)
       if (!Object.keys(info).length || info['INN'] !== inn) {
         info = await this.$store.dispatch('fetchInfo', {token, inn})
       }

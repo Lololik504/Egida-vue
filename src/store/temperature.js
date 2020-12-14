@@ -4,61 +4,16 @@ import {server_path} from "@/local_settings";
 
 export default {
     actions: {
-        async createBuilding({commit}, data) {
+        async fetchTemperatures({dispatch, commit}, inn) {
             try {
                 const token = localStorage.getItem('token')
                 return await new Promise((resolve, reject) => {
-                    axios.post(server_path + "/api/building/",
-                        data,
+                    axios.get(server_path + "/api/temperature",
                         {
                             headers: {
-                                'Content-Type': 'application/json',
                                 "Authorization": "auth " + token,
-                            }
-                        })
-                        .then(resp => {
-                            resolve(resp)
-                        })
-                        .catch(err => {
-                            reject(err)
-                        })
-                })
-            } catch (e) {
-                commit('setError', e)
-                throw e
-            }
-        },
-        async updateBuilding({commit}, data) {
-            try {
-                const token = localStorage.getItem('token')
-                return await new Promise((resolve, reject) => {
-                    axios.put(server_path + "/api/building/",
-                        data,
-                        {
-                            headers: {
                                 'Content-Type': 'application/json',
-                                "Authorization": "auth " + token,
-                            }
-                        })
-                        .then(resp => {
-                            resolve(resp)
-                        })
-                        .catch(err => {
-                            reject(err)
-                        })
-                })
-            } catch (e) {
-                commit('setError', e)
-                throw e
-            }
-        },
-        async fetchFieldsBuilding({commit}) {
-            try {
-                return await new Promise((resolve, reject) => {
-                    axios.get(server_path + "/api/fields/building",
-                        {
-                            headers: {
-                                'Content-Type': 'application/json'
+                                "INN": inn
                             }
                         })
                         .then(resp => {
@@ -73,15 +28,16 @@ export default {
                 throw e
             }
         },
-        async fetchBuildings({dispatch, commit}, {token, inn}) {
+        async addTemperature({dispatch, commit}, data) {
             try {
+                const token = localStorage.getItem('token')
                 return await new Promise((resolve, reject) => {
-                    axios.get(server_path + "/api/all_buildings",
+                    axios.post(server_path + "/api/temperature/",
+                        data,
                         {
                             headers: {
-                                "Authorization": "auth " + token,
                                 'Content-Type': 'application/json',
-                                "INN": inn
+                                "Authorization": "auth " + token,
                             }
                         })
                         .then(resp => {
@@ -96,19 +52,21 @@ export default {
                 throw e
             }
         },
-        async fetchBuilding({dispatch, commit}, {token, id}) {
+        async deleteTemperature({dispatch, commit}, data) {
             try {
+                const token = localStorage.getItem('token')
                 return await new Promise((resolve, reject) => {
-                    axios.get(server_path + "/api/building",
+                    axios.delete(server_path + "/api/temperature/",
                         {
                             headers: {
-                                "Authorization": "auth " + token,
                                 'Content-Type': 'application/json',
-                                "id": id
+                                'Authorization': 'auth ' + token,
+                                'data': JSON.stringify(data)
                             }
                         })
                         .then(resp => {
-                            resolve(resp.data.data[0])
+                            console.log(resp)
+                            resolve(resp)
                         })
                         .catch(err => {
                             reject(err)
@@ -119,19 +77,19 @@ export default {
                 throw e
             }
         },
-        async deleteBuilding({commit}, id) {
+        async updateTemperature({dispatch, commit}, data) {
             try {
                 const token = localStorage.getItem('token')
                 return await new Promise((resolve, reject) => {
-                    axios.delete(server_path + "/api/building",
+                    axios.put(server_path + "/api/temperature/", data,
                         {
                             headers: {
-                                "Authorization": "auth " + token,
                                 'Content-Type': 'application/json',
-                                "id": id
+                                'Authorization': 'auth ' + token
                             }
                         })
                         .then(resp => {
+                            console.log(resp)
                             resolve(resp)
                         })
                         .catch(err => {

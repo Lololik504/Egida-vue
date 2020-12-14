@@ -1,8 +1,10 @@
 <template>
   <div class="container">
-    <h4>Информация о здании</h4>
     <Loader v-if="loading"/>
     <form v-else>
+      <h4>Информация о здании
+        <router-link :to="`/buildingcard/${this.$route.params['id']}`"> {{ d.street + ', ' + d.street_number }}</router-link>
+      </h4>
       <div class="q-pa-md">
         <div class="input-field-street">
           <label>Улица</label>
@@ -562,11 +564,15 @@ export default {
   },
   methods: {
     async updateBuild() {
+      if (this.$v.$invalid) {
+        this.$v.$touch()
+        return
+      }
       try {
         this.d.id = this.$route.params['id']
         const data = this.d
         await this.$store.dispatch('updateBuilding', data)
-        await this.$router.push(`/schoolbuilding/${this.info.INN}`)
+        await this.$router.push(`/schoolbuilding/${localStorage.getItem('currentINN')}`)
       } catch (e) {
         console.log(e)
       }
@@ -577,7 +583,7 @@ export default {
         if (isConfirmed) {
           const id = this.$route.params['id']
           await this.$store.dispatch('deleteBuilding', id)
-          await this.$router.push(`/schoolbuilding/${this.info.INN}`)
+          await this.$router.push(`/schoolbuilding/${localStorage.getItem('currentINN')}`)
         }
       } catch (e) {
         console.log(e)
@@ -589,7 +595,7 @@ export default {
       const token = localStorage.getItem('token')
       const id = this.$route.params['id']
       const resp = await this.$store.dispatch('fetchBuilding', {token, id})
-      this.d = resp.data.data[0]
+      this.d = resp
       this.loading = false
     } catch (e) {
       console.log(e)

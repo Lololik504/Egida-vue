@@ -160,11 +160,6 @@
           Редактировать реквизиты
         </button>
       </div>
-      <div class="q-gutter-md">
-        <button class="btn waves-effect waves-light" v-on:click="toBuilding">
-          Здания
-        </button>
-      </div>
     </div>
 
   </div>
@@ -248,9 +243,6 @@ export default {
     }
   },
   methods: {
-    toBuilding() {
-      this.$router.push(`/schoolbuilding/${this.$route.params['school']}`)
-    },
     toUpdateInfo() {
       this.$router.push(`/update_school_info/${this.$route.params['school']}`)
     },

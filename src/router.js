@@ -67,6 +67,14 @@ let router = new Router({
       component: () => import('./views/Building'),
     },
     {
+      path: '/buildingcard/:card',
+      name: 'BuildingCard',
+      meta: {
+        requiresAuth: true
+      },
+      component: () => import('./views/BuildingCard'),
+    },
+    {
       path: '/create_school',
       name: 'CreateSchool',
       meta: {
@@ -97,6 +105,14 @@ let router = new Router({
         requiresAuth: true
       },
       component: () => import('./views/UpdateRequisites'),
+    },
+    {
+      path: '/temperature/:id',
+      name: 'Temperature',
+      meta: {
+        requiresAuth: true
+      },
+      component: () => import('./views/Temperature'),
     }
   ],
 })

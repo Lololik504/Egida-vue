@@ -156,6 +156,7 @@ export default {
   },
   async mounted() {
     try {
+      if (localStorage.getItem('currentINN')) localStorage.removeItem('currentINN')
       this.districts = await this.$store.dispatch('fetchDistricts')
       this.buildInfo = await this.$store.dispatch('fetchFieldsBuilding')
       this.districtInfo = await this.$store.dispatch('fetchFieldsDistricts')
