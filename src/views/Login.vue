@@ -20,7 +20,7 @@
 </template>
 
 <script>
-
+import messages from "@/utils/messages";
 export default {
   name: "Login",
   data() {
@@ -45,10 +45,19 @@ export default {
         } else await this.$router.push('/')
       } catch (e) {
         console.log(e)
+        await this.$router.push('/login?message=wrong-password')
+        this.showMessage()
       }
-
+    },
+    showMessage() {
+      if (messages[this.$route.query.message]) {
+        this.$message(messages[this.$route.query.message])
+      }
     }
-  }
+  },
+  mounted() {
+    this.showMessage()
+  },
 }
 </script>
 

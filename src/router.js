@@ -123,7 +123,7 @@ router.beforeEach((to, from, next) => {
       next()
       return
     }
-    next('/login')
+    next('/login?message=login')
   } else {
     next()
   }

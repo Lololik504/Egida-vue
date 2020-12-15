@@ -8,9 +8,9 @@
       />
       <br/>
       <div class="q-gutter-md">
-        <button class="btn waves-effect waves-light" v-on:click="exportData">
-          Экспорт данных
-        </button>
+<!--        <button class="btn waves-effect waves-light" v-on:click="exportData">-->
+<!--          Экспорт данных-->
+<!--        </button>-->
         <button class="btn waves-effect waves-light" v-on:click="dialog = true">
           Мастер выгрузки
         </button>
@@ -62,6 +62,22 @@
                       />
                     </div>
                   </div>
+                  <div class="column inline items-baseline">
+                    <q-checkbox class="col" v-if="isBuildInfo" v-model="isTempInfo" label="Температурный режим" color="orange"/>
+                    <div class="col"  v-if="isTempInfo">
+                      <q-input v-model="dateStart" filled type="date" hint="Начало периода" autofocus
+                               :class="{invalid: dateStart > new Date().toISOString().substr(0,10)}"
+                               :error-message="dateStart > new Date().toISOString().substr(0,10) ? 'Некорректная дата!': ''"
+                               :error="(dateStart > new Date().toISOString().substr(0,10))"/>
+                      <q-input v-model="dateEnd" filled type="date" hint="Конец периода" autofocus
+                               :class="{invalid: dateEnd > new Date().toISOString().substr(0,10) || dateEnd < dateStart}"
+                               :error-message="dateEnd > new Date().toISOString().substr(0,10) || dateEnd < dateStart ? 'Некорректная дата!': ''"
+                               :error="(dateEnd > new Date().toISOString().substr(0,10) || dateEnd < dateStart)"/>
+                      <q-checkbox class="col" v-model="coolant_temperature" label="Температура теплонагревателя" color="orange"/>
+                      <q-checkbox class="col"  v-model="air_temperature" label="Температурный воздуха" color="orange"/>
+
+                    </div>
+                  </div>
                 </div>
                 <br/>
                 <div class="q-gutter-xs row inline items-baseline">
@@ -107,11 +123,17 @@ export default {
     buildStates: {},
     districtStates: {},
     isMainInfo: false,
+    isTempInfo: false,
     isBuildInfo: false,
     isDistrictInfo: false,
     loading: true,
     error: false,
     dialog: false,
+    dateStart: '',
+    dateEnd: '',
+    coolant_temperature: true,
+    air_temperature: true,
+    model: {}
   }),
   methods: {
     async exportData() {
@@ -129,6 +151,14 @@ export default {
         }
         if (this.isMainInfo) {
           data['school'] = this.mainStates
+        }
+        if (this.isTempInfo) {
+          data['temperature'] = {
+            start: this.dateStart,
+            end: this.dateEnd,
+            air_temperature: this.air_temperature,
+            coolant_temperature: this.coolant_temperature
+          }
         }
         if (this.isDistrictInfo) {
           data['filters'] = {}
@@ -166,7 +196,7 @@ export default {
       for (let key in this.districtStates) {
         this.districtStates[key] = true
       }
-      await this.$store.dispatch('fetchAllModels')
+      // const test = await this.$store.dispatch('fetchAllModels')
 
       this.mainStates = Object.assign({}, this.mainInfo)
       for (let key in this.mainStates) {

@@ -55,7 +55,7 @@ export default {
       await this.$store.dispatch('logout')
           .then(() => {
             this.$emit('update')
-            this.$router.push('/login')
+            this.$router.push('/login?message=logout')
           })
     },
     toLogin() {

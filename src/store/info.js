@@ -192,7 +192,6 @@ export default {
             }
         },
         async sendMainInfo({commit}, data) {
-
             try {
                 const token = localStorage.getItem('token')
                 return await new Promise((resolve, reject) => {
