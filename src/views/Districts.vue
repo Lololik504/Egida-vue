@@ -62,8 +62,8 @@
                       />
                     </div>
                   </div>
-                  <div class="column inline items-baseline">
-                    <q-checkbox class="col" v-if="isBuildInfo" v-model="isTempInfo" label="Температурный режим" color="orange"/>
+                  <div class="column inline items-baseline" v-if="isBuildInfo" >
+                    <q-checkbox class="col" v-model="isTempInfo" label="Температурный режим" color="orange"/>
                     <div class="col"  v-if="isTempInfo">
                       <q-input v-model="dateStart" filled type="date" hint="Начало периода" autofocus
                                :class="{invalid: dateStart > new Date().toISOString().substr(0,10)}"
