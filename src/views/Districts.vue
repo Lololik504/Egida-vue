@@ -64,7 +64,7 @@
                   </div>
                   <div class="column inline items-baseline" v-if="isBuildInfo" >
                     <q-checkbox class="col" v-model="isTempInfo" label="Температурный режим" color="orange"/>
-                    <div class="col"  v-if="isTempInfo">
+                    <div class="col" style="height: 250px; width: 250px" v-if="isTempInfo">
                       <q-input v-model="dateStart" filled type="date" hint="Начало периода" autofocus
                                :class="{invalid: dateStart > new Date().toISOString().substr(0,10)}"
                                :error-message="dateStart > new Date().toISOString().substr(0,10) ? 'Некорректная дата!': ''"
@@ -73,9 +73,11 @@
                                :class="{invalid: dateEnd > new Date().toISOString().substr(0,10) || dateEnd < dateStart}"
                                :error-message="dateEnd > new Date().toISOString().substr(0,10) || dateEnd < dateStart ? 'Некорректная дата!': ''"
                                :error="(dateEnd > new Date().toISOString().substr(0,10) || dateEnd < dateStart)"/>
-                      <q-checkbox class="col" v-model="coolant_temperature" label="Температура теплонагревателя" color="orange"/>
-                      <q-checkbox class="col"  v-model="air_temperature" label="Температурный воздуха" color="orange"/>
-
+                      <q-checkbox class="col" v-model="coolant_forward_temperature" label="Температура подающего трубопровода" color="orange"/>
+                      <q-checkbox class="col" v-model="coolant_backward_temperature" label="Температура обратного трубопровода" color="orange"/>
+                      <q-checkbox class="col" v-model="forward_pressure" label="Давление на обратном трубопроводе" color="orange"/>
+                      <q-checkbox class="col" v-model="backward_pressure" label="Давление на обратном трубопроводе" color="orange"/>
+                      <q-checkbox class="col" v-model="air_temperature" label="Температурный воздуха" color="orange"/>
                     </div>
                   </div>
                 </div>
@@ -131,7 +133,10 @@ export default {
     dialog: false,
     dateStart: '',
     dateEnd: '',
-    coolant_temperature: true,
+    coolant_forward_temperature: true,
+    coolant_backward_temperature: true,
+    backward_pressure: true,
+    forward_pressure: true,
     air_temperature: true,
     model: {}
   }),
@@ -157,7 +162,10 @@ export default {
             start: this.dateStart,
             end: this.dateEnd,
             air_temperature: this.air_temperature,
-            coolant_temperature: this.coolant_temperature
+            coolant_forward_temperature: this.coolant_forward_temperature,
+            coolant_backward_temperature: this.coolant_backward_temperature,
+            forward_pressure: this.forward_pressure,
+            backward_pressure: this.backward_pressure
           }
         }
         if (this.isDistrictInfo) {
