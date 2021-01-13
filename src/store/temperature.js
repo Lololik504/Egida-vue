@@ -17,6 +17,7 @@ export default {
                             }
                         })
                         .then(resp => {
+                            console.log(resp)
                             resolve(resp.data.data)
                         })
                         .catch(err => {
