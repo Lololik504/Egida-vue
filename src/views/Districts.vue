@@ -132,7 +132,7 @@ export default {
     error: false,
     dialog: false,
     dateStart: '',
-    dateEnd: '',
+    dateEnd: new Date().toISOString().substr(0,10) || '',
     coolant_forward_temperature: true,
     coolant_backward_temperature: true,
     backward_pressure: true,
