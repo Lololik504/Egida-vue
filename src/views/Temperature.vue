@@ -233,7 +233,8 @@ export default {
         align: 'center',
         label: 'Температура подающего трубопровода (℃)',
         field: 'coolant_forward_temperature',
-        sortable: true
+        sortable: true,
+        style: 'width: 100px'
       },
       {
         name: 'coolant_backward_temperature',
@@ -375,7 +376,13 @@ export default {
 
 <style lang="sass">
 .my-sticky-column-table
+  margin-top: 10px
   max-width: 100%
+  table-layout: fixed
+
+  thead th
+    width: 100px
+    white-space: normal
 
   thead tr:first-child th:first-child
     /* bg color is important for th; just specify one */
@@ -389,4 +396,6 @@ export default {
     position: sticky
     left: 0
     z-index: 1
+
+
 </style>
