@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import store from './store/index'
-import Home from "@/views/Home";
 
 Vue.use(Router)
 
@@ -9,9 +8,14 @@ let router = new Router({
   mode: 'history',
   routes: [
     {
+      path: '*',
+      name: 'notFoundPage',
+      component: () => import('./views/NotFoundPage')
+    },
+    {
       path: '/',
       name: 'home',
-      component: Home
+      component: () => import('./views/Home')
     },
     {
       path: '/districts',
