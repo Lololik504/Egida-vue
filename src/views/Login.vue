@@ -13,7 +13,7 @@
         <label for="vpn_key">Пароль</label>
       </div>
       <br>
-      <button class="btn waves-effect waves-light auth-submit" v-on:click="login">Войти</button>
+      <button class="btn waves-effect waves-light auth-submit" @click="login">Войти</button>
     </div>
 
   </div>

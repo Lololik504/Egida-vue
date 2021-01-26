@@ -28,6 +28,7 @@ export default {
                             }
                         })
                         .then(resp => {
+                            console.log(resp)
                             const infoSchool = resp.data.data.school
                             commit('setInfo', infoSchool)
                             resolve(infoSchool)
