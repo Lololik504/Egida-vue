@@ -15,7 +15,7 @@
         <button v-if="data.length" class="btn waves-effect waves-light" @click="promptUpdateHandler">
           Изменить сведения
         </button>
-        <button v-if="data.length" class="btn waves-effect waves-light" @click="promptDeleteHandler">
+        <button v-if="data.length && localStorage.getItem('permission') < 15" class="btn waves-effect waves-light" @click="promptDeleteHandler">
           Удалить сведения
         </button>
       </div>

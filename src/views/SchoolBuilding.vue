@@ -5,14 +5,20 @@
       <h4>Здания учреждения
         <router-link :to="`/schoolcard/${this.$route.params['build']}`">{{ shortname }}</router-link>
       </h4>
-      <button class="btn waves-effect waves-light" v-on:click="createBuilding">
+      <button class="btn waves-effect waves-light" @click="createBuilding">
         Создать новое здание
       </button>
       <div class="buildings" v-if="data.length">
         <h5>Существующие здания</h5>
         <ol>
-          <router-link style="text-decoration: underline;" v-for="d in data" :key="d.id" tag="li"
-                       :to="`/buildingcard/${d.id}`">Адрес здания: {{ d.street }}, {{ d.street_number }}
+          <router-link
+              style="text-decoration: underline; cursor: pointer"
+              v-for="d in data"
+              :key="d.id"
+              tag="li"
+              :to="`/buildingcard/${d.id}`"
+          >
+            Адрес здания: {{ d.street }}, {{ d.street_number }}
           </router-link>
         </ol>
       </div>
