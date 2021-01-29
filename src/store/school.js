@@ -95,6 +95,30 @@ export default {
                 commit('setError', e)
                 throw e
             }
+        },
+        async fetchRequisites({commit}, inn) {
+            try {
+                const token = localStorage.getItem('token')
+                return await new Promise((resolve, reject) => {
+                    axios.get(server_path + "/api/requisites",
+                        {
+                            headers: {
+                                "Authorization": "auth " + token,
+                                'Content-Type': 'application/json',
+                                "INN": inn
+                            }
+                        })
+                        .then(resp => {
+                            resolve(resp.data.data)
+                        })
+                        .catch(err => {
+                            reject(err)
+                        })
+                })
+            } catch (e) {
+                commit('setError', e)
+                throw e
+            }
         }
     }
 }

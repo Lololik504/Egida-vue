@@ -15,7 +15,7 @@
         <button v-if="data.length" class="btn waves-effect waves-light" @click="promptUpdateHandler">
           Изменить сведения
         </button>
-        <button v-if="data.length && getPermission < 15" class="btn waves-effect waves-light" @click="promptDeleteHandler">
+        <button v-if="data.length && permission" class="btn waves-effect waves-light" @click="promptDeleteHandler">
           Удалить сведения
         </button>
       </div>
@@ -273,11 +273,6 @@ export default {
     pressOut: required,
     pressIn: required,
     tempAir: required
-  },
-  computed: {
-    getPermission: function () {
-      return localStorage.getItem('permission')
-    }
   },
   methods: {
     promptAddHandler() {

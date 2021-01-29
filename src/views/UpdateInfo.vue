@@ -28,9 +28,14 @@
             <q-input outlined hint="Формат: Аббревиатура - расшифровка" placeholder="Введите вид образования" v-model="other_edu_type"/>
           </div>
         </div>
-        <button class="btn waves-effect waves-light" type="submit">
-          Сохранить
-        </button>
+        <div class="q-gutter-md">
+          <button class="btn waves-effect waves-light" type="submit">
+            Сохранить
+          </button>
+          <button class="btn waves-effect waves-light" @click="returnBack">
+            Отменить
+          </button>
+        </div>
       </form>
     </div>
   </div>
@@ -95,6 +100,9 @@ export default {
     }
   },
   methods: {
+    async returnBack() {
+      await this.$router.push(`/school/${this.$route.params['inn']}`)
+    },
     async submitHandler() {
       try {
         if (this.mainInfo.edu_type.includes('-')) {

@@ -30,12 +30,12 @@
 
           <div v-if="data.type === types[0]">
             <div class="select-purpose-field">
-              <label>Назначение школы</label>
+              <label>Назначение здания</label>
               <div class="select">
                 <q-select outlined v-model="data.purpose" :options="purposes"/>
               </div>
               <div v-if="data.purpose === purposes[7]">
-                <label>Введите назначение школы</label>
+                <label>Введите назначение здания</label>
                 <q-input outlined v-model="choose_purpose"/>
               </div>
               <div class="input-field-year">
@@ -338,12 +338,12 @@
 
           <div v-else-if="data.type === types[2]">
             <div class="select-purpose-field">
-              <label>Назначение школы</label>
+              <label>Назначение здания</label>
               <div class="select">
                 <q-select outlined v-model="data.purpose" :options="purposes"/>
               </div>
               <div v-if="data.purpose === purposes[7]">
-                <label>Введите назначение школы</label>
+                <label>Введите назначение здания</label>
                 <q-input outlined v-model="choose_purpose"/>
               </div>
               <div class="input-field-year">

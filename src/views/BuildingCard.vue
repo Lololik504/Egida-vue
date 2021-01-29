@@ -4,16 +4,19 @@
     <div v-else>
       <h4> Карточка здания {{ street + ', ' + street_number }}</h4>
       <div class="q-gutter-md">
-        <button class="btn waves-effect waves-light" v-on:click="mainInfo">
+        <button class="btn waves-effect waves-light" @click="mainInfo">
           Сведения о здании
         </button>
-        <button class="btn waves-effect waves-light" v-on:click="temperature">
+        <button class="btn waves-effect waves-light" @click="temperature">
           Температурный режим
+        </button>
+        <button class="btn waves-effect waves-light" @click="characteristic">
+          Характеристика здания
         </button>
         <button v-if="permission" class="btn waves-effect waves-light" @click.prevent="deleteBuilding">
           Удалить здание
         </button>
-        <button class="btn waves-effect waves-light" v-on:click="backPage">
+        <button class="btn waves-effect waves-light" @click="backPage">
           Вернуться назад
         </button>
       </div>
@@ -41,6 +44,9 @@ export default {
     },
     async temperature() {
       await this.$router.push(`/temperature/${this.$route.params['card']}`)
+    },
+    async characteristic() {
+      await this.$router.push(`/characteristic/${this.$route.params['card']}`)
     },
     async backPage() {
       await this.$router.push(`/schoolbuilding/${localStorage.getItem('currentINN')}`)

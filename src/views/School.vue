@@ -139,11 +139,11 @@
           <tbody>
           <tr class="site">
             <th>Официальный сайт</th>
-            <td>{{ requisites.site }}</td>
+            <td>{{ requisites.official_site }}</td>
           </tr>
           <tr class="address">
             <th>Юридический адрес</th>
-            <td>{{ requisites.street}} {{requisites.street_number}}</td>
+            <td>{{ requisites.legal_address_street}}, {{requisites.legal_address_number}}</td>
           </tr>
           <tr class="district">
             <th>Территориальная принадлежность</th>
@@ -151,7 +151,7 @@
           </tr>
           <tr class="date">
             <th>Дата образования юр.лица</th>
-            <td>{{ requisites.date }}</td>
+            <td>{{ requisites.formation_date }}</td>
           </tr>
           </tbody>
         </table>
@@ -178,11 +178,11 @@ export default {
       name: null,
     },
     requisites: {
-      street: null,
-      street_number: null,
+      legal_address_street: null,
+      legal_address_number: null,
       district: null,
-      site: null,
-      date: null
+      official_site: null,
+      formation_date: null
     },
     contactInfo: {
       director: {
@@ -223,6 +223,7 @@ export default {
       const inn = this.$route.params['school']
       const info = await this.$store.dispatch('fetchInfo', {token, inn})
       const personal = await this.$store.dispatch('fetchPersonal', inn)
+      const requisite = await this.$store.dispatch('fetchRequisites', inn)
 
       this.mainInfo.INN = info['INN']
       this.mainInfo.name = info['name']
@@ -235,7 +236,11 @@ export default {
       this.contactInfo.updater = personal['updater']
       this.contactInfo.bookkeeper = personal['bookkeeper']
 
-      this.requisites.district = info['district']
+      this.requisites.district = requisite.requisites.district.name
+      this.requisites.formation_date = requisite.requisites['formation_date']
+      this.requisites.official_site = requisite.requisites['official_site']
+      this.requisites.legal_address_street = requisite.requisites['legal_address_street']
+      this.requisites.legal_address_number = requisite.requisites['legal_address_number']
 
       this.loading = false
     } catch (e) {

@@ -9,21 +9,22 @@
         <div class="q-pa-sm">
           <div class="input-field-shortname">
             <label>Официальный сайт учреждения</label>
-            <q-input outlined placeholder="Введите официальный сайт учреждения" type="url" v-model="$v.requisites.site.$model"
-                     :class="{invalid: (!$v.requisites.site.url && $v.requisites.site.$dirty)}"
+            <q-input outlined placeholder="Введите официальный сайт учреждения" type="url"
+                     v-model="$v.requisites.official_site.$model"
+                     :class="{invalid: (!$v.requisites.official_site.url && $v.requisites.official_site.$dirty)}"
                      error-message="Введите корректный URL (формат: https://site.ru)"
-                     :error="(!$v.requisites.site.url && $v.requisites.site.$dirty)"
+                     :error="(!$v.requisites.official_site.url && $v.requisites.official_site.$dirty)"
                      hint="Формат: https://site.ru"
             />
           </div>
           <div class="row">
             <div class="col">
               <label>Юридический адрес учреждения (улица)</label>
-              <q-input outlined placeholder="Введите улицу" v-model="requisites.street"/>
+              <q-input outlined placeholder="Введите улицу" v-model="requisites.legal_address_street"/>
             </div>
             <div class="col">
               <label>Юридический адрес учреждения (номер дома)</label>
-              <q-input outlined placeholder="Введите номер дома" v-model="requisites.street_number"/>
+              <q-input outlined placeholder="Введите номер дома" v-model="requisites.legal_address_number"/>
             </div>
           </div>
           <div class="select-district">
@@ -32,12 +33,17 @@
           </div>
           <div class="input-field-shortname">
             <label>Дата образования юр. лица</label>
-            <q-input v-model="requisites.date" outlined type="date"/>
+            <q-input v-model="requisites.formation_date" outlined type="date"/>
           </div>
         </div>
-        <button class="btn waves-effect waves-light" type="submit">
-          Сохранить
-        </button>
+        <div class="q-gutter-md">
+          <button class="btn waves-effect waves-light" type="submit">
+            Сохранить
+          </button>
+          <button class="btn waves-effect waves-light" @click="returnBack">
+            Отменить
+          </button>
+        </div>
       </form>
     </div>
   </div>
@@ -45,6 +51,7 @@
 
 <script>
 import {url} from 'vuelidate/lib/validators'
+
 export default {
   name: "UpdateRequisites",
   data: () => ({
@@ -53,16 +60,16 @@ export default {
     districts: [],
     requisites: {
       INN: null,
-      street: null,
-      street_number: null,
+      legal_address_street: null,
+      legal_address_number: null,
       district: null,
-      site: null,
-      date: null
+      official_site: null,
+      formation_date: null
     }
   }),
   validations: {
     requisites: {
-      site: {
+      official_site: {
         url
       }
     }
@@ -73,15 +80,20 @@ export default {
       const token = localStorage.getItem('token')
       const inn = this.$route.params['inn']
       info = await this.$store.dispatch('fetchInfo', {token, inn})
-      const resp = await this.$store.dispatch('fetchDistricts')
+      const resp = await this.$store.dispatch('fetchDistrictsQuery')
+      const requisite = await this.$store.dispatch('fetchRequisites', inn)
+
       for (let key in resp) {
-        this.districts.push(resp[key].name.name)
+        this.districts.push(resp[key].attributes.name)
       }
-      console.log(info)
 
       this.shortname = info['shortname']
       this.requisites.INN = info['INN']
-      this.requisites.district = info['district']
+      this.requisites.district = requisite.requisites.district.name
+      this.requisites.formation_date = requisite.requisites['formation_date']
+      this.requisites.official_site = requisite.requisites['official_site']
+      this.requisites.legal_address_street = requisite.requisites['legal_address_street']
+      this.requisites.legal_address_number = requisite.requisites['legal_address_number']
 
 
       this.loading = false
@@ -90,15 +102,16 @@ export default {
     }
   },
   methods: {
+    async returnBack() {
+      await this.$router.push(`/school/${this.requisites.INN}`)
+    },
     async submitHandler() {
       try {
         if (this.$v.$invalid) {
           this.$v.$touch()
           return
         }
-        console.log('contact')
-        console.log(this.requisites)
-        // await this.$store.dispatch('updatePersonal', this.contactInfo)
+        await this.$store.dispatch('updateRequisites', this.requisites)
         await this.$router.push(`/school/${this.requisites.INN}`)
       } catch (e) {
         console.log(e)

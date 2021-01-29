@@ -66,6 +66,31 @@ export default {
                 throw e
             }
         },
+        async fetchDistrictsQuery({commit}) {
+            try {
+                const token = localStorage.getItem('token')
+                return await new Promise((resolve, reject) => {
+                    axios.get(server_path + "/api/districts/query",
+                        {
+                            headers: {
+                                "Authorization": "auth " + token,
+                                'Content-Type': 'application/json'
+                            }
+                        })
+                        .then(resp => {
+                            const info = resp.data.data
+                            commit('setDistricts', info)
+                            resolve(info)
+                        })
+                        .catch(err => {
+                            reject(err)
+                        })
+                })
+            } catch (e) {
+                commit('setError', e)
+                throw e
+            }
+        },
         async fetchFieldsDistricts({commit}) {
             try {
                 return await new Promise((resolve, reject) => {
@@ -118,6 +143,30 @@ export default {
                 const token = localStorage.getItem('token')
                 return await new Promise((resolve, reject) => {
                     axios.put(server_path + "/api/personal/",
+                        data,
+                        {
+                            headers: {
+                                "Authorization": "auth " + token,
+                                'Content-Type': 'application/json'
+                            }
+                        })
+                        .then(resp => {
+                            resolve(resp)
+                        })
+                        .catch(err => {
+                            reject(err)
+                        })
+                })
+            } catch (e) {
+                commit('setError', e)
+                throw e
+            }
+        },
+        async updateRequisites({commit}, data) {
+            try {
+                const token = localStorage.getItem('token')
+                return await new Promise((resolve, reject) => {
+                    axios.put(server_path + "/api/requisites/",
                         data,
                         {
                             headers: {
