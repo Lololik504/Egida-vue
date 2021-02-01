@@ -42,17 +42,26 @@
             tag="div"
             :to="`/characteristic/${$route.params['id']}/${helpList[character].name}`"
         >
-          {{character}}
+          {{ character }}
         </router-link>
       </li>
+      <router-link
+          v-if="purposeList.includes(purpose)"
+          :to="`/characteristic/${$route.params['id']}/accessible_environment`"
+          tag="li"
+      >
+        Доступная среда
+      </router-link>
     </ul>
   </div>
 </template>
 
 <script>
 export default {
-name: "Sidebar",
+  props: ['purpose'],
+  name: "Sidebar",
   data: () => ({
+    purposeList: ['Корпус школы', 'Корпус д/с', 'Подразделение доп. образования'],
     characteristicList: [
       'Строительные конструкции',
       'Инженерные коммуникации',

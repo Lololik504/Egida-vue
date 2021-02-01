@@ -8,10 +8,10 @@
           <div class="select-type-field">
             <label>Материал подвальных перекрытий</label>
             <div class="select">
-              <q-select outlined v-model="material" :options="overlap_materials"/>
+              <q-select outlined v-model="basement_overlapping_material" :options="overlap_materials"/>
             </div>
           </div>
-          <div v-if="material === overlap_materials[2]">
+          <div v-if="basement_overlapping_material === overlap_materials[2]">
             <label>Введите материал подвальных перекрытий</label>
             <q-input outlined v-model="other_material"/>
           </div>
@@ -21,7 +21,7 @@
               <q-list>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="status" val="Исправное состояние"/>
+                    <q-radio v-model="basement_overlapping_status" val="Исправное состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Исправное состояние</q-item-label>
@@ -33,7 +33,7 @@
                 </q-item>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="status" val="Работоспособное состояние"/>
+                    <q-radio v-model="basement_overlapping_status" val="Работоспособное состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Работоспособное состояние</q-item-label>
@@ -48,7 +48,7 @@
                 </q-item>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="status" val="Ограниченно работоспособное состояние"/>
+                    <q-radio v-model="basement_overlapping_status" val="Ограниченно работоспособное состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Ограниченно работоспособное состояние</q-item-label>
@@ -62,7 +62,7 @@
                 </q-item>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="status" val="Недопустимое состояние"/>
+                    <q-radio v-model="basement_overlapping_status" val="Недопустимое состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Недопустимое состояние</q-item-label>
@@ -76,7 +76,7 @@
                 </q-item>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="status" val="Аварийное состояние"/>
+                    <q-radio v-model="basement_overlapping_status" val="Аварийное состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Аварийное состояние</q-item-label>
@@ -112,6 +112,8 @@
 </template>
 
 <script>
+import messages from "@/utils/messages";
+
 export default {
   name: "Basement_overlaps",
   data: () => ({
@@ -120,8 +122,8 @@ export default {
       'Деревянные',
       'Прочее'
     ],
-    status: null,
-    material: null,
+    basement_overlapping_status: null,
+    basement_overlapping_material: null,
     other_material: null,
     act: null,
     loading: false,
@@ -135,7 +137,41 @@ export default {
       })
     },
     async save() {
-      console.log(this.status)
+      try {
+        if (this.other_material) {
+          this.basement_overlapping_material = this.other_material
+        }
+        const data = {
+          basement_overlapping_status: this.basement_overlapping_status,
+          basement_overlapping_material: this.basement_overlapping_material,
+          id: this.$route.params['id']
+        }
+        const resp = await this.$store.dispatch('sendConstructionInfo', data)
+        if (resp['status'] === 200) {
+          this.showMessage('saveSuccess')
+        }
+      } catch (e) {
+        console.log(e)
+        this.showMessage('error')
+      }
+    },
+    showMessage(text) {
+      if (messages[text]) {
+        window.scrollTo(0,0)
+        this.$message(messages[text])
+      }
+    }
+  },
+  async mounted() {
+    const token = localStorage.getItem('token')
+    const id = this.$route.params['id']
+    try {
+      const info = await this.$store.dispatch('fetchConstruction', {token, id})
+      this.basement_overlapping_material = info['basement_overlapping_material']
+      this.basement_overlapping_status = info['basement_overlapping_status']
+      this.loading = false
+    } catch (e) {
+      console.log(e)
     }
   }
 }

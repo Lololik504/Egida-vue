@@ -11,15 +11,14 @@
       <div class="buildings" v-if="data.length">
         <h5>Существующие здания</h5>
         <ol>
+          <li v-for="d in data"
+              :key="d.id">
           <router-link
-              style="text-decoration: underline; cursor: pointer"
-              v-for="d in data"
-              :key="d.id"
-              tag="li"
               :to="`/buildingcard/${d.id}`"
           >
             Адрес здания: {{ d.street }}, {{ d.street_number }}
           </router-link>
+          </li>
         </ol>
       </div>
     </div>

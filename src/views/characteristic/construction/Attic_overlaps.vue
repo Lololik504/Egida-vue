@@ -8,26 +8,26 @@
           <div class="select-material-field">
             <label>Материал чердачных перекрытий</label>
             <div class="select">
-              <q-select outlined v-model="material" :options="overlap_materials"/>
+              <q-select outlined v-model="attic_overlapping_material" :options="overlap_materials"/>
             </div>
           </div>
-          <div v-if="material === overlap_materials[2]">
+          <div v-if="attic_overlapping_material === overlap_materials[2]">
             <label>Введите материал чердачных перекрытий</label>
             <q-input outlined v-model="other_material"/>
           </div>
           <div class="select-warming-field">
             <label>Утепление чердачного перекрытияй</label>
             <div class="select">
-              <q-select outlined v-model="warming" :options="overlap_warmings"/>
+              <q-select outlined v-model="attic_overlapping_warming" :options="overlap_warmings"/>
             </div>
           </div>
-          <div v-if="warming === overlap_warmings[5]">
+          <div v-if="attic_overlapping_warming === overlap_warmings[5]">
             <label>Введите материал чердачных перекрытий</label>
             <q-input outlined v-model="other_warming"/>
           </div>
           <div class="input-field-warming">
             <label>Толщина утепления чердачных перекрытый, мм.</label>
-            <q-input outlined type="number" v-model.number="thickness"/>
+            <q-input outlined type="number" v-model.number="attic_overlapping_thickness"/>
           </div>
           <q-card flat bordered class="my-card">
             <label>Общее техническое состояние чердачных перекрытий:</label>
@@ -35,7 +35,7 @@
               <q-list>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="status" val="Исправное состояние"/>
+                    <q-radio v-model="attic_overlapping_status" val="Исправное состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Исправное состояние</q-item-label>
@@ -47,7 +47,7 @@
                 </q-item>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="status" val="Работоспособное состояние"/>
+                    <q-radio v-model="attic_overlapping_status" val="Работоспособное состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Работоспособное состояние</q-item-label>
@@ -62,7 +62,7 @@
                 </q-item>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="status" val="Ограниченно работоспособное состояние"/>
+                    <q-radio v-model="attic_overlapping_status" val="Ограниченно работоспособное состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Ограниченно работоспособное состояние</q-item-label>
@@ -76,7 +76,7 @@
                 </q-item>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="status" val="Недопустимое состояние"/>
+                    <q-radio v-model="attic_overlapping_status" val="Недопустимое состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Недопустимое состояние</q-item-label>
@@ -90,7 +90,7 @@
                 </q-item>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="status" val="Аварийное состояние"/>
+                    <q-radio v-model="attic_overlapping_status" val="Аварийное состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Аварийное состояние</q-item-label>
@@ -126,6 +126,8 @@
 </template>
 
 <script>
+import messages from "@/utils/messages";
+
 export default {
   name: "Attic_overlaps",
   data: () => ({
@@ -142,12 +144,12 @@ export default {
       'Газобетон',
       'Прочее'
     ],
-    status: null,
-    material: null,
+    attic_overlapping_status: null,
+    attic_overlapping_material: null,
+    attic_overlapping_thickness: null,
     other_material: null,
-    warming: null,
+    attic_overlapping_warming: null,
     other_warming: null,
-    thickness: null,
     act: null,
     loading: false,
     photo: null
@@ -160,7 +162,48 @@ export default {
       })
     },
     async save() {
-      console.log(this.status)
+      try {
+        if (this.other_material) {
+          this.attic_overlapping_material = this.other_material
+        }
+        if (this.other_warming) {
+          this.attic_overlapping_warming = this.other_warming
+        }
+        const data = {
+          attic_overlapping_status: this.attic_overlapping_status,
+          attic_overlapping_material: this.attic_overlapping_material,
+          attic_overlapping_warming: this.attic_overlapping_warming,
+          attic_overlapping_thickness: this.attic_overlapping_thickness,
+          id: this.$route.params['id']
+        }
+        const resp = await this.$store.dispatch('sendConstructionInfo', data)
+        if (resp['status'] === 200) {
+          this.showMessage('saveSuccess')
+        }
+      } catch (e) {
+        console.log(e)
+        this.showMessage('error')
+      }
+    },
+    showMessage(text) {
+      if (messages[text]) {
+        window.scrollTo(0,0)
+        this.$message(messages[text])
+      }
+    }
+  },
+  async mounted() {
+    const token = localStorage.getItem('token')
+    const id = this.$route.params['id']
+    try {
+      const info = await this.$store.dispatch('fetchConstruction', {token, id})
+      this.attic_overlapping_material = info['attic_overlapping_material']
+      this.attic_overlapping_warming = info['attic_overlapping_warming']
+      this.attic_overlapping_thickness = info['attic_overlapping_thickness']
+      this.attic_overlapping_status = info['attic_overlapping_status']
+      this.loading = false
+    } catch (e) {
+      console.log(e)
     }
   }
 }

@@ -89,7 +89,11 @@ export default {
 
       this.shortname = info['shortname']
       this.requisites.INN = info['INN']
-      this.requisites.district = requisite.requisites.district.name
+      if (requisite.requisites.district) {
+        this.requisites.district = requisite.requisites.district.name
+      } else {
+        this.requisites.district = null
+      }
       this.requisites.formation_date = requisite.requisites['formation_date']
       this.requisites.official_site = requisite.requisites['official_site']
       this.requisites.legal_address_street = requisite.requisites['legal_address_street']

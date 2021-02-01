@@ -595,6 +595,7 @@ export default {
       const token = localStorage.getItem('token')
       const id = this.$route.params['id']
       const resp = await this.$store.dispatch('fetchBuilding', {token, id})
+      console.log(resp)
       this.d = resp
       this.loading = false
     } catch (e) {

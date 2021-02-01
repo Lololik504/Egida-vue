@@ -9,7 +9,7 @@
       </router-link>
     </h4>
     <div class="flex">
-      <Sidebar/>
+      <Sidebar :purpose="purpose"/>
       <div class="main">
         <router-view/>
       </div>
@@ -27,18 +27,14 @@ export default {
     street: '',
     street_number: '',
     permission: localStorage.getItem('permission') <= 10,
-
+    purpose: null
   }),
-  methods: {
-    async construction() {
-      await this.$router.push(`/characteristic/${this.$route.params['id']}/construction`)
-    }
-  },
   async mounted() {
     const token = localStorage.getItem('token')
     const id = this.$route.params['id']
     try {
       const resp = await this.$store.dispatch('fetchBuilding', {token, id})
+      this.purpose = resp['purpose']
       this.street = resp['street']
       this.street_number = resp['street_number']
       this.loading = false

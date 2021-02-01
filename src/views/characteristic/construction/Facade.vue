@@ -25,10 +25,10 @@
           <div class="select-type-field">
             <label>Тип фасада</label>
             <div class="select">
-              <q-select outlined v-model="type" :options="facade_types"/>
+              <q-select outlined v-model="facade_type" :options="facade_types"/>
             </div>
           </div>
-          <div v-if="type === facade_types[4]">
+          <div v-if="facade_type === facade_types[4]">
             <label>Введите тип фасада</label>
             <q-input outlined v-model="other_type"/>
           </div>
@@ -38,7 +38,7 @@
               <q-list>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="status" val="Исправное состояние"/>
+                    <q-radio v-model="facade_status" val="Исправное состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Исправное состояние</q-item-label>
@@ -50,7 +50,7 @@
                 </q-item>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="status" val="Работоспособное состояние"/>
+                    <q-radio v-model="facade_status" val="Работоспособное состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Работоспособное состояние</q-item-label>
@@ -65,7 +65,7 @@
                 </q-item>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="status" val="Ограниченно работоспособное состояние"/>
+                    <q-radio v-model="facade_status" val="Ограниченно работоспособное состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Ограниченно работоспособное состояние</q-item-label>
@@ -79,7 +79,7 @@
                 </q-item>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="status" val="Недопустимое состояние"/>
+                    <q-radio v-model="facade_status" val="Недопустимое состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Недопустимое состояние</q-item-label>
@@ -93,7 +93,7 @@
                 </q-item>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="status" val="Аварийное состояние"/>
+                    <q-radio v-model="facade_status" val="Аварийное состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Аварийное состояние</q-item-label>
@@ -129,6 +129,8 @@
 </template>
 
 <script>
+import messages from "@/utils/messages";
+
 export default {
   name: "Facade",
   data: () => ({
@@ -139,8 +141,8 @@ export default {
       'Сборные газобетонные (керамзитобетонные) панели',
       'Прочее'
     ],
-    status: null,
-    type: null,
+    facade_status: null,
+    facade_type: null,
     other_type: null,
     act: null,
     loading: false,
@@ -155,7 +157,43 @@ export default {
       })
     },
     async save() {
-      console.log(this.status)
+      try {
+        if (this.other_type) {
+          this.facade_type = this.other_type
+        }
+        const data = {
+          facade_type: this.facade_type,
+          facade_square: this.facade_square,
+          facade_status: this.facade_status,
+          id: this.$route.params['id']
+        }
+        const resp = await this.$store.dispatch('sendConstructionInfo', data)
+        if (resp['status'] === 200) {
+          this.showMessage('saveSuccess')
+        }
+      } catch (e) {
+        console.log(e)
+        this.showMessage('error')
+      }
+    },
+    showMessage(text) {
+      if (messages[text]) {
+        window.scrollTo(0,0)
+        this.$message(messages[text])
+      }
+    }
+  },
+  async mounted() {
+    const token = localStorage.getItem('token')
+    const id = this.$route.params['id']
+    try {
+      const info = await this.$store.dispatch('fetchConstruction', {token, id})
+      this.facade_type = info['facade_type']
+      this.facade_square = info['facade_square']
+      this.facade_status = info['facade_status']
+      this.loading = false
+    } catch (e) {
+      console.log(e)
     }
   }
 }

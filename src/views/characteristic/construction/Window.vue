@@ -8,12 +8,12 @@
           <div class="select-type-field">
             <label>Материал окон</label>
             <div class="select">
-              <q-select outlined v-model="material" :options="window_materials"/>
+              <q-select outlined v-model="window_material" :options="window_materials"/>
             </div>
           </div>
           <div class="input-field-window-percent">
             <label>Процент остекления энергосберегающими стеклопакетами , %.</label>
-            <q-input outlined type="number" v-model.number="window_percent"/>
+            <q-input outlined type="number" v-model.number="energy_saving_window_percent"/>
           </div>
           <div class="input-field-window-count">
             <label>Количество окон, шт.</label>
@@ -29,7 +29,7 @@
               <q-list>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="status" val="Исправное состояние"/>
+                    <q-radio v-model="window_status" val="Исправное состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Исправное состояние</q-item-label>
@@ -41,7 +41,7 @@
                 </q-item>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="status" val="Работоспособное состояние"/>
+                    <q-radio v-model="window_status" val="Работоспособное состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Работоспособное состояние</q-item-label>
@@ -56,7 +56,7 @@
                 </q-item>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="status" val="Ограниченно работоспособное состояние"/>
+                    <q-radio v-model="window_status" val="Ограниченно работоспособное состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Ограниченно работоспособное состояние</q-item-label>
@@ -70,7 +70,7 @@
                 </q-item>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="status" val="Недопустимое состояние"/>
+                    <q-radio v-model="window_status" val="Недопустимое состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Недопустимое состояние</q-item-label>
@@ -84,7 +84,7 @@
                 </q-item>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="status" val="Аварийное состояние"/>
+                    <q-radio v-model="window_status" val="Аварийное состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Аварийное состояние</q-item-label>
@@ -122,16 +122,18 @@
 </template>
 
 <script>
+import messages from "@/utils/messages";
+
 export default {
   name: "Window",
   data: () => ({
     window_materials: ['Деревянные рамы', 'Энергосберегающие (пластик/дерево)'],
-    material: null,
-    status: null,
+    window_material: null,
+    window_status: null,
     act: null,
     loading: false,
     window_square: null,
-    window_percent: null,
+    energy_saving_window_percent: null,
     window_count: null
   }),
   methods: {
@@ -142,7 +144,44 @@ export default {
       })
     },
     async save() {
-      console.log(this.status)
+      try {
+        const data = {
+          window_material: this.window_material,
+          energy_saving_window_percent: this.energy_saving_window_percent,
+          window_count: this.window_count,
+          window_square: this.window_square,
+          window_status: this.window_status,
+          id: this.$route.params['id']
+        }
+        const resp = await this.$store.dispatch('sendConstructionInfo', data)
+        if (resp['status'] === 200) {
+          this.showMessage('saveSuccess')
+        }
+      } catch (e) {
+        console.log(e)
+        this.showMessage('error')
+      }
+    },
+    showMessage(text) {
+      if (messages[text]) {
+        window.scrollTo(0,0)
+        this.$message(messages[text])
+      }
+    }
+  },
+  async mounted() {
+    const token = localStorage.getItem('token')
+    const id = this.$route.params['id']
+    try {
+      const info = await this.$store.dispatch('fetchConstruction', {token, id})
+      this.window_material = info['window_material']
+      this.window_square = info['window_square']
+      this.window_count = info['window_count']
+      this.energy_saving_window_percent = info['energy_saving_window_percent']
+      this.window_status = info['window_status']
+      this.loading = false
+    } catch (e) {
+      console.log(e)
     }
   }
 }

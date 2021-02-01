@@ -3,5 +3,7 @@ export default {
     'login': 'Для начала войдите в систему',
     'auth/user-not-found': 'Пользователя с таким Email не существует',
     'wrong-password': 'Введен неверный пароль!',
-    'auth/email-already-in-use': 'Пользователь с данным Email уже существует'
+    'auth/email-already-in-use': 'Пользователь с данным Email уже существует',
+    'error': 'Произошла ошибка!',
+    'saveSuccess': 'Данные успешно сохранены!'
 }

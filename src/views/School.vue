@@ -143,7 +143,7 @@
           </tr>
           <tr class="address">
             <th>Юридический адрес</th>
-            <td>{{ requisites.legal_address_street}}, {{requisites.legal_address_number}}</td>
+            <td>{{ requisites.legal_address_street }}, {{ requisites.legal_address_number }}</td>
           </tr>
           <tr class="district">
             <th>Территориальная принадлежность</th>
@@ -236,7 +236,11 @@ export default {
       this.contactInfo.updater = personal['updater']
       this.contactInfo.bookkeeper = personal['bookkeeper']
 
-      this.requisites.district = requisite.requisites.district.name
+      if (requisite.requisites.district) {
+        this.requisites.district = requisite.requisites.district.name
+      } else {
+        this.requisites.district = null
+      }
       this.requisites.formation_date = requisite.requisites['formation_date']
       this.requisites.official_site = requisite.requisites['official_site']
       this.requisites.legal_address_street = requisite.requisites['legal_address_street']

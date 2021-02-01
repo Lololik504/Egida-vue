@@ -10,10 +10,10 @@
           <div class="select-type-field">
             <label>Водоснабжающая организация</label>
             <div class="select">
-              <q-select outlined v-model="organization" :options="organizations"/>
+              <q-select outlined v-model="water_supply_organization" :options="organizations"/>
             </div>
           </div>
-          <div v-if="organization === organizations[2]">
+          <div v-if="water_supply_organization === organizations[2]">
             <label>Введите иную водоснабжающую организацию</label>
             <q-input outlined v-model="other_organization"/>
           </div>
@@ -23,7 +23,7 @@
               <q-list>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="status_water_supply" val="Работоспособное состояние"/>
+                    <q-radio v-model="technical_condition_of_the_water_supply_system" val="Работоспособное состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Работоспособное состояние</q-item-label>
@@ -38,7 +38,7 @@
                 </q-item>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="status_water_supply" val="Ограниченно работоспособное состояние"/>
+                    <q-radio v-model="technical_condition_of_the_water_supply_system" val="Ограниченно работоспособное состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Ограниченно работоспособное состояние</q-item-label>
@@ -52,7 +52,7 @@
                 </q-item>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="status_water_supply" val="Аварийное состояние"/>
+                    <q-radio v-model="technical_condition_of_the_water_supply_system" val="Аварийное состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Аварийное состояние</q-item-label>
@@ -84,7 +84,7 @@
               <q-list>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="status_sewerage" val="Работоспособное состояние"/>
+                    <q-radio v-model="technical_condition_of_the_sewerage_system" val="Работоспособное состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Работоспособное состояние</q-item-label>
@@ -99,7 +99,7 @@
                 </q-item>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="status_sewerage" val="Ограниченно работоспособное состояние"/>
+                    <q-radio v-model="technical_condition_of_the_sewerage_system" val="Ограниченно работоспособное состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Ограниченно работоспособное состояние</q-item-label>
@@ -113,7 +113,7 @@
                 </q-item>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="status_sewerage" val="Аварийное состояние"/>
+                    <q-radio v-model="technical_condition_of_the_sewerage_system" val="Аварийное состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Аварийное состояние</q-item-label>
@@ -139,33 +139,33 @@
             </div>
           </q-card>
           <br/>
-          <h5><strong>Документация</strong></h5>
-          <div class="row">
-            <div class="col">
-              <label>Акт балансового разграничения</label>
-              <q-file
-                  v-model="act"
-                  outlined
-                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"
-                  multiple
-                  max-total-size="25165824"
-                  accept=".jpg, image/jpeg, .pdf"
-                  @rejected="onRejected"
-              />
-            </div>
-            <div class="col">
-              <label>Схема балансового разграничения</label>
-              <q-file
-                  v-model="schema"
-                  outlined
-                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"
-                  multiple
-                  max-total-size="25165824"
-                  accept=".jpg, image/jpeg, .pdf"
-                  @rejected="onRejected"
-              />
-            </div>
-          </div>
+<!--          <h5><strong>Документация</strong></h5>-->
+<!--          <div class="row">-->
+<!--            <div class="col">-->
+<!--              <label>Акт балансового разграничения</label>-->
+<!--              <q-file-->
+<!--                  v-model="act"-->
+<!--                  outlined-->
+<!--                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"-->
+<!--                  multiple-->
+<!--                  max-total-size="25165824"-->
+<!--                  accept=".jpg, image/jpeg, .pdf"-->
+<!--                  @rejected="onRejected"-->
+<!--              />-->
+<!--            </div>-->
+<!--            <div class="col">-->
+<!--              <label>Схема балансового разграничения</label>-->
+<!--              <q-file-->
+<!--                  v-model="schema"-->
+<!--                  outlined-->
+<!--                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"-->
+<!--                  multiple-->
+<!--                  max-total-size="25165824"-->
+<!--                  accept=".jpg, image/jpeg, .pdf"-->
+<!--                  @rejected="onRejected"-->
+<!--              />-->
+<!--            </div>-->
+<!--          </div>-->
           <button class="btn waves-effect waves-light" type="submit">
             Сохранить
           </button>
@@ -176,15 +176,17 @@
 </template>
 
 <script>
+import messages from "@/utils/messages";
+
 export default {
   name: "Water_supply",
   data: () => ({
     organizations: ['МУП Горводоканал', 'ФГУП УЭВ', 'Иное'],
-    organization: null,
+    water_supply_organization: null,
     other_organization: null,
-    status_sewerage: null,
+    technical_condition_of_the_sewerage_system: null,
     act_sewerage: null,
-    status_water_supply: null,
+    technical_condition_of_the_water_supply_system: null,
     act_water_supply: null,
     act: null,
     schema: null,
@@ -198,7 +200,43 @@ export default {
       })
     },
     async save() {
-      console.log(this.status)
+      try {
+        if (this.other_organization) {
+          this.water_supply_organization = this.other_organization
+        }
+        const data = {
+          water_supply_organization: this.water_supply_organization,
+          technical_condition_of_the_sewerage_system: this.technical_condition_of_the_sewerage_system,
+          technical_condition_of_the_water_supply_system: this.technical_condition_of_the_water_supply_system,
+          id: this.$route.params['id']
+        }
+        const resp = await this.$store.dispatch('sendEngineeringInfo', data)
+        if (resp['status'] === 200) {
+          this.showMessage('saveSuccess')
+        }
+      } catch (e) {
+        console.log(e)
+        this.showMessage('error')
+      }
+    },
+    showMessage(text) {
+      if (messages[text]) {
+        window.scrollTo(0,0)
+        this.$message(messages[text])
+      }
+    }
+  },
+  async mounted() {
+    const token = localStorage.getItem('token')
+    const id = this.$route.params['id']
+    try {
+      const info = await this.$store.dispatch('fetchEngineering', {token, id})
+      this.water_supply_organization = info['water_supply_organization']
+      this.technical_condition_of_the_sewerage_system = info['technical_condition_of_the_sewerage_system']
+      this.technical_condition_of_the_water_supply_system = info['technical_condition_of_the_water_supply_system']
+      this.loading = false
+    } catch (e) {
+      console.log(e)
     }
   }
 }

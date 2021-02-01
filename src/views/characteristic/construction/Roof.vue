@@ -25,16 +25,16 @@
           <div class="select-type-field">
             <label>Тип кровли</label>
             <div class="select">
-              <q-select outlined v-model="type" :options="roof_types"/>
+              <q-select outlined v-model="roof_type" :options="roof_types"/>
             </div>
           </div>
           <div class="select-material-field">
             <label>Материал кровли</label>
             <div class="select">
-              <q-select outlined v-model="material" :options="roof_materials"/>
+              <q-select outlined v-model="roof_material" :options="roof_materials"/>
             </div>
           </div>
-          <div v-if="material === roof_materials[6]">
+          <div v-if="roof_material === roof_materials[6]">
             <label>Введите материал кровли</label>
             <q-input outlined v-model="other_material"/>
           </div>
@@ -44,7 +44,7 @@
               <q-list>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="status" val="Исправное состояние"/>
+                    <q-radio v-model="roof_status" val="Исправное состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Исправное состояние</q-item-label>
@@ -56,7 +56,7 @@
                 </q-item>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="status" val="Работоспособное состояние"/>
+                    <q-radio v-model="roof_status" val="Работоспособное состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Работоспособное состояние</q-item-label>
@@ -71,7 +71,7 @@
                 </q-item>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="status" val="Ограниченно работоспособное состояние"/>
+                    <q-radio v-model="roof_status" val="Ограниченно работоспособное состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Ограниченно работоспособное состояние</q-item-label>
@@ -85,7 +85,7 @@
                 </q-item>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="status" val="Недопустимое состояние"/>
+                    <q-radio v-model="roof_status" val="Недопустимое состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Недопустимое состояние</q-item-label>
@@ -99,7 +99,7 @@
                 </q-item>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="status" val="Аварийное состояние"/>
+                    <q-radio v-model="roof_status" val="Аварийное состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Аварийное состояние</q-item-label>
@@ -135,6 +135,8 @@
 </template>
 
 <script>
+import messages from "@/utils/messages";
+
 export default {
   name: "Roof",
   data: () => ({
@@ -148,12 +150,12 @@ export default {
       'Оцинкованные металлические плоские листы (фальцевое соединение)',
       'Прочее'
     ],
-    type: null,
-    material: null,
+    roof_type: null,
+    roof_material: null,
     other_material: null,
-    status: null,
+    roof_status: null,
     act: null,
-    loading: false,
+    loading: true,
     roof_square: null,
     photo: null
   }),
@@ -165,9 +167,48 @@ export default {
       })
     },
     async save() {
-      console.log(this.status)
+      try {
+        if (this.other_material) {
+          this.roof_material = this.other_material
+        }
+        const data = {
+          roof_type: this.roof_type,
+          roof_square: this.roof_square,
+          roof_material: this.roof_material,
+          roof_status: this.roof_status,
+          id: this.$route.params['id']
+        }
+        const resp = await this.$store.dispatch('sendConstructionInfo', data)
+        if (resp['status'] === 200) {
+          this.showMessage('saveSuccess')
+        }
+      } catch (e) {
+        console.log(e)
+        this.showMessage('error')
+      }
+    },
+    showMessage(text) {
+      if (messages[text]) {
+        window.scrollTo(0,0)
+        this.$message(messages[text])
+      }
+    }
+  },
+  async mounted() {
+    const token = localStorage.getItem('token')
+    const id = this.$route.params['id']
+    try {
+      const info = await this.$store.dispatch('fetchConstruction', {token, id})
+      this.roof_material = info['roof_material']
+      this.roof_type = info['roof_type']
+      this.roof_square = info['roof_square']
+      this.roof_status = info['roof_status']
+      this.loading = false
+    } catch (e) {
+      console.log(e)
     }
   }
+
 }
 </script>
 

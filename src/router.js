@@ -390,6 +390,13 @@ let router = new Router({
                         requiresAuth: true
                     },
                     component: () => import('./views/characteristic/Sports_facility')
+                },
+                {
+                    path: 'accessible_environment',
+                    meta: {
+                        requiresAuth: true
+                    },
+                    component: () => import('./views/characteristic/Accessible_environment')
                 }
             ]
         }
