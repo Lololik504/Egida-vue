@@ -2,10 +2,10 @@
   <div class="container">
     <Loader v-if="loading"/>
     <div v-else>
-      <h4>Учереждение
+      <h4 class="center">Учереждение
         <router-link :to="`/schoolcard/${this.$route.params['school']}`"> {{ mainInfo.shortname }}</router-link>
       </h4>
-      <div class="card">
+      <div class="card" >
         <h4>Основные сведения учреждения</h4>
         <table class="main-info">
           <tbody>
@@ -32,7 +32,7 @@
           </tbody>
         </table>
         <br>
-        <button class="btn waves-effect waves-light right" @click.prevent="toUpdateInfo">
+        <button class="btn waves-effect waves-light center" @click.prevent="toUpdateInfo">
           Редактировать основные сведения
         </button>
       </div>
@@ -40,7 +40,7 @@
       <div class="card">
         <h4>Контактные данные</h4>
         <div class="director">
-          <h5>Руководство образовательного учреждения</h5>
+          <h5 class="center-align">Руководство образовательного учреждения</h5>
           <table class="main-info">
             <tbody>
             <tr class="fio">
@@ -61,7 +61,7 @@
           </table>
         </div>
         <div class="zavhoz">
-          <h5>Заместитель директора по административно-хозяйственной части / завхоз</h5>
+          <h5 class="center-align">Заместитель директора по административно-хозяйственной части / завхоз</h5>
           <table class="main-info">
             <tbody>
             <tr class="fio">
@@ -82,7 +82,7 @@
           </table>
         </div>
         <div class="updater">
-          <h5>Ответственный за заполнение данных</h5>
+          <h5 class="center-align">Ответственный за заполнение данных</h5>
           <table class="main-info">
             <tbody>
             <tr class="fio">
@@ -108,7 +108,7 @@
           <br>
         </div>
         <div class="bookkeeper">
-          <h5>Главный бухгалтер</h5>
+          <h5 class="center-align">Главный бухгалтер</h5>
           <table class="main-info">
             <tbody>
             <tr class="fio">
@@ -129,7 +129,7 @@
           </table>
         </div>
         <br>
-        <button class="btn waves-effect waves-light right" @click.prevent="toUpdateContacts">
+        <button class="btn waves-effect waves-light center" @click.prevent="toUpdateContacts">
           Редактировать контактные данные
         </button>
       </div>
@@ -156,7 +156,7 @@
           </tbody>
         </table>
         <br>
-        <button class="btn waves-effect waves-light right" @click.prevent="toUpdateRequisites">
+        <button class="btn waves-effect waves-light center" @click.prevent="toUpdateRequisites">
           Редактировать реквизиты
         </button>
       </div>
@@ -272,9 +272,13 @@ export default {
   display: flex;
 }
 
+h4 {
+  margin: 20px auto;
+}
+
+
 table {
   width: 60%;
-  /*align-self: center;*/
 }
 
 tbody {
@@ -300,8 +304,8 @@ td {
   border: 1px gray solid;
 }
 
-.right {
-  width: 400px;
+.main-info {
+  margin: 10px auto;
 }
 
 </style>

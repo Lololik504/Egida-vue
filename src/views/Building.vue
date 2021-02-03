@@ -3,7 +3,10 @@
     <Loader v-if="loading"/>
     <form v-else>
       <h4>Информация о здании
-        <router-link :to="`/buildingcard/${this.$route.params['id']}`"> {{ d.street + ', ' + d.street_number }}</router-link>
+        <router-link :to="`/buildingcard/${this.$route.params['id']}`"> {{
+            d.street + ', ' + d.street_number
+          }}
+        </router-link>
       </h4>
       <div class="q-pa-md">
         <div class="input-field-street">
@@ -141,7 +144,8 @@
                   </q-item>
                   <q-item tag="label" v-ripple>
                     <q-item-section avatar top>
-                      <q-radio :disable="disable" v-model="d.TECHNICAL_CONDITION" val="Ограниченно работоспособное состояние"/>
+                      <q-radio :disable="disable" v-model="d.TECHNICAL_CONDITION"
+                               val="Ограниченно работоспособное состояние"/>
                     </q-item-section>
                     <q-item-section>
                       <q-item-label>Ограниченно работоспособное состояние</q-item-label>
@@ -283,7 +287,8 @@
                 </q-item>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio :disable="disable" v-model="d.TECHNICAL_CONDITION" val="Ограниченно работоспособное состояние"/>
+                    <q-radio :disable="disable" v-model="d.TECHNICAL_CONDITION"
+                             val="Ограниченно работоспособное состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Ограниченно работоспособное состояние</q-item-label>
@@ -448,7 +453,8 @@
                   </q-item>
                   <q-item tag="label" v-ripple>
                     <q-item-section avatar top>
-                      <q-radio :disable="disable" v-model="d.TECHNICAL_CONDITION" val="Ограниченно работоспособное состояние"/>
+                      <q-radio :disable="disable" v-model="d.TECHNICAL_CONDITION"
+                               val="Ограниченно работоспособное состояние"/>
                     </q-item-section>
                     <q-item-section>
                       <q-item-label>Ограниченно работоспособное состояние</q-item-label>
@@ -508,8 +514,11 @@
           <button class="btn waves-effect waves-light" @click.prevent="disable = false" v-if="disable">
             Редактирование
           </button>
-          <button class="btn waves-effect waves-light" @click.prevent="updateBuild" v-else>
+          <button class="btn waves-effect waves-light" @click.prevent="updateBuild" v-if="!disable">
             Изменить
+          </button>
+          <button class="btn waves-effect waves-light" @click.prevent="disable = true" v-if="!disable">
+            Отменить
           </button>
           <button class="btn waves-effect waves-light" @click.prevent="deleteBuilding">
             Удалить здание
