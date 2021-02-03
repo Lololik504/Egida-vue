@@ -7,7 +7,7 @@
         <div class="q-pa-md">
           <div class="input-field-square">
             <label>Площадь асфальтового покрытия, кв. м.</label>
-            <q-input outlined type="number" v-model.number="asphalt_area"/>
+            <q-input outlined :disable="disable" type="number" v-model.number="data.asphalt_area"/>
           </div>
           <q-card flat bordered class="my-card">
             <label>Техническое состояние асфальтового покрытия:</label>
@@ -17,29 +17,37 @@
                     <h6 class="col">Работоспособное состояние</h6>
                     <div class="input-field-roof-square col">
                       <label>% от общего асфальтового покрытия</label>
-                      <q-input outlined type="number" v-model="asphalt_ok_percent"/>
+                      <q-input outlined :disable="disable" type="number" v-model="data.asphalt_ok_percent"/>
                     </div>
                 </q-item>
                 <q-item class="column">
                     <h6 class="col">Ограниченно работоспособное состояние</h6>
                     <div class="input-field-roof-square col">
                       <label>% от общего асфальтового покрытия</label>
-                      <q-input outlined type="number" v-model="asphalt_warning_percent"/>
+                      <q-input outlined :disable="disable" type="number" v-model="data.asphalt_warning_percent"/>
                     </div>
                 </q-item><q-item class="column">
                     <h6 class="col">Ограниченно работоспособное состояние</h6>
                     <div class="input-field-roof-square col">
                       <label>% от общего асфальтового покрытия</label>
-                      <q-input outlined type="number" v-model="asphalt_emergency_percent"/>
+                      <q-input outlined :disable="disable" type="number" v-model="data.asphalt_emergency_percent"/>
                     </div>
                 </q-item>
               </q-list>
             </div>
           </q-card>
           <br/>
-          <button class="btn waves-effect waves-light" type="submit">
-            Сохранить
+          <button class="btn waves-effect waves" @click.prevent="disable = false" v-if="disable">
+            Редактирование
           </button>
+          <div class="q-gutter-sm" v-else>
+            <button class="btn waves-effect waves-light" type="submit">
+              Сохранить
+            </button>
+            <button class="btn waves-effect waves" @click.prevent="disable = true">
+              Отменить
+            </button>
+          </div>
         </div>
       </form>
     </div>
@@ -53,10 +61,14 @@ export default {
   name: "Asphalt",
   data: () => ({
     loading: true,
-    asphalt_area: null,
-    asphalt_ok_percent: null,
-    asphalt_warning_percent: null,
-    asphalt_emergency_percent: null,
+    disable: true,
+    data: {
+      id: null,
+      asphalt_area: null,
+      asphalt_ok_percent: null,
+      asphalt_warning_percent: null,
+      asphalt_emergency_percent: null
+    }
   }),
   methods: {
     onRejected(rejectedEntries) {
@@ -67,16 +79,10 @@ export default {
     },
     async save() {
       try {
-        const data = {
-          asphalt_area: this.asphalt_area,
-          asphalt_ok_percent: this.asphalt_ok_percent,
-          asphalt_warning_percent: this.asphalt_warning_percent,
-          asphalt_emergency_percent: this.asphalt_emergency_percent,
-          id: this.$route.params['id']
-        }
-        const resp = await this.$store.dispatch('sendLandImprovementInfo', data)
+        const resp = await this.$store.dispatch('sendLandImprovementInfo', this.data)
         if (resp['status'] === 200) {
           this.showMessage('saveSuccess')
+          this.disable = true
         }
       } catch (e) {
         console.log(e)
@@ -95,10 +101,8 @@ export default {
     const id = this.$route.params['id']
     try {
       const info = await this.$store.dispatch('fetchLandImprovement', {token, id})
-      this.asphalt_emergency_percent = info['asphalt_emergency_percent']
-      this.asphalt_warning_percent = info['asphalt_warning_percent']
-      this.asphalt_ok_percent = info['asphalt_ok_percent']
-      this.asphalt_area = info['asphalt_area']
+      Object.assign(this.data, info)
+      this.data['id'] = id
       this.loading = false
     } catch (e) {
       console.log(e)

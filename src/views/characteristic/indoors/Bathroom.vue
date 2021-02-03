@@ -9,63 +9,31 @@
         <div class="q-pa-md">
           <div class="input-field-roof-square">
             <label>Количество санузелов</label>
-            <q-input outlined type="number" v-model="bathroom_total_count"/>
+            <q-input outlined :disable="disable" type="number" v-model="data.bathroom_total_count"/>
           </div>
           <q-card flat bordered class="my-card">
             <label>Техническое состояние санузелов:</label>
-            <div class="q-pa-md">
+            <div class="q-pa-sm">
               <q-list>
-                <q-item tag="label" v-ripple>
-                  <q-item-section avatar top>
-                    <q-radio v-model="bathroom_technical_condition" val="Работоспособное состояние"/>
-                  </q-item-section>
-                  <q-item-section>
-                    <q-item-label>Работоспособное состояние</q-item-label>
-                    <q-item-label caption>категория технического состояния здания, при которой некоторые из численно
-                      оцениваемых контролируемых параметров не отвечают требованиям проекта, норм и стандартов, но
-                      имеющиеся нарушения требований, например, по деформативности, а в железобетоне и по
-                      трещиностойкости, в данных конкретных условиях эксплуатации не приводят к нарушению
-                      работоспособности, и несущая способность конструкций, с учетом влияния имеющихся дефектов и
-                      повреждений, обеспечивается.
-                    </q-item-label>
-                  </q-item-section>
-                </q-item>
-                <q-item tag="label" v-ripple>
-                  <q-item-section avatar top>
-                    <q-radio v-model="bathroom_technical_condition" val="Ограниченно работоспособное состояние"/>
-                  </q-item-section>
-                  <q-item-section>
-                    <q-item-label>Ограниченно работоспособное состояние</q-item-label>
-                    <q-item-label caption>категория технического состояния здания или его строительных конструкций,
-                      при которой имеются дефекты и повреждения, приведшие к некоторому снижению несущей
-                      способности,
-                      но отсутствует опасность внезапного разрушения и функционирование конструкции возможно при
-                      контроле ее состояния, продолжительности и условий эксплуатации.
-                    </q-item-label>
-                  </q-item-section>
-                </q-item>
-                <q-item v-if="bathroom_technical_condition === 'Ограниченно работоспособное состояние'">
-                  <div class="input-field-roof-square">
-                    <label>Количество</label>
-                    <q-input outlined type="number" v-model="bathroom_count_of_technical_condition_field"/>
+                <q-item class="column">
+                  <h6 class="col">Работоспособное состояние</h6>
+                  <div class="input-field-roof-square col">
+                    <label>Количество санузелов</label>
+                    <q-input outlined type="number" :disable="disable" v-model="data.bathroom_ok_count"/>
                   </div>
                 </q-item>
-                <q-item tag="label" v-ripple>
-                  <q-item-section avatar top>
-                    <q-radio v-model="bathroom_technical_condition" val="Аварийное состояние"/>
-                  </q-item-section>
-                  <q-item-section>
-                    <q-item-label>Аварийное состояние</q-item-label>
-                    <q-item-label caption>категория технического состояния строительной конструкции или здания и
-                      сооружения в целом, характеризующаяся повреждениями и деформациями, свидетельствующими об
-                      исчерпании несущей способности и опасности обрушения.
-                    </q-item-label>
-                  </q-item-section>
+                <q-item class="column">
+                  <h6 class="col">Ограниченно работоспособное состояние</h6>
+                  <div class="input-field-roof-square col">
+                    <label>Количество санузелов</label>
+                    <q-input outlined type="number" :disable="disable" v-model="data.bathroom_warning_count"/>
+                  </div>
                 </q-item>
-                <q-item v-if="bathroom_technical_condition === 'Аварийное состояние'">
-                  <div class="input-field-roof-square">
-                    <label>Количество</label>
-                    <q-input outlined type="number" v-model="bathroom_count_of_technical_condition_field"/>
+                <q-item class="column">
+                  <h6 class="col">Ограниченно работоспособное состояние</h6>
+                  <div class="input-field-roof-square col">
+                    <label>Количество санузелов</label>
+                    <q-input outlined type="number" :disable="disable" v-model="data.bathroom_emergency_count"/>
                   </div>
                 </q-item>
               </q-list>
@@ -75,6 +43,7 @@
               <q-file
                   v-model="act"
                   outlined
+                  :disable="disable"
                   hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"
                   multiple
                   max-total-size="25165824"
@@ -90,29 +59,40 @@
               <q-select outlined
                         emit-value
                         map-options
-                        v-model="bathroom_exhaust_ventilation"
+                        :disable="disable"
+                        v-model="data.bathroom_exhaust_ventilation"
                         :options="[{label: 'Есть', value: true}, {label: 'Нет', value: false}]"/>
             </div>
           </div>
-          <div class="select-type-field" v-if="bathroom_exhaust_ventilation === 'Есть'">
+          <div class="select-type-field" v-if="data.bathroom_exhaust_ventilation === 'Есть'">
             <label>Техническое состояние вытяжной вентиляции</label>
             <div class="select">
               <q-select outlined
-                        v-model="bathroom_exhaust_ventilation_is_workable"
+                        v-model="data.bathroom_exhaust_ventilation_is_workable"
                         emit-value
                         map-options
+                        :disable="disable"
                         :options="[{label: 'Работоспособное', value: true}, {label: 'Неисправное', value: false}]"/>
             </div>
           </div>
           <div class="select-type-field">
             <label>Тип вентиляции</label>
             <div class="select">
-              <q-select outlined v-model="bathroom_ventilation_type" :options="['Естественная', 'С механическим побуждением']"/>
+              <q-select outlined :disable="disable" v-model="data.bathroom_ventilation_type"
+                        :options="['Естественная', 'С механическим побуждением']"/>
             </div>
           </div>
-          <button class="btn waves-effect waves-light" type="submit">
-            Сохранить
+          <button class="btn waves-effect waves" @click.prevent="disable = false" v-if="disable">
+            Редактирование
           </button>
+          <div class="q-gutter-sm" v-else>
+            <button class="btn waves-effect waves-light" type="submit">
+              Сохранить
+            </button>
+            <button class="btn waves-effect waves" @click.prevent="disable = true">
+              Отменить
+            </button>
+          </div>
         </div>
       </form>
     </div>
@@ -126,12 +106,18 @@ export default {
   name: "Bathroom",
   data: () => ({
     act: null,
-    bathroom_technical_condition: null,
-    bathroom_total_count: null,
-    bathroom_count_of_technical_condition_field: null,
-    bathroom_exhaust_ventilation: null,
-    bathroom_exhaust_ventilation_is_workable: null,
-    bathroom_ventilation_type: null,
+    disable: true,
+    data: {
+      id: null,
+      bathroom_technical_condition: null,
+      bathroom_total_count: null,
+      bathroom_ok_count: null,
+      bathroom_warning_count: null,
+      bathroom_emergency_count: null,
+      bathroom_exhaust_ventilation: null,
+      bathroom_exhaust_ventilation_is_workable: null,
+      bathroom_ventilation_type: null,
+    },
     loading: true,
   }),
   methods: {
@@ -143,18 +129,10 @@ export default {
     },
     async save() {
       try {
-        const data = {
-          bathroom_technical_condition: this.bathroom_technical_condition,
-          bathroom_total_count: this.bathroom_total_count,
-          bathroom_count_of_technical_condition_field: this.bathroom_count_of_technical_condition_field,
-          bathroom_exhaust_ventilation: this.bathroom_exhaust_ventilation,
-          bathroom_exhaust_ventilation_is_workable: this.bathroom_exhaust_ventilation_is_workable,
-          bathroom_ventilation_type: this.bathroom_ventilation_type,
-          id: this.$route.params['id']
-        }
-        const resp = await this.$store.dispatch('sendIndoorInfo', data)
+        const resp = await this.$store.dispatch('sendIndoorInfo', this.data)
         if (resp['status'] === 200) {
           this.showMessage('saveSuccess')
+          this.disable = true
         }
       } catch (e) {
         console.log(e)
@@ -173,12 +151,8 @@ export default {
     const id = this.$route.params['id']
     try {
       const info = await this.$store.dispatch('fetchIndoors', {token, id})
-      this.bathroom_technical_condition = info['bathroom_technical_condition']
-      this.bathroom_total_count = info['bathroom_total_count']
-      this.bathroom_count_of_technical_condition_field = info['bathroom_count_of_technical_condition_field']
-      this.bathroom_exhaust_ventilation = info['bathroom_exhaust_ventilation']
-      this.bathroom_exhaust_ventilation_is_workable = info['bathroom_exhaust_ventilation_is_workable']
-      this.bathroom_ventilation_type = info['bathroom_ventilation_type']
+      Object.assign(this.data, info)
+      this.data['id'] = id
       this.loading = false
     } catch (e) {
       console.log(e)

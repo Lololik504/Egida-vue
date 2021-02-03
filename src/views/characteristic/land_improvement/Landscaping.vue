@@ -8,17 +8,26 @@
           <div class="input-field-square">
             <label>Площадь зеленых насаждений, кв. м.</label>
             <q-input outlined
+                     :disable="disable"
                      type="number"
                      hint="подсказка «Зелёные насажде́ния — совокупность древесных, кустарниковых и травянистых растений на определённой территории»"
                      v-model.number="green_area_square"/>
           </div>
           <div class="input-field-window-square">
             <label>Количество аварийных деревьев, согласно порубочного талона, шт</label>
-            <q-input outlined type="number" v-model.number="emergency_trees_count"/>
+            <q-input outlined type="number" :disable="disable" v-model.number="emergency_trees_count"/>
           </div>
-          <button class="btn waves-effect waves-light" type="submit">
-            Сохранить
+          <button class="btn waves-effect waves" @click.prevent="disable = false" v-if="disable">
+            Редактирование
           </button>
+          <div class="q-gutter-sm" v-else>
+            <button class="btn waves-effect waves-light" type="submit">
+              Сохранить
+            </button>
+            <button class="btn waves-effect waves" @click.prevent="disable = true">
+              Отменить
+            </button>
+          </div>
         </div>
       </form>
     </div>
@@ -34,6 +43,7 @@ export default {
   name: "Landscaping",
   data: () => ({
     loading: true,
+    disable: true,
     green_area_square: null,
     emergency_trees_count: null
   }),
@@ -54,6 +64,7 @@ export default {
         const resp = await this.$store.dispatch('sendLandImprovementInfo', data)
         if (resp['status'] === 200) {
           this.showMessage('saveSuccess')
+          this.disable = true
         }
       } catch (e) {
         console.log(e)

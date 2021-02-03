@@ -7,12 +7,13 @@
         <div class="q-pa-md">
           <div class="input-field-year">
             <label>Год установки системы видеонаблюдения</label>
-            <q-input outlined v-model.number="CCTV_installation_year"
+            <q-input outlined v-model.number="data.CCTV_installation_year"
                      placeholder="гггг"
                      type="tel"
                      hint="в формате гггг(начиная от 1900 г, не ранее)"
                      mask="####"
                      ref="year"
+                     :disable="disable"
                      unmasked-value
                      :rules="[val => val > 1899 && val <= new Date().getFullYear() || 'начиная от 1900 г, не ранее, до текущего']"
             />
@@ -20,14 +21,15 @@
           <div class="select-type-field">
             <label>Вид системы видеонаблюдения</label>
             <div class="select">
-              <q-select outlined v-model="CCTV_type" :options="['Аналоговое', 'Цифровое']"/>
+              <q-select outlined v-model="data.CCTV_type" :disable="disable" :options="['Аналоговое', 'Цифровое']"/>
             </div>
           </div>
           <div class="select-type-field">
             <label>Соответствует техническим требованиям программы «Безопасный город»</label>
             <div class="select">
               <q-select outlined
-                        v-model="CCTV_complies_safe_city_program"
+                        v-model="data.CCTV_complies_safe_city_program"
+                        :disable="disable"
                         emit-value
                         map-options
                         :options="[{label: 'Да', value: true}, {label: 'Нет', value: false}]"/>
@@ -35,19 +37,20 @@
           </div>
           <div class="input-field-window-square">
             <label>Количество камер внутри помещения</label>
-            <q-input outlined type="number" v-model.number="indoor_cameras_count"/>
+            <q-input outlined type="number" :disable="disable" v-model.number="data.indoor_cameras_count"/>
           </div>
           <div class="input-field-window-square">
             <label>Количество наружных камер</label>
-            <q-input outlined type="number" v-model.number="outdoor_cameras_count"/>
+            <q-input outlined type="number" :disable="disable" v-model.number="data.outdoor_cameras_count"/>
           </div>
           <div class="select-type-field">
             <label>Наличие проекта на систему видеонаблюдения</label>
             <div class="select">
               <q-select outlined
-                        v-model="CCTV_project"
+                        v-model="data.CCTV_project"
                         emit-value
                         map-options
+                        :disable="disable"
                         :options="[{label: 'Есть', value: true}, {label: 'Нет', value: false}]"/>
             </div>
           </div>
@@ -57,7 +60,7 @@
               <q-list>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="CCTV_is_workable" val="true"/>
+                    <q-radio v-model="data.CCTV_is_workable" :disable="disable" val="true"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Работоспособное состояние</q-item-label>
@@ -72,7 +75,7 @@
                 </q-item>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="CCTV_is_workable" val="false"/>
+                    <q-radio v-model="data.CCTV_is_workable" :disable="disable" val="false"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Аварийное состояние</q-item-label>
@@ -84,20 +87,26 @@
                 </q-item>
               </q-list>
             </div>
-            <div class="input-field-window-square" v-if="CCTV_is_workable !== null">
+            <div class="input-field-window-square" v-if="data.CCTV_is_workable !== null">
               <label>Количество камер</label>
-              <q-input outlined type="number" v-model.number="unworkable_cameras_count"/>
+              <q-input outlined type="number" :disable="disable" v-model.number="data.unworkable_cameras_count"/>
             </div>
           </q-card>
           <br/>
-          <button class="btn waves-effect waves-light" type="submit">
-            Сохранить
+          <button class="btn waves-effect waves" @click.prevent="disable = false" v-if="disable">
+            Редактирование
           </button>
+          <div class="q-gutter-sm" v-else>
+            <button class="btn waves-effect waves-light" type="submit">
+              Сохранить
+            </button>
+            <button class="btn waves-effect waves" @click.prevent="disable = true">
+              Отменить
+            </button>
+          </div>
         </div>
       </form>
     </div>
-
-
   </div>
 </template>
 
@@ -108,14 +117,18 @@ export default {
   name: "CCTV",
   data: () => ({
     loading: true,
-    CCTV_installation_year: null,
-    CCTV_type: null,
-    CCTV_is_workable: null,
-    CCTV_complies_safe_city_program: null,
-    CCTV_project: null,
-    indoor_cameras_count: null,
-    outdoor_cameras_count: null,
-    unworkable_cameras_count: null
+    disable: true,
+    data: {
+      id: null,
+      CCTV_installation_year: null,
+      CCTV_type: null,
+      CCTV_is_workable: null,
+      CCTV_complies_safe_city_program: null,
+      CCTV_project: null,
+      indoor_cameras_count: null,
+      outdoor_cameras_count: null,
+      unworkable_cameras_count: null
+    }
   }),
   methods: {
     onRejected(rejectedEntries) {
@@ -126,19 +139,7 @@ export default {
     },
     async save() {
       try {
-
-        const data = {
-          CCTV_installation_year: this.CCTV_installation_year,
-          CCTV_type: this.CCTV_type,
-          CCTV_is_workable: this.CCTV_is_workable === 'true' ? true : this.CCTV_is_workable === 'false' ? false : null,
-          CCTV_complies_safe_city_program: this.CCTV_complies_safe_city_program,
-          CCTV_project: this.CCTV_project,
-          indoor_cameras_count: this.indoor_cameras_count,
-          outdoor_cameras_count: this.outdoor_cameras_count,
-          unworkable_cameras_count: this.unworkable_cameras_count,
-          id: this.$route.params['id']
-        }
-        const resp = await this.$store.dispatch('sendSecurityInfo', data)
+        const resp = await this.$store.dispatch('sendSecurityInfo', this.data)
         if (resp['status'] === 200) {
           this.showMessage('saveSuccess')
         }
@@ -159,14 +160,8 @@ export default {
     const id = this.$route.params['id']
     try {
       const info = await this.$store.dispatch('fetchSecurity', {token, id})
-      this.CCTV_installation_year = info['CCTV_installation_year']
-      this.CCTV_type = info['CCTV_type']
-      this.CCTV_is_workable = info['CCTV_is_workable'].toString()
-      this.CCTV_complies_safe_city_program = info['CCTV_complies_safe_city_program']
-      this.CCTV_project = info['CCTV_project']
-      this.indoor_cameras_count = info['indoor_cameras_count']
-      this.outdoor_cameras_count = info['outdoor_cameras_count']
-      this.unworkable_cameras_count = info['unworkable_cameras_count']
+      Object.assign(this.data, info)
+      this.data['id'] = id
       this.loading = false
     } catch (e) {
       console.log(e)

@@ -9,59 +9,27 @@
         <div class="q-pa-md">
           <q-card flat bordered class="my-card">
             <label>Техническое состояние коридоров:</label>
-            <div class="q-pa-md">
+            <div class="q-pa-sm">
               <q-list>
-                <q-item tag="label" v-ripple>
-                  <q-item-section avatar top>
-                    <q-radio v-model="corridors_technical_condition" val="Работоспособное состояние"/>
-                  </q-item-section>
-                  <q-item-section>
-                    <q-item-label>Работоспособное состояние</q-item-label>
-                    <q-item-label caption>категория технического состояния здания, при которой некоторые из численно
-                      оцениваемых контролируемых параметров не отвечают требованиям проекта, норм и стандартов, но
-                      имеющиеся нарушения требований, например, по деформативности, а в железобетоне и по
-                      трещиностойкости, в данных конкретных условиях эксплуатации не приводят к нарушению
-                      работоспособности, и несущая способность конструкций, с учетом влияния имеющихся дефектов и
-                      повреждений, обеспечивается.
-                    </q-item-label>
-                  </q-item-section>
-                </q-item>
-                <q-item tag="label" v-ripple>
-                  <q-item-section avatar top>
-                    <q-radio v-model="corridors_technical_condition" val="Ограниченно работоспособное состояние"/>
-                  </q-item-section>
-                  <q-item-section>
-                    <q-item-label>Ограниченно работоспособное состояние</q-item-label>
-                    <q-item-label caption>категория технического состояния здания или его строительных конструкций,
-                      при которой имеются дефекты и повреждения, приведшие к некоторому снижению несущей
-                      способности,
-                      но отсутствует опасность внезапного разрушения и функционирование конструкции возможно при
-                      контроле ее состояния, продолжительности и условий эксплуатации.
-                    </q-item-label>
-                  </q-item-section>
-                </q-item>
-                <q-item v-if="corridors_technical_condition === 'Ограниченно работоспособное состояние'" >
-                  <div class="input-field-roof-square">
-                    <label>Процент</label>
-                    <q-input outlined type="number" v-model="corridors_percent_of_technical_condition_field"/>
+                <q-item class="column">
+                  <h6 class="col">Работоспособное состояние</h6>
+                  <div class="input-field-roof-square col">
+                    <label>Количество коридоров</label>
+                    <q-input outlined type="number" :disable="disable" v-model="data.corridors_ok_percent"/>
                   </div>
                 </q-item>
-                <q-item tag="label" v-ripple>
-                  <q-item-section avatar top>
-                    <q-radio v-model="corridors_technical_condition" val="Аварийное состояние"/>
-                  </q-item-section>
-                  <q-item-section>
-                    <q-item-label>Аварийное состояние</q-item-label>
-                    <q-item-label caption>категория технического состояния строительной конструкции или здания и
-                      сооружения в целом, характеризующаяся повреждениями и деформациями, свидетельствующими об
-                      исчерпании несущей способности и опасности обрушения.
-                    </q-item-label>
-                  </q-item-section>
+                <q-item class="column">
+                  <h6 class="col">Ограниченно работоспособное состояние</h6>
+                  <div class="input-field-roof-square col">
+                    <label>Количество коридоров</label>
+                    <q-input outlined type="number" :disable="disable" v-model="data.corridors_warning_percent"/>
+                  </div>
                 </q-item>
-                <q-item v-if="corridors_technical_condition === 'Аварийное состояние'" >
-                  <div class="input-field-roof-square">
-                    <label>Процент</label>
-                    <q-input outlined type="number" v-model="corridors_percent_of_technical_condition_field"/>
+                <q-item class="column">
+                  <h6 class="col">Ограниченно работоспособное состояние</h6>
+                  <div class="input-field-roof-square col">
+                    <label>Количество коридоров</label>
+                    <q-input outlined type="number" :disable="disable" v-model="data.corridors_emergency_percent"/>
                   </div>
                 </q-item>
               </q-list>
@@ -71,6 +39,7 @@
               <q-file
                   v-model="act"
                   outlined
+                  :disable="disable"
                   hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"
                   multiple
                   max-total-size="25165824"
@@ -80,9 +49,17 @@
             </div>
           </q-card>
           <br/>
-          <button class="btn waves-effect waves-light" type="submit">
-            Сохранить
+          <button class="btn waves-effect waves" @click.prevent="disable = false" v-if="disable">
+            Редактирование
           </button>
+          <div class="q-gutter-sm" v-else>
+            <button class="btn waves-effect waves-light" type="submit">
+              Сохранить
+            </button>
+            <button class="btn waves-effect waves" @click.prevent="disable = true">
+              Отменить
+            </button>
+          </div>
         </div>
       </form>
     </div>
@@ -96,8 +73,13 @@ export default {
   name: "Corridors",
   data: () => ({
     act: null,
-    corridors_technical_condition: null,
-    corridors_percent_of_technical_condition_field: null,
+    disable: true,
+    data: {
+      id: null,
+      corridors_ok_percent: null,
+      corridors_warning_percent: null,
+      corridors_emergency_percent: null,
+    },
     loading: true,
   }),
   methods: {
@@ -109,14 +91,10 @@ export default {
     },
     async save() {
       try {
-        const data = {
-          corridors_technical_condition: this.corridors_technical_condition,
-          corridors_percent_of_technical_condition_field: this.corridors_percent_of_technical_condition_field,
-          id: this.$route.params['id']
-        }
-        const resp = await this.$store.dispatch('sendIndoorInfo', data)
+        const resp = await this.$store.dispatch('sendIndoorInfo', this.data)
         if (resp['status'] === 200) {
           this.showMessage('saveSuccess')
+          this.disable = true
         }
       } catch (e) {
         console.log(e)
@@ -125,7 +103,7 @@ export default {
     },
     showMessage(text) {
       if (messages[text]) {
-        window.scrollTo(0,0)
+        window.scrollTo(0, 0)
         this.$message(messages[text])
       }
     }
@@ -135,8 +113,8 @@ export default {
     const id = this.$route.params['id']
     try {
       const info = await this.$store.dispatch('fetchIndoors', {token, id})
-      this.corridors_technical_condition = info['corridors_technical_condition']
-      this.corridors_percent_of_technical_condition_field = info['corridors_percent_of_technical_condition_field']
+      Object.assign(this.data, info)
+      this.data['id'] = id
       this.loading = false
     } catch (e) {
       console.log(e)

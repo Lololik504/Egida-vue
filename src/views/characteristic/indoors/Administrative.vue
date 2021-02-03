@@ -9,63 +9,31 @@
         <div class="q-pa-md">
           <div class="input-field-roof-square">
             <label>Общее количество</label>
-            <q-input outlined type="number" v-model="admin_room_total_count"/>
+            <q-input outlined :disable="disable" type="number" v-model="data.admin_room_total_count"/>
           </div>
           <q-card flat bordered class="my-card">
             <label>Техническое состояние административных кабинетов:</label>
-            <div class="q-pa-md">
+            <div class="q-pa-sm">
               <q-list>
-                <q-item tag="label" v-ripple>
-                  <q-item-section avatar top>
-                    <q-radio v-model="admin_room_technical_condition" val="Работоспособное состояние"/>
-                  </q-item-section>
-                  <q-item-section>
-                    <q-item-label>Работоспособное состояние</q-item-label>
-                    <q-item-label caption>категория технического состояния здания, при которой некоторые из численно
-                      оцениваемых контролируемых параметров не отвечают требованиям проекта, норм и стандартов, но
-                      имеющиеся нарушения требований, например, по деформативности, а в железобетоне и по
-                      трещиностойкости, в данных конкретных условиях эксплуатации не приводят к нарушению
-                      работоспособности, и несущая способность конструкций, с учетом влияния имеющихся дефектов и
-                      повреждений, обеспечивается.
-                    </q-item-label>
-                  </q-item-section>
-                </q-item>
-                <q-item tag="label" v-ripple>
-                  <q-item-section avatar top>
-                    <q-radio v-model="admin_room_technical_condition" val="Ограниченно работоспособное состояние"/>
-                  </q-item-section>
-                  <q-item-section>
-                    <q-item-label>Ограниченно работоспособное состояние</q-item-label>
-                    <q-item-label caption>категория технического состояния здания или его строительных конструкций,
-                      при которой имеются дефекты и повреждения, приведшие к некоторому снижению несущей
-                      способности,
-                      но отсутствует опасность внезапного разрушения и функционирование конструкции возможно при
-                      контроле ее состояния, продолжительности и условий эксплуатации.
-                    </q-item-label>
-                  </q-item-section>
-                </q-item>
-                <q-item v-if="admin_room_technical_condition === 'Ограниченно работоспособное состояние'" >
-                  <div class="input-field-roof-square">
-                    <label>Количество помещений</label>
-                    <q-input outlined type="number" v-model="admin_room_count_of_technical_condition_field"/>
+                <q-item class="column">
+                  <h6 class="col">Работоспособное состояние</h6>
+                  <div class="input-field-roof-square col">
+                    <label>Количество коридоров</label>
+                    <q-input outlined type="number" :disable="disable" v-model="data.admin_room_ok_status_count"/>
                   </div>
                 </q-item>
-                <q-item tag="label" v-ripple>
-                  <q-item-section avatar top>
-                    <q-radio v-model="admin_room_technical_condition" val="Аварийное состояние"/>
-                  </q-item-section>
-                  <q-item-section>
-                    <q-item-label>Аварийное состояние</q-item-label>
-                    <q-item-label caption>категория технического состояния строительной конструкции или здания и
-                      сооружения в целом, характеризующаяся повреждениями и деформациями, свидетельствующими об
-                      исчерпании несущей способности и опасности обрушения.
-                    </q-item-label>
-                  </q-item-section>
+                <q-item class="column">
+                  <h6 class="col">Ограниченно работоспособное состояние</h6>
+                  <div class="input-field-roof-square col">
+                    <label>Количество коридоров</label>
+                    <q-input outlined type="number" :disable="disable" v-model="data.admin_room_warning_status_count"/>
+                  </div>
                 </q-item>
-                <q-item v-if="admin_room_technical_condition === 'Аварийное состояние'" >
-                  <div class="input-field-roof-square">
-                    <label>Количество помещений</label>
-                    <q-input outlined type="number" v-model="admin_room_count_of_technical_condition_field"/>
+                <q-item class="column">
+                  <h6 class="col">Ограниченно работоспособное состояние</h6>
+                  <div class="input-field-roof-square col">
+                    <label>Количество коридоров</label>
+                    <q-input outlined type="number" :disable="disable" v-model="data.admin_room_emergency_status_count"/>
                   </div>
                 </q-item>
               </q-list>
@@ -75,6 +43,7 @@
               <q-file
                   v-model="act"
                   outlined
+                  :disable="disable"
                   hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"
                   multiple
                   max-total-size="25165824"
@@ -84,9 +53,17 @@
             </div>
           </q-card>
           <br/>
-          <button class="btn waves-effect waves-light" type="submit">
-            Сохранить
+          <button class="btn waves-effect waves" @click.prevent="disable = false" v-if="disable">
+            Редактирование
           </button>
+          <div class="q-gutter-sm" v-else>
+            <button class="btn waves-effect waves-light" type="submit">
+              Сохранить
+            </button>
+            <button class="btn waves-effect waves" @click.prevent="disable = true">
+              Отменить
+            </button>
+          </div>
         </div>
       </form>
     </div>
@@ -100,9 +77,14 @@ export default {
   name: "Administrative",
   data: () => ({
     act: null,
-    admin_room_technical_condition: null,
-    admin_room_total_count: null,
-    admin_room_count_of_technical_condition_field: null,
+    disable: true,
+    data: {
+      id: null,
+      admin_room_ok_status_count: null,
+      admin_room_total_count: null,
+      admin_room_emergency_status_count: null,
+      admin_room_warning_status_count: null,
+    },
     loading: true,
   }),
   methods: {
@@ -114,15 +96,10 @@ export default {
     },
     async save() {
       try {
-        const data = {
-          admin_room_technical_condition: this.admin_room_technical_condition,
-          admin_room_total_count: this.admin_room_total_count,
-          admin_room_count_of_technical_condition_field: this.admin_room_count_of_technical_condition_field,
-          id: this.$route.params['id']
-        }
-        const resp = await this.$store.dispatch('sendIndoorInfo', data)
+        const resp = await this.$store.dispatch('sendIndoorInfo', this.data)
         if (resp['status'] === 200) {
           this.showMessage('saveSuccess')
+          this.disable = true
         }
       } catch (e) {
         console.log(e)
@@ -141,9 +118,8 @@ export default {
     const id = this.$route.params['id']
     try {
       const info = await this.$store.dispatch('fetchIndoors', {token, id})
-      this.admin_room_technical_condition = info['admin_room_technical_condition']
-      this.admin_room_total_count = info['admin_room_total_count']
-      this.admin_room_count_of_technical_condition_field = info['admin_room_count_of_technical_condition_field']
+      Object.assign(this.data, info)
+      this.data['id'] = id
       this.loading = false
     } catch (e) {
       console.log(e)

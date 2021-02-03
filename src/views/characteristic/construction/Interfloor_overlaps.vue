@@ -8,12 +8,13 @@
           <div class="select-type-field">
             <label>Материал межэтажных перекрытий</label>
             <div class="select">
-              <q-select outlined v-model="inter_floor_overlapping_material" :options="overlap_materials"/>
+              <q-select outlined :disable="disable" v-model="data.inter_floor_overlapping_material"
+                        :options="overlap_materials"/>
             </div>
           </div>
-          <div v-if="inter_floor_overlapping_material === overlap_materials[2]">
+          <div v-if="data.inter_floor_overlapping_material === overlap_materials[2]">
             <label>Введите материал межэтажных перекрытий</label>
-            <q-input outlined v-model="other_material"/>
+            <q-input outlined :disable="disable" v-model="other_material"/>
           </div>
           <q-card flat bordered class="my-card">
             <label>Общее техническое состояние межэтажных перекрытий:</label>
@@ -21,7 +22,8 @@
               <q-list>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="inter_floor_overlapping_status" val="Исправное состояние"/>
+                    <q-radio :disable="disable" v-model="data.inter_floor_overlapping_status"
+                             val="Исправное состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Исправное состояние</q-item-label>
@@ -33,7 +35,8 @@
                 </q-item>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="inter_floor_overlapping_status" val="Работоспособное состояние"/>
+                    <q-radio :disable="disable" v-model="data.inter_floor_overlapping_status"
+                             val="Работоспособное состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Работоспособное состояние</q-item-label>
@@ -48,7 +51,8 @@
                 </q-item>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="inter_floor_overlapping_status" val="Ограниченно работоспособное состояние"/>
+                    <q-radio :disable="disable" v-model="data.inter_floor_overlapping_status"
+                             val="Ограниченно работоспособное состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Ограниченно работоспособное состояние</q-item-label>
@@ -62,7 +66,8 @@
                 </q-item>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="inter_floor_overlapping_status" val="Недопустимое состояние"/>
+                    <q-radio :disable="disable" v-model="data.inter_floor_overlapping_status"
+                             val="Недопустимое состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Недопустимое состояние</q-item-label>
@@ -76,7 +81,8 @@
                 </q-item>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="inter_floor_overlapping_status" val="Аварийное состояние"/>
+                    <q-radio :disable="disable" v-model="data.inter_floor_overlapping_status"
+                             val="Аварийное состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Аварийное состояние</q-item-label>
@@ -93,8 +99,9 @@
           <div class="input-roof-photo">
             <label>Акт обследования технического состояния (экспертной оценки специализированной организации)</label>
             <q-file
-                v-model="act"
+                v-model="data.act"
                 outlined
+                :disable="disable"
                 hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"
                 multiple
                 max-total-size="25165824"
@@ -102,9 +109,17 @@
                 @rejected="onRejected"
             />
           </div>
-          <button class="btn waves-effect waves-light" type="submit">
-            Сохранить
+          <button class="btn waves-effect waves" @click.prevent="disable = false" v-if="disable">
+            Редактирование
           </button>
+          <div class="q-gutter-sm" v-else>
+            <button class="btn waves-effect waves-light" type="submit">
+              Сохранить
+            </button>
+            <button class="btn waves-effect waves" @click.prevent="disable = true">
+              Отменить
+            </button>
+          </div>
         </div>
       </form>
     </div>
@@ -122,12 +137,16 @@ export default {
       'Деревянные',
       'Прочее'
     ],
-    inter_floor_overlapping_status: null,
-    inter_floor_overlapping_material: null,
-    other_material: null,
-    act: null,
     loading: true,
-    photo: null
+    other_material: null,
+    disable: true,
+    data: {
+      id: null,
+      inter_floor_overlapping_status: null,
+      inter_floor_overlapping_material: null,
+      act: null,
+      photo: null
+    }
   }),
   methods: {
     onRejected(rejectedEntries) {
@@ -139,16 +158,12 @@ export default {
     async save() {
       try {
         if (this.other_material) {
-          this.inter_floor_overlapping_material = this.other_material
+          this.data.inter_floor_overlapping_material = this.other_material
         }
-        const data = {
-          inter_floor_overlapping_status: this.inter_floor_overlapping_status,
-          inter_floor_overlapping_material: this.inter_floor_overlapping_material,
-          id: this.$route.params['id']
-        }
-        const resp = await this.$store.dispatch('sendConstructionInfo', data)
+        const resp = await this.$store.dispatch('sendConstructionInfo', this.data)
         if (resp['status'] === 200) {
           this.showMessage('saveSuccess')
+          this.disable = true
         }
       } catch (e) {
         console.log(e)
@@ -157,7 +172,7 @@ export default {
     },
     showMessage(text) {
       if (messages[text]) {
-        window.scrollTo(0,0)
+        window.scrollTo(0, 0)
         this.$message(messages[text])
       }
     }
@@ -167,8 +182,8 @@ export default {
     const id = this.$route.params['id']
     try {
       const info = await this.$store.dispatch('fetchConstruction', {token, id})
-      this.inter_floor_overlapping_material = info['inter_floor_overlapping_material']
-      this.inter_floor_overlapping_status = info['inter_floor_overlapping_status']
+      Object.assign(this.data, info)
+      this.data['id'] = id
       this.loading = false
     } catch (e) {
       console.log(e)

@@ -9,7 +9,8 @@
             <label>Наличие контейнерной площадки</label>
             <div class="select">
               <q-select outlined
-                        v-model="container_site"
+                        :disable="disable"
+                        v-model="data.container_site"
                         emit-value
                         map-options
                         :options="[{label: 'Есть', value: true}, {label: 'Нет', value: false}]"/>
@@ -18,21 +19,22 @@
           <div class="select-material-field">
             <label>Материал покрытия контейнерной площадки</label>
             <div class="select">
-              <q-select outlined v-model="container_site_material" :options="['Бетон', 'Асфальт', 'Иное']"/>
+              <q-select outlined :disable="disable" v-model="data.container_site_material" :options="['Бетон', 'Асфальт', 'Иное']"/>
             </div>
           </div>
-          <div v-if="container_site_material === 'Иное'">
+          <div v-if="data.container_site_material === 'Иное'">
             <label>Введите материал покрытия контейнерной площадки</label>
-            <q-input outlined v-model="other_material"/>
+            <q-input outlined :disable="disable" v-model="data.other_material"/>
           </div>
           <div class="input-field-window-percent">
             <label>Площадь контейнерной площадки, м2</label>
-            <q-input outlined type="number" v-model.number="container_site_square"/>
+            <q-input outlined :disable="disable" type="number" v-model.number="data.container_site_square"/>
           </div>
           <div class="select-type-field">
             <label>Наличие ограждения контейнерной площадки</label>
             <div class="select">
-              <q-select outlined v-model="container_site_fence"
+              <q-select outlined v-model="data.container_site_fence"
+                        :disable="disable"
                         emit-value
                         map-options
                         :options="[{label: 'Есть', value: true}, {label: 'Нет', value: false}]"/>
@@ -40,11 +42,19 @@
           </div>
           <div class="input-field-window-count">
             <label>Суммарный объем контейнеров, м3</label>
-            <q-input outlined type="number" v-model.number="total_container_volume"/>
+            <q-input outlined :disable="disable" type="number" v-model.number="data.total_container_volume"/>
           </div>
-          <button class="btn waves-effect waves-light" type="submit">
-            Сохранить
+          <button class="btn waves-effect waves" @click.prevent="disable = false" v-if="disable">
+            Редактирование
           </button>
+          <div class="q-gutter-sm" v-else>
+            <button class="btn waves-effect waves-light" type="submit">
+              Сохранить
+            </button>
+            <button class="btn waves-effect waves" @click.prevent="disable = true">
+              Отменить
+            </button>
+          </div>
         </div>
       </form>
     </div>
@@ -58,12 +68,16 @@ export default {
   name: "Waste_container",
   data: () => ({
     loading: true,
-    container_site_square: null,
-    container_site_material: null,
-    other_material: null,
-    container_site: null,
-    container_site_fence: null,
-    total_container_volume: null
+    disable: true,
+    data: {
+      id: null,
+      container_site_square: null,
+      container_site_material: null,
+      other_material: null,
+      container_site: null,
+      container_site_fence: null,
+      total_container_volume: null
+    }
   }),
   methods: {
     onRejected(rejectedEntries) {
@@ -74,20 +88,13 @@ export default {
     },
     async save() {
       try {
-        if (this.other_material) {
-          this.container_site_material = this.other_material
+        if (this.data.other_material) {
+          this.data.container_site_material = this.data.other_material
         }
-        const data = {
-          container_site_square: this.container_site_square,
-          container_site_material: this.container_site_material,
-          container_site: this.container_site,
-          container_site_fence: this.container_site_fence,
-          total_container_volume: this.total_container_volume,
-          id: this.$route.params['id']
-        }
-        const resp = await this.$store.dispatch('sendLandImprovementInfo', data)
+        const resp = await this.$store.dispatch('sendLandImprovementInfo', this.data)
         if (resp['status'] === 200) {
           this.showMessage('saveSuccess')
+          this.disable = true
         }
       } catch (e) {
         console.log(e)
@@ -106,11 +113,8 @@ export default {
     const id = this.$route.params['id']
     try {
       const info = await this.$store.dispatch('fetchLandImprovement', {token, id})
-      this.container_site_square = info['container_site_square']
-      this.container_site_material = info['container_site_material']
-      this.container_site = info['container_site']
-      this.container_site_fence = info['container_site_fence']
-      this.total_container_volume = info['total_container_volume']
+      Object.assign(this.data, info)
+      this.data['id'] = id
       this.loading = false
     } catch (e) {
       console.log(e)

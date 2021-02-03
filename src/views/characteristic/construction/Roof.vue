@@ -7,14 +7,14 @@
         <div class="q-pa-md">
           <div class="input-field-roof-square">
             <label>Площадь кровли, кв. м.</label>
-            <q-input outlined type="number" v-model.number="roof_square"/>
+            <q-input outlined :disable="disable" type="number" v-model.number="data.roof_square"/>
           </div>
           <div class="input-roof-photo">
             <label>Фото кровли</label>
             <q-file
-                v-model="photo"
+                v-model="data.photo"
                 outlined
-
+                :disable="disable"
                 hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"
                 multiple
                 max-total-size="25165824"
@@ -25,18 +25,18 @@
           <div class="select-type-field">
             <label>Тип кровли</label>
             <div class="select">
-              <q-select outlined v-model="roof_type" :options="roof_types"/>
+              <q-select outlined :disable="disable" v-model="data.roof_type" :options="roof_types"/>
             </div>
           </div>
           <div class="select-material-field">
             <label>Материал кровли</label>
             <div class="select">
-              <q-select outlined v-model="roof_material" :options="roof_materials"/>
+              <q-select outlined :disable="disable" v-model="data.roof_material" :options="roof_materials"/>
             </div>
           </div>
-          <div v-if="roof_material === roof_materials[6]">
+          <div v-if="data.roof_material === roof_materials[6]">
             <label>Введите материал кровли</label>
-            <q-input outlined v-model="other_material"/>
+            <q-input outlined :disable="disable" v-model="other_material"/>
           </div>
           <q-card flat bordered class="my-card">
             <label>Общее техническое состояние кровли:</label>
@@ -44,7 +44,7 @@
               <q-list>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="roof_status" val="Исправное состояние"/>
+                    <q-radio :disable="disable" v-model="data.roof_status" val="Исправное состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Исправное состояние</q-item-label>
@@ -56,7 +56,7 @@
                 </q-item>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="roof_status" val="Работоспособное состояние"/>
+                    <q-radio :disable="disable" v-model="data.roof_status" val="Работоспособное состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Работоспособное состояние</q-item-label>
@@ -71,7 +71,7 @@
                 </q-item>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="roof_status" val="Ограниченно работоспособное состояние"/>
+                    <q-radio :disable="disable" v-model="data.roof_status" val="Ограниченно работоспособное состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Ограниченно работоспособное состояние</q-item-label>
@@ -85,7 +85,7 @@
                 </q-item>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="roof_status" val="Недопустимое состояние"/>
+                    <q-radio :disable="disable" v-model="data.roof_status" val="Недопустимое состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Недопустимое состояние</q-item-label>
@@ -99,7 +99,7 @@
                 </q-item>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="roof_status" val="Аварийное состояние"/>
+                    <q-radio :disable="disable" v-model="data.roof_status" val="Аварийное состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Аварийное состояние</q-item-label>
@@ -116,7 +116,8 @@
           <div class="input-roof-photo">
             <label>Акт обследования технического состояния (экспертной оценки специализированной организации)</label>
             <q-file
-                v-model="act"
+                v-model="data.act"
+                :disable="disable"
                 outlined
                 hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"
                 multiple
@@ -125,9 +126,17 @@
                 @rejected="onRejected"
             />
           </div>
-          <button class="btn waves-effect waves-light" type="submit">
-            Сохранить
+          <button class="btn waves-effect waves" @click.prevent="disable = false" v-if="disable">
+            Редактирование
           </button>
+          <div class="q-gutter-sm" v-else>
+            <button class="btn waves-effect waves-light" type="submit">
+              Сохранить
+            </button>
+            <button class="btn waves-effect waves" @click.prevent="disable = true">
+              Отменить
+            </button>
+          </div>
         </div>
       </form>
     </div>
@@ -150,14 +159,18 @@ export default {
       'Оцинкованные металлические плоские листы (фальцевое соединение)',
       'Прочее'
     ],
-    roof_type: null,
-    roof_material: null,
     other_material: null,
-    roof_status: null,
-    act: null,
     loading: true,
-    roof_square: null,
-    photo: null
+    disable: true,
+    data: {
+      id: null,
+      roof_type: null,
+      roof_material: null,
+      roof_status: null,
+      act: null,
+      roof_square: null,
+      photo: null
+    }
   }),
   methods: {
     onRejected(rejectedEntries) {
@@ -169,18 +182,12 @@ export default {
     async save() {
       try {
         if (this.other_material) {
-          this.roof_material = this.other_material
+          this.data.roof_material = this.other_material
         }
-        const data = {
-          roof_type: this.roof_type,
-          roof_square: this.roof_square,
-          roof_material: this.roof_material,
-          roof_status: this.roof_status,
-          id: this.$route.params['id']
-        }
-        const resp = await this.$store.dispatch('sendConstructionInfo', data)
+        const resp = await this.$store.dispatch('sendConstructionInfo', this.data)
         if (resp['status'] === 200) {
           this.showMessage('saveSuccess')
+          this.disable = true
         }
       } catch (e) {
         console.log(e)
@@ -189,7 +196,7 @@ export default {
     },
     showMessage(text) {
       if (messages[text]) {
-        window.scrollTo(0,0)
+        window.scrollTo(0, 0)
         this.$message(messages[text])
       }
     }
@@ -199,10 +206,8 @@ export default {
     const id = this.$route.params['id']
     try {
       const info = await this.$store.dispatch('fetchConstruction', {token, id})
-      this.roof_material = info['roof_material']
-      this.roof_type = info['roof_type']
-      this.roof_square = info['roof_square']
-      this.roof_status = info['roof_status']
+      Object.assign(this.data, info)
+      this.data['id'] = id
       this.loading = false
     } catch (e) {
       console.log(e)

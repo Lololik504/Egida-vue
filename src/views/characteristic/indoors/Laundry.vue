@@ -13,7 +13,7 @@
               <q-list>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="laundry_technical_condition" val="Работоспособное состояние"/>
+                    <q-radio v-model="data.laundry_technical_condition" val="Работоспособное состояние" :disable="disable"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Работоспособное состояние</q-item-label>
@@ -28,7 +28,7 @@
                 </q-item>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="laundry_technical_condition" val="Ограниченно работоспособное состояние"/>
+                    <q-radio v-model="data.laundry_technical_condition" :disable="disable" val="Ограниченно работоспособное состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Ограниченно работоспособное состояние</q-item-label>
@@ -42,7 +42,7 @@
                 </q-item>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="laundry_technical_condition" val="Аварийное состояние"/>
+                    <q-radio v-model="data.laundry_technical_condition" :disable="disable" val="Аварийное состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Аварийное состояние</q-item-label>
@@ -59,6 +59,7 @@
               <q-file
                   v-model="act"
                   outlined
+                  :disable="disable"
                   hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"
                   multiple
                   max-total-size="25165824"
@@ -74,17 +75,19 @@
               <q-select outlined
                         emit-value
                         map-options
-                        v-model="laundry_exhaust_ventilation"
+                        :disable="disable"
+                        v-model="data.laundry_exhaust_ventilation"
                         :options="[{label: 'Есть', value: true}, {label: 'Нет', value: false}]"/>
             </div>
           </div>
-          <div class="select-type-field" v-if="laundry_exhaust_ventilation">
+          <div class="select-type-field" v-if="data.laundry_exhaust_ventilation">
             <label>Техническое состояние вытяжной вентиляции</label>
             <div class="select">
               <q-select outlined
                         emit-value
                         map-options
-                        v-model="laundry_exhaust_ventilation_is_workable"
+                        :disable="disable"
+                        v-model="data.laundry_exhaust_ventilation_is_workable"
                         :options="[{label: 'Работоспособное', value: true}, {label: 'Неисправное', value: false}]"/>
             </div>
           </div>
@@ -92,13 +95,22 @@
             <label>Тип вентиляции</label>
             <div class="select">
               <q-select outlined
-                        v-model="laundry_ventilation_type"
+                        :disable="disable"
+                        v-model="data.laundry_ventilation_type"
                         :options="['Естественная', 'С механическим побуждением']"/>
             </div>
           </div>
-          <button class="btn waves-effect waves-light" type="submit">
-            Сохранить
+          <button class="btn waves-effect waves" @click.prevent="disable = false" v-if="disable">
+            Редактирование
           </button>
+          <div class="q-gutter-sm" v-else>
+            <button class="btn waves-effect waves-light" type="submit">
+              Сохранить
+            </button>
+            <button class="btn waves-effect waves" @click.prevent="disable = true">
+              Отменить
+            </button>
+          </div>
         </div>
       </form>
     </div>
@@ -112,10 +124,14 @@ export default {
   name: "Laundry",
   data: () => ({
     act: null,
-    laundry_technical_condition: null,
-    laundry_exhaust_ventilation: null,
-    laundry_exhaust_ventilation_is_workable: null,
-    laundry_ventilation_type: null,
+    disable: true,
+    data: {
+      id: null,
+      laundry_technical_condition: null,
+      laundry_exhaust_ventilation: null,
+      laundry_exhaust_ventilation_is_workable: null,
+      laundry_ventilation_type: null
+    },
     loading: true,
   }),
   methods: {
@@ -127,16 +143,10 @@ export default {
     },
     async save() {
       try {
-        const data = {
-          laundry_technical_condition: this.laundry_technical_condition,
-          laundry_exhaust_ventilation: this.laundry_exhaust_ventilation,
-          laundry_exhaust_ventilation_is_workable: this.laundry_exhaust_ventilation_is_workable,
-          laundry_ventilation_type: this.laundry_ventilation_type,
-          id: this.$route.params['id']
-        }
-        const resp = await this.$store.dispatch('sendIndoorInfo', data)
+        const resp = await this.$store.dispatch('sendIndoorInfo', this.data)
         if (resp['status'] === 200) {
           this.showMessage('saveSuccess')
+          this.disable = true
         }
       } catch (e) {
         console.log(e)
@@ -155,10 +165,8 @@ export default {
     const id = this.$route.params['id']
     try {
       const info = await this.$store.dispatch('fetchIndoors', {token, id})
-      this.laundry_technical_condition = info['laundry_technical_condition']
-      this.laundry_exhaust_ventilation = info['laundry_exhaust_ventilation']
-      this.laundry_exhaust_ventilation_is_workable = info['laundry_exhaust_ventilation_is_workable']
-      this.laundry_ventilation_type = info['laundry_ventilation_type']
+      Object.assign(this.data, info)
+      this.data['id'] = id
       this.loading = false
     } catch (e) {
       console.log(e)

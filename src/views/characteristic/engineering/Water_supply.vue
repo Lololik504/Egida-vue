@@ -10,12 +10,12 @@
           <div class="select-type-field">
             <label>Водоснабжающая организация</label>
             <div class="select">
-              <q-select outlined v-model="water_supply_organization" :options="organizations"/>
+              <q-select outlined :disable="disable" v-model="data.water_supply_organization" :options="organizations"/>
             </div>
           </div>
-          <div v-if="water_supply_organization === organizations[2]">
+          <div v-if="data.water_supply_organization === organizations[2]">
             <label>Введите иную водоснабжающую организацию</label>
-            <q-input outlined v-model="other_organization"/>
+            <q-input outlined :disable="disable" v-model="other_organization"/>
           </div>
           <q-card flat bordered class="my-card">
             <label>Техническое состояние системы водоснабжения:</label>
@@ -23,7 +23,7 @@
               <q-list>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="technical_condition_of_the_water_supply_system" val="Работоспособное состояние"/>
+                    <q-radio :disable="disable" v-model="data.technical_condition_of_the_water_supply_system" val="Работоспособное состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Работоспособное состояние</q-item-label>
@@ -38,7 +38,7 @@
                 </q-item>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="technical_condition_of_the_water_supply_system" val="Ограниченно работоспособное состояние"/>
+                    <q-radio :disable="disable" v-model="data.technical_condition_of_the_water_supply_system" val="Ограниченно работоспособное состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Ограниченно работоспособное состояние</q-item-label>
@@ -52,7 +52,7 @@
                 </q-item>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="technical_condition_of_the_water_supply_system" val="Аварийное состояние"/>
+                    <q-radio :disable="disable" v-model="data.technical_condition_of_the_water_supply_system" val="Аварийное состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Аварийное состояние</q-item-label>
@@ -67,8 +67,9 @@
             <div class="input-roof-photo">
               <label>Акт обследования технического состояния (экспертной оценки специализированной организации)</label>
               <q-file
-                  v-model="act_water_supply"
+                  v-model="data.act_water_supply"
                   outlined
+                  :disable="disable"
                   hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"
                   multiple
                   max-total-size="25165824"
@@ -84,7 +85,7 @@
               <q-list>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="technical_condition_of_the_sewerage_system" val="Работоспособное состояние"/>
+                    <q-radio :disable="disable" v-model="data.technical_condition_of_the_sewerage_system" val="Работоспособное состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Работоспособное состояние</q-item-label>
@@ -99,7 +100,7 @@
                 </q-item>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="technical_condition_of_the_sewerage_system" val="Ограниченно работоспособное состояние"/>
+                    <q-radio :disable="disable" v-model="data.technical_condition_of_the_sewerage_system" val="Ограниченно работоспособное состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Ограниченно работоспособное состояние</q-item-label>
@@ -113,7 +114,7 @@
                 </q-item>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="technical_condition_of_the_sewerage_system" val="Аварийное состояние"/>
+                    <q-radio :disable="disable" v-model="data.technical_condition_of_the_sewerage_system" val="Аварийное состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Аварийное состояние</q-item-label>
@@ -128,8 +129,9 @@
             <div class="input-roof-photo">
               <label>Акт обследования технического состояния (экспертной оценки специализированной организации)</label>
               <q-file
-                  v-model="act_sewerage"
+                  v-model="data.act_sewerage"
                   outlined
+                  :disable="disable"
                   hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"
                   multiple
                   max-total-size="25165824"
@@ -166,9 +168,17 @@
 <!--              />-->
 <!--            </div>-->
 <!--          </div>-->
-          <button class="btn waves-effect waves-light" type="submit">
-            Сохранить
+          <button class="btn waves-effect waves" @click.prevent="disable = false" v-if="disable">
+            Редактирование
           </button>
+          <div class="q-gutter-sm" v-else>
+            <button class="btn waves-effect waves-light" type="submit">
+              Сохранить
+            </button>
+            <button class="btn waves-effect waves" @click.prevent="disable = true">
+              Отменить
+            </button>
+          </div>
         </div>
       </form>
     </div>
@@ -182,14 +192,18 @@ export default {
   name: "Water_supply",
   data: () => ({
     organizations: ['МУП Горводоканал', 'ФГУП УЭВ', 'Иное'],
-    water_supply_organization: null,
     other_organization: null,
-    technical_condition_of_the_sewerage_system: null,
-    act_sewerage: null,
-    technical_condition_of_the_water_supply_system: null,
-    act_water_supply: null,
-    act: null,
-    schema: null,
+    disable: true,
+    data: {
+      id: null,
+      water_supply_organization: null,
+      technical_condition_of_the_sewerage_system: null,
+      act_sewerage: null,
+      technical_condition_of_the_water_supply_system: null,
+      act_water_supply: null,
+      act: null,
+      schema: null,
+    },
     loading: true,
   }),
   methods: {
@@ -202,17 +216,12 @@ export default {
     async save() {
       try {
         if (this.other_organization) {
-          this.water_supply_organization = this.other_organization
+          this.data.water_supply_organization = this.other_organization
         }
-        const data = {
-          water_supply_organization: this.water_supply_organization,
-          technical_condition_of_the_sewerage_system: this.technical_condition_of_the_sewerage_system,
-          technical_condition_of_the_water_supply_system: this.technical_condition_of_the_water_supply_system,
-          id: this.$route.params['id']
-        }
-        const resp = await this.$store.dispatch('sendEngineeringInfo', data)
+        const resp = await this.$store.dispatch('sendEngineeringInfo', this.data)
         if (resp['status'] === 200) {
           this.showMessage('saveSuccess')
+          this.disable = true
         }
       } catch (e) {
         console.log(e)
@@ -231,9 +240,8 @@ export default {
     const id = this.$route.params['id']
     try {
       const info = await this.$store.dispatch('fetchEngineering', {token, id})
-      this.water_supply_organization = info['water_supply_organization']
-      this.technical_condition_of_the_sewerage_system = info['technical_condition_of_the_sewerage_system']
-      this.technical_condition_of_the_water_supply_system = info['technical_condition_of_the_water_supply_system']
+      Object.assign(this.data, info)
+      this.data['id'] = id
       this.loading = false
     } catch (e) {
       console.log(e)

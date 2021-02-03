@@ -7,14 +7,14 @@
         <div class="q-pa-md">
           <div class="input-field-roof-square">
             <label>Площадь фасада, кв. м.</label>
-            <q-input outlined type="number" v-model.number="facade_square"/>
+            <q-input outlined :disable="disable" type="number" v-model.number="data.facade_square"/>
           </div>
           <div class="input-roof-photo">
             <label>Фото фасада</label>
             <q-file
-                v-model="photo"
+                v-model="data.photo"
                 outlined
-
+                :disable="disable"
                 hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"
                 multiple
                 max-total-size="25165824"
@@ -25,12 +25,12 @@
           <div class="select-type-field">
             <label>Тип фасада</label>
             <div class="select">
-              <q-select outlined v-model="facade_type" :options="facade_types"/>
+              <q-select outlined :disable="disable" v-model="data.facade_type" :options="facade_types"/>
             </div>
           </div>
-          <div v-if="facade_type === facade_types[4]">
+          <div v-if="data.facade_type === facade_types[4]">
             <label>Введите тип фасада</label>
-            <q-input outlined v-model="other_type"/>
+            <q-input outlined :disable="disable" v-model="other_type"/>
           </div>
           <q-card flat bordered class="my-card">
             <label>Общее техническое состояние фасада:</label>
@@ -38,7 +38,7 @@
               <q-list>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="facade_status" val="Исправное состояние"/>
+                    <q-radio :disable="disable" v-model="data.facade_status" val="Исправное состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Исправное состояние</q-item-label>
@@ -50,7 +50,7 @@
                 </q-item>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="facade_status" val="Работоспособное состояние"/>
+                    <q-radio :disable="disable" v-model="data.facade_status" val="Работоспособное состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Работоспособное состояние</q-item-label>
@@ -65,7 +65,8 @@
                 </q-item>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="facade_status" val="Ограниченно работоспособное состояние"/>
+                    <q-radio :disable="disable" v-model="data.facade_status"
+                             val="Ограниченно работоспособное состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Ограниченно работоспособное состояние</q-item-label>
@@ -79,7 +80,7 @@
                 </q-item>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="facade_status" val="Недопустимое состояние"/>
+                    <q-radio :disable="disable" v-model="data.facade_status" val="Недопустимое состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Недопустимое состояние</q-item-label>
@@ -93,7 +94,7 @@
                 </q-item>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="facade_status" val="Аварийное состояние"/>
+                    <q-radio :disable="disable" v-model="data.facade_status" val="Аварийное состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Аварийное состояние</q-item-label>
@@ -110,8 +111,9 @@
           <div class="input-roof-photo">
             <label>Акт обследования технического состояния (экспертной оценки специализированной организации)</label>
             <q-file
-                v-model="act"
+                v-model="data.act"
                 outlined
+                :disable="disable"
                 hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"
                 multiple
                 max-total-size="25165824"
@@ -119,9 +121,17 @@
                 @rejected="onRejected"
             />
           </div>
-          <button class="btn waves-effect waves-light" type="submit">
-            Сохранить
+          <button class="btn waves-effect waves" @click.prevent="disable = false" v-if="disable">
+            Редактирование
           </button>
+          <div class="q-gutter-sm" v-else>
+            <button class="btn waves-effect waves-light" type="submit">
+              Сохранить
+            </button>
+            <button class="btn waves-effect waves" @click.prevent="disable = true">
+              Отменить
+            </button>
+          </div>
         </div>
       </form>
     </div>
@@ -141,13 +151,17 @@ export default {
       'Сборные газобетонные (керамзитобетонные) панели',
       'Прочее'
     ],
-    facade_status: null,
-    facade_type: null,
-    other_type: null,
-    act: null,
     loading: true,
-    facade_square: null,
-    photo: null
+    other_type: null,
+    disable: true,
+    data: {
+      id: null,
+      facade_status: null,
+      facade_type: null,
+      act: null,
+      facade_square: null,
+      photo: null
+    }
   }),
   methods: {
     onRejected(rejectedEntries) {
@@ -159,17 +173,12 @@ export default {
     async save() {
       try {
         if (this.other_type) {
-          this.facade_type = this.other_type
+          this.data.facade_type = this.other_type
         }
-        const data = {
-          facade_type: this.facade_type,
-          facade_square: this.facade_square,
-          facade_status: this.facade_status,
-          id: this.$route.params['id']
-        }
-        const resp = await this.$store.dispatch('sendConstructionInfo', data)
+        const resp = await this.$store.dispatch('sendConstructionInfo', this.data)
         if (resp['status'] === 200) {
           this.showMessage('saveSuccess')
+          this.disable = true
         }
       } catch (e) {
         console.log(e)
@@ -178,7 +187,7 @@ export default {
     },
     showMessage(text) {
       if (messages[text]) {
-        window.scrollTo(0,0)
+        window.scrollTo(0, 0)
         this.$message(messages[text])
       }
     }
@@ -188,9 +197,8 @@ export default {
     const id = this.$route.params['id']
     try {
       const info = await this.$store.dispatch('fetchConstruction', {token, id})
-      this.facade_type = info['facade_type']
-      this.facade_square = info['facade_square']
-      this.facade_status = info['facade_status']
+      Object.assign(this.data, info)
+      this.data['id'] = id
       this.loading = false
     } catch (e) {
       console.log(e)

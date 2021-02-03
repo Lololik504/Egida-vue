@@ -8,8 +8,9 @@
           <div class="input-roof-photo">
             <label>Фото фундамента</label>
             <q-file
-                v-model="photo"
+                v-model="data.photo"
                 outlined
+                :disable="disable"
                 hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"
                 multiple
                 max-total-size="25165824"
@@ -20,12 +21,12 @@
           <div class="select-type-field">
             <label>Тип фундамента</label>
             <div class="select">
-              <q-select outlined v-model="foundation_type" :options="foundation_types"/>
+              <q-select outlined :disable="disable" v-model="data.foundation_type" :options="foundation_types"/>
             </div>
           </div>
-          <div v-if="foundation_type === foundation_types[8]">
+          <div v-if="data.foundation_type === foundation_types[8]">
             <label>Введите тип фундамента</label>
-            <q-input outlined v-model="other_type"/>
+            <q-input outlined :disable="disable" v-model="other_type"/>
           </div>
           <q-card flat bordered class="my-card">
             <label>Общее техническое состояние фундамента:</label>
@@ -33,7 +34,7 @@
               <q-list>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="foundation_status" val="Исправное состояние"/>
+                    <q-radio :disable="disable" v-model="data.foundation_status" val="Исправное состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Исправное состояние</q-item-label>
@@ -45,7 +46,7 @@
                 </q-item>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="foundation_status" val="Работоспособное состояние"/>
+                    <q-radio :disable="disable" v-model="data.foundation_status" val="Работоспособное состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Работоспособное состояние</q-item-label>
@@ -60,7 +61,7 @@
                 </q-item>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="foundation_status" val="Ограниченно работоспособное состояние"/>
+                    <q-radio :disable="disable" v-model="data.foundation_status" val="Ограниченно работоспособное состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Ограниченно работоспособное состояние</q-item-label>
@@ -74,7 +75,7 @@
                 </q-item>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="foundation_status" val="Недопустимое состояние"/>
+                    <q-radio :disable="disable" v-model="data.foundation_status" val="Недопустимое состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Недопустимое состояние</q-item-label>
@@ -88,7 +89,7 @@
                 </q-item>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="foundation_status" val="Аварийное состояние"/>
+                    <q-radio :disable="disable" v-model="data.foundation_status" val="Аварийное состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Аварийное состояние</q-item-label>
@@ -105,8 +106,9 @@
           <div class="input-roof-photo">
             <label>Акт обследования технического состояния (экспертной оценки специализированной организации)</label>
             <q-file
-                v-model="act"
+                v-model="data.act"
                 outlined
+                :disable="disable"
                 hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"
                 multiple
                 max-total-size="25165824"
@@ -114,9 +116,17 @@
                 @rejected="onRejected"
             />
           </div>
-          <button class="btn waves-effect waves-light" type="submit">
-            Сохранить
+          <button class="btn waves-effect waves" @click.prevent="disable = false" v-if="disable">
+            Редактирование
           </button>
+          <div class="q-gutter-sm" v-else>
+            <button class="btn waves-effect waves-light" type="submit">
+              Сохранить
+            </button>
+            <button class="btn waves-effect waves" @click.prevent="disable = true">
+              Отменить
+            </button>
+          </div>
         </div>
       </form>
     </div>
@@ -129,6 +139,7 @@ import messages from "@/utils/messages";
 export default {
   name: "Foundation",
   data: () => ({
+    loading: true,
     foundation_types: [
       'Ленточный фундамент',
       'Столбчатый фундамент',
@@ -140,12 +151,15 @@ export default {
       'Винтовой фундамент',
       'Прочее'
     ],
-    foundation_status: null,
-    foundation_type: null,
     other_type: null,
-    act: null,
-    loading: true,
-    photo: null
+    disable: true,
+    data: {
+      id: null,
+      foundation_status: null,
+      foundation_type: null,
+      act: null,
+      photo: null
+    }
   }),
   methods: {
     onRejected(rejectedEntries) {
@@ -157,16 +171,12 @@ export default {
     async save() {
       try {
         if (this.other_type) {
-          this.foundation_type = this.other_type
+          this.data.foundation_type = this.other_type
         }
-        const data = {
-          foundation_status: this.foundation_status,
-          foundation_type: this.foundation_type,
-          id: this.$route.params['id']
-        }
-        const resp = await this.$store.dispatch('sendConstructionInfo', data)
+        const resp = await this.$store.dispatch('sendConstructionInfo', this.data)
         if (resp['status'] === 200) {
           this.showMessage('saveSuccess')
+          this.disable = true
         }
       } catch (e) {
         console.log(e)
@@ -185,8 +195,8 @@ export default {
     const id = this.$route.params['id']
     try {
       const info = await this.$store.dispatch('fetchConstruction', {token, id})
-      this.foundation_type = info['foundation_type']
-      this.foundation_status = info['foundation_status']
+      Object.assign(this.data, info)
+      this.data['id'] = id
       this.loading = false
     } catch (e) {
       console.log(e)
