@@ -126,7 +126,7 @@ export default {
     inter_floor_overlapping_material: null,
     other_material: null,
     act: null,
-    loading: false,
+    loading: true,
     photo: null
   }),
   methods: {

@@ -190,7 +190,7 @@ export default {
     act_water_supply: null,
     act: null,
     schema: null,
-    loading: false,
+    loading: true,
   }),
   methods: {
     onRejected(rejectedEntries) {

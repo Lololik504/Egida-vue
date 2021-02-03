@@ -151,7 +151,7 @@ export default {
     attic_overlapping_warming: null,
     other_warming: null,
     act: null,
-    loading: false,
+    loading: true,
     photo: null
   }),
   methods: {

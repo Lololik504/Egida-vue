@@ -13,7 +13,7 @@
               <q-list>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="status" val="Работоспособное состояние"/>
+                    <q-radio v-model="corridors_technical_condition" val="Работоспособное состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Работоспособное состояние</q-item-label>
@@ -28,7 +28,7 @@
                 </q-item>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="status" val="Ограниченно работоспособное состояние"/>
+                    <q-radio v-model="corridors_technical_condition" val="Ограниченно работоспособное состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Ограниченно работоспособное состояние</q-item-label>
@@ -40,15 +40,15 @@
                     </q-item-label>
                   </q-item-section>
                 </q-item>
-                <q-item v-if="status === 'Ограниченно работоспособное состояние'" >
+                <q-item v-if="corridors_technical_condition === 'Ограниченно работоспособное состояние'" >
                   <div class="input-field-roof-square">
                     <label>Процент</label>
-                    <q-input outlined type="number" v-model="percent"/>
+                    <q-input outlined type="number" v-model="corridors_percent_of_technical_condition_field"/>
                   </div>
                 </q-item>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="status" val="Аварийное состояние"/>
+                    <q-radio v-model="corridors_technical_condition" val="Аварийное состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Аварийное состояние</q-item-label>
@@ -58,10 +58,10 @@
                     </q-item-label>
                   </q-item-section>
                 </q-item>
-                <q-item v-if="status === 'Аварийное состояние'" >
+                <q-item v-if="corridors_technical_condition === 'Аварийное состояние'" >
                   <div class="input-field-roof-square">
                     <label>Процент</label>
-                    <q-input outlined type="number" v-model="percent"/>
+                    <q-input outlined type="number" v-model="corridors_percent_of_technical_condition_field"/>
                   </div>
                 </q-item>
               </q-list>
@@ -90,13 +90,15 @@
 </template>
 
 <script>
+import messages from "@/utils/messages";
+
 export default {
   name: "Corridors",
   data: () => ({
     act: null,
-    status: null,
-    percent: null,
-    loading: false,
+    corridors_technical_condition: null,
+    corridors_percent_of_technical_condition_field: null,
+    loading: true,
   }),
   methods: {
     onRejected(rejectedEntries) {
@@ -106,7 +108,38 @@ export default {
       })
     },
     async save() {
-      console.log(this.status)
+      try {
+        const data = {
+          corridors_technical_condition: this.corridors_technical_condition,
+          corridors_percent_of_technical_condition_field: this.corridors_percent_of_technical_condition_field,
+          id: this.$route.params['id']
+        }
+        const resp = await this.$store.dispatch('sendIndoorInfo', data)
+        if (resp['status'] === 200) {
+          this.showMessage('saveSuccess')
+        }
+      } catch (e) {
+        console.log(e)
+        this.showMessage('error')
+      }
+    },
+    showMessage(text) {
+      if (messages[text]) {
+        window.scrollTo(0,0)
+        this.$message(messages[text])
+      }
+    }
+  },
+  async mounted() {
+    const token = localStorage.getItem('token')
+    const id = this.$route.params['id']
+    try {
+      const info = await this.$store.dispatch('fetchIndoors', {token, id})
+      this.corridors_technical_condition = info['corridors_technical_condition']
+      this.corridors_percent_of_technical_condition_field = info['corridors_percent_of_technical_condition_field']
+      this.loading = false
+    } catch (e) {
+      console.log(e)
     }
   }
 }

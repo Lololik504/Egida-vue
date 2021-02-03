@@ -145,7 +145,7 @@ export default {
     other_type: null,
     blind_area_status: null,
     act: null,
-    loading: false,
+    loading: true,
     blind_area_square: null,
     blind_area_length: null,
     photo: null

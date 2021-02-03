@@ -131,7 +131,7 @@ export default {
     window_material: null,
     window_status: null,
     act: null,
-    loading: false,
+    loading: true,
     window_square: null,
     energy_saving_window_percent: null,
     window_count: null

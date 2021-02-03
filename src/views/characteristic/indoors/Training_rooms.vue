@@ -9,7 +9,7 @@
         <div class="q-pa-md">
           <div class="input-field-roof-square">
             <label>Общее количество</label>
-            <q-input outlined type="number" v-model="count"/>
+            <q-input outlined type="number" v-model="total_classroom_count"/>
           </div>
           <q-card flat bordered class="my-card">
             <label>Техническое состояние учебных помещений:</label>
@@ -17,7 +17,7 @@
               <q-list>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="status" val="Работоспособное состояние"/>
+                    <q-radio v-model="classrooms_technical_condition" val="Работоспособное состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Работоспособное состояние</q-item-label>
@@ -32,7 +32,7 @@
                 </q-item>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="status" val="Ограниченно работоспособное состояние"/>
+                    <q-radio v-model="classrooms_technical_condition" val="Ограниченно работоспособное состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Ограниченно работоспособное состояние</q-item-label>
@@ -44,15 +44,15 @@
                     </q-item-label>
                   </q-item-section>
                 </q-item>
-                <q-item v-if="status === 'Ограниченно работоспособное состояние'" >
+                <q-item v-if="classrooms_technical_condition === 'Ограниченно работоспособное состояние'" >
                   <div class="input-field-roof-square">
                     <label>Количество помещений</label>
-                    <q-input outlined type="number" v-model="countRooms"/>
+                    <q-input outlined type="number" v-model="classroom_count_of_technical_condition_field"/>
                   </div>
                 </q-item>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="status" val="Аварийное состояние"/>
+                    <q-radio v-model="classrooms_technical_condition" val="Аварийное состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Аварийное состояние</q-item-label>
@@ -62,10 +62,10 @@
                     </q-item-label>
                   </q-item-section>
                 </q-item>
-                <q-item v-if="status === 'Аварийное состояние'" >
+                <q-item v-if="classrooms_technical_condition === 'Аварийное состояние'" >
                   <div class="input-field-roof-square">
                     <label>Количество помещений</label>
-                    <q-input outlined type="number" v-model="countRooms"/>
+                    <q-input outlined type="number" v-model="classroom_count_of_technical_condition_field"/>
                   </div>
                 </q-item>
               </q-list>
@@ -94,13 +94,15 @@
 </template>
 
 <script>
+import messages from "@/utils/messages";
+
 export default {
   name: "Training_rooms",
   data: () => ({
     act: null,
-    status: null,
-    count: null,
-    countRooms: null,
+    classrooms_technical_condition: null,
+    total_classroom_count: null,
+    classroom_count_of_technical_condition_field: null,
     loading: false,
   }),
   methods: {
@@ -111,7 +113,40 @@ export default {
       })
     },
     async save() {
-      console.log(this.status)
+      try {
+        const data = {
+          classrooms_technical_condition: this.classrooms_technical_condition,
+          total_classroom_count: this.total_classroom_count,
+          classroom_count_of_technical_condition_field: this.classroom_count_of_technical_condition_field,
+          id: this.$route.params['id']
+        }
+        const resp = await this.$store.dispatch('sendIndoorInfo', data)
+        if (resp['status'] === 200) {
+          this.showMessage('saveSuccess')
+        }
+      } catch (e) {
+        console.log(e)
+        this.showMessage('error')
+      }
+    },
+    showMessage(text) {
+      if (messages[text]) {
+        window.scrollTo(0,0)
+        this.$message(messages[text])
+      }
+    }
+  },
+  async mounted() {
+    const token = localStorage.getItem('token')
+    const id = this.$route.params['id']
+    try {
+      const info = await this.$store.dispatch('fetchIndoors', {token, id})
+      this.classroom_count_of_technical_condition_field = info['classroom_count_of_technical_condition_field']
+      this.total_classroom_count = info['total_classroom_count']
+      this.classrooms_technical_condition = info['classrooms_technical_condition']
+      this.loading = false
+    } catch (e) {
+      console.log(e)
     }
   }
 }

@@ -502,7 +502,7 @@ export default {
     referenceDoc: null,
     paymentDoc: null,
     toposnovaDoc: null,
-    loading: false,
+    loading: true,
   }),
   methods: {
     onRejected(rejectedEntries) {

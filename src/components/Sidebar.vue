@@ -6,10 +6,11 @@
           :key="character.id"
       >
         <q-expansion-item
+            style="font-weight: bold"
             v-if="character !== 'Спортивные сооружение/теневые навесы'"
             :label="character"
         >
-          <div
+          <div class="lnk"
               v-for="item in helpList[character].expansionArray"
               :key="item.id"
           >
@@ -38,6 +39,7 @@
           </div>
         </q-expansion-item>
         <router-link
+            class="link"
             v-else
             tag="div"
             :to="`/characteristic/${$route.params['id']}/${helpList[character].name}`"
@@ -46,6 +48,7 @@
         </router-link>
       </li>
       <router-link
+          class="link"
           v-if="purposeList.includes(purpose)"
           :to="`/characteristic/${$route.params['id']}/accessible_environment`"
           tag="li"
@@ -235,6 +238,22 @@ export default {
 li {
   padding: 10px 15px;
   border: 1px solid #ddd;
+  cursor: pointer;
+  font-weight: normal;
+}
+
+.lnk li:hover {
+  color: blue;
+  text-decoration: underline;
+}
+
+.link {
+  font-weight: bold;
+}
+
+.link:hover {
+  color: blue;
+  text-decoration: underline;
 }
 
 .sidebar {

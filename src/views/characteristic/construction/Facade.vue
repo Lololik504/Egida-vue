@@ -145,7 +145,7 @@ export default {
     facade_type: null,
     other_type: null,
     act: null,
-    loading: false,
+    loading: true,
     facade_square: null,
     photo: null
   }),

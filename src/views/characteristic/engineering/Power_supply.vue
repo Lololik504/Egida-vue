@@ -304,7 +304,7 @@ export default {
     balanceActDoc: null,
     balanceSchemaDoc: null,
     photo: null,
-    loading: false,
+    loading: true,
   }),
   methods: {
     onRejected(rejectedEntries) {

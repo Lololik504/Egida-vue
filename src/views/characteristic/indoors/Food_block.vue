@@ -13,7 +13,7 @@
               <q-list>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="status" val="Работоспособное состояние"/>
+                    <q-radio v-model="food_block_technical_condition" val="Работоспособное состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Работоспособное состояние</q-item-label>
@@ -28,7 +28,7 @@
                 </q-item>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="status" val="Ограниченно работоспособное состояние"/>
+                    <q-radio v-model="food_block_technical_condition" val="Ограниченно работоспособное состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Ограниченно работоспособное состояние</q-item-label>
@@ -42,7 +42,7 @@
                 </q-item>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="status" val="Аварийное состояние"/>
+                    <q-radio v-model="food_block_technical_condition" val="Аварийное состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Аварийное состояние</q-item-label>
@@ -71,37 +71,54 @@
           <div class="select-type-field">
             <label>Наличие вытяжной вентиляции</label>
             <div class="select">
-              <q-select outlined v-model="ventilation1" :options="['Есть', 'Нет']"/>
+              <q-select outlined
+                        emit-value
+                        map-options
+                        v-model="food_block_exhaust_ventilation"
+                        :options="[{label: 'Есть', value: true}, {label: 'Нет', value: false}]"/>
             </div>
           </div>
-          <div class="select-type-field" v-if="ventilation1 === 'Есть'">
+          <div class="select-type-field" v-if="food_block_exhaust_ventilation">
             <label>Техническое состояние вытяжной вентиляции</label>
             <div class="select">
-              <q-select outlined v-model="ventilation1_state" :options="['Работоспособное', 'Неисправное']"/>
+              <q-select outlined
+                        emit-value
+                        map-options
+                        v-model="food_block_exhaust_ventilation_is_workable"
+                        :options="[{label: 'Работоспособное', value: true}, {label: 'Неисправное', value: false}]"/>
             </div>
           </div>
           <div class="select-type-field">
             <label>Тип вентиляции</label>
             <div class="select">
-              <q-select outlined v-model="ventilation_type" :options="['Естественная', 'С механическим побуждением']"/>
+              <q-select outlined v-model="food_block_ventilation_type"
+                        :options="['Естественная', 'С механическим побуждением']"/>
             </div>
           </div>
           <div class="select-type-field">
             <label>Наличие приточной вентиляции</label>
             <div class="select">
-              <q-select outlined v-model="ventilation2" :options="['Есть', 'Нет']"/>
+              <q-select outlined
+                        emit-value
+                        map-options
+                        v-model="food_block_supply_ventilation"
+                        :options="[{label: 'Есть', value: true}, {label: 'Нет', value: false}]"/>
             </div>
           </div>
-          <div class="select-type-field" v-if="ventilation2 === 'Есть'">
+          <div class="select-type-field" v-if="food_block_supply_ventilation">
             <label>Техническое состояние приточной вентиляции</label>
             <div class="select">
-              <q-select outlined v-model="ventilation1_state" :options="['Работоспособное', 'Неисправное']"/>
+              <q-select outlined
+                        emit-value
+                        map-options
+                        v-model="food_block_supply_ventilation_is_workable"
+                        :options="[{label: 'Работоспособное', value: true}, {label: 'Неисправное', value: false}]"/>
             </div>
           </div>
           <div class="select-type-field">
             <label>Тип воздухонагревателя</label>
             <div class="select">
-              <q-select outlined v-model="warmer_type" :options="['Водяной', 'Электрический']"/>
+              <q-select outlined v-model="food_block_air_heater_type" :options="['Водяной', 'Электрический']"/>
             </div>
           </div>
           <button class="btn waves-effect waves-light" type="submit">
@@ -114,18 +131,20 @@
 </template>
 
 <script>
+import messages from "@/utils/messages";
+
 export default {
   name: "Food_block",
   data: () => ({
     act: null,
-    status: null,
-    ventilation1: null,
-    ventilation2: null,
-    ventilation1_state: null,
-    ventilation2_state: null,
-    ventilation_type: null,
-    warmer_type: null,
-    loading: false,
+    food_block_technical_condition: null,
+    food_block_exhaust_ventilation: null,
+    food_block_supply_ventilation: null,
+    food_block_exhaust_ventilation_is_workable: null,
+    food_block_supply_ventilation_is_workable: null,
+    food_block_ventilation_type: null,
+    food_block_air_heater_type: null,
+    loading: true,
   }),
   methods: {
     onRejected(rejectedEntries) {
@@ -135,7 +154,48 @@ export default {
       })
     },
     async save() {
-      console.log(this.status)
+      try {
+        const data = {
+          food_block_technical_condition: this.food_block_technical_condition,
+          food_block_exhaust_ventilation: this.food_block_exhaust_ventilation,
+          food_block_supply_ventilation: this.food_block_supply_ventilation,
+          food_block_exhaust_ventilation_is_workable: this.food_block_exhaust_ventilation_is_workable,
+          food_block_supply_ventilation_is_workable: this.food_block_supply_ventilation_is_workable,
+          food_block_ventilation_type: this.food_block_ventilation_type,
+          food_block_air_heater_type: this.food_block_air_heater_type,
+          id: this.$route.params['id']
+        }
+        const resp = await this.$store.dispatch('sendIndoorInfo', data)
+        if (resp['status'] === 200) {
+          this.showMessage('saveSuccess')
+        }
+      } catch (e) {
+        console.log(e)
+        this.showMessage('error')
+      }
+    },
+    showMessage(text) {
+      if (messages[text]) {
+        window.scrollTo(0, 0)
+        this.$message(messages[text])
+      }
+    }
+  },
+  async mounted() {
+    const token = localStorage.getItem('token')
+    const id = this.$route.params['id']
+    try {
+      const info = await this.$store.dispatch('fetchIndoors', {token, id})
+      this.food_block_technical_condition = info['food_block_technical_condition']
+      this.food_block_exhaust_ventilation = info['food_block_exhaust_ventilation']
+      this.food_block_supply_ventilation = info['food_block_supply_ventilation']
+      this.food_block_exhaust_ventilation_is_workable = info['food_block_exhaust_ventilation_is_workable']
+      this.food_block_supply_ventilation_is_workable = info['food_block_supply_ventilation_is_workable']
+      this.food_block_ventilation_type = info['food_block_ventilation_type']
+      this.food_block_air_heater_type = info['food_block_air_heater_type']
+      this.loading = false
+    } catch (e) {
+      console.log(e)
     }
   }
 }

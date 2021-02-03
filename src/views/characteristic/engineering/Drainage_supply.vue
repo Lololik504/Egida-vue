@@ -48,7 +48,7 @@ export default {
     water_occurs_onto_low_relief: null,
     number_of_storm_water_inlets: null,
     the_number_of_wells_of_the_storm_sewer_system: null,
-    loading: false,
+    loading: true,
   }),
   methods: {
     onRejected(rejectedEntries) {

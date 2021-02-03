@@ -8,16 +8,16 @@
       <button class="btn waves-effect waves-light" @click="createBuilding">
         Создать новое здание
       </button>
-      <div class="buildings" v-if="data.length">
+      <div class="buildings" v-if="data">
         <h5>Существующие здания</h5>
         <ol>
           <li v-for="d in data"
               :key="d.id">
-          <router-link
-              :to="`/buildingcard/${d.id}`"
-          >
-            Адрес здания: {{ d.street }}, {{ d.street_number }}
-          </router-link>
+            <router-link
+                :to="`/buildingcard/${d.id}`"
+            >
+              Адрес здания: {{ d.street }}, {{ d.street_number }}
+            </router-link>
           </li>
         </ol>
       </div>
@@ -44,11 +44,7 @@ export default {
     const inn = this.$route.params['build']
     try {
       const resp = await this.$store.dispatch('fetchBuildings', {token, inn})
-      let info = this.$store.getters.info
-      if (!Object.keys(info).length || info['INN'] !== inn) {
-        info = await this.$store.dispatch('fetchInfo', {token, inn})
-        console.log('info')
-      }
+      const info = await this.$store.dispatch('fetchInfo', {token, inn})
       this.shortname = info['shortname']
       this.data = resp.data.data[0]
       this.loading = false

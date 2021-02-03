@@ -5,6 +5,7 @@ import info from './info'
 import building from "./building"
 import school from "./school";
 import temperature from "./temperature";
+import character from './character'
 
 Vue.use(Vuex)
 
@@ -50,6 +51,6 @@ export default new Vuex.Store({
         permission: state => state.permission
     },
     modules: {
-        auth, info, building, school, temperature
+        auth, info, building, school, temperature, character
     }
 })

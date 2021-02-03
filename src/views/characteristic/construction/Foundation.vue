@@ -144,7 +144,7 @@ export default {
     foundation_type: null,
     other_type: null,
     act: null,
-    loading: false,
+    loading: true,
     photo: null
   }),
   methods: {
