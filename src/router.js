@@ -128,6 +128,14 @@ let router = new Router({
             component: () => import('./views/Temperature'),
         },
         {
+            path: '/documents/:id',
+            name: 'Documents',
+            meta: {
+                requiresAuth: true
+            },
+            component: () => import('./views/Documents'),
+        },
+        {
             path: '/characteristic/:id',
             name: 'BuildingСharacteristic',
             meta: {

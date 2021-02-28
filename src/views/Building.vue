@@ -61,7 +61,7 @@
             </div>
             <div class="input-field-building-square">
               <label>Площадь здания, Кв. м.</label>
-              <q-input outlined :disable="disable" type="number" v-model.number="d.building_square"/>
+              <q-input outlined :disable="disable" v-model.number="d.building_square"/>
             </div>
             <div class="input-field-land-square">
               <label>Площадь земельного участка, Кв. м.</label>

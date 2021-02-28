@@ -4,13 +4,16 @@
     <div v-else>
       <h4> Карточка учреждения {{ shortname }}</h4>
       <div class="q-gutter-md">
-        <button class="btn waves-effect waves-light" v-on:click="mainInfo">
+        <button class="btn waves-effect waves-light" @click="mainInfo">
           Сведения о юридическом лице
         </button>
-        <button class="btn waves-effect waves-light" v-on:click="toBuilding">
+        <button class="btn waves-effect waves-light" @click="toBuilding">
           Здания
         </button>
-        <button v-if="permission" class="btn waves-effect waves-light" v-on:click="deleteSchool">
+        <button class="btn waves-effect waves-light" @click="toDocs">
+          Документация
+        </button>
+        <button v-if="permission" class="btn waves-effect waves-light" @click="deleteSchool">
           Удалить учреждение
         </button>
       </div>
@@ -32,6 +35,9 @@ export default {
     },
     toBuilding() {
       this.$router.push(`/schoolbuilding/${this.$route.params['card']}`)
+    },
+    toDocs() {
+      this.$router.push(`/documents/${this.$route.params['card']}`)
     },
     async deleteSchool() {
       try {
