@@ -7,7 +7,7 @@
         <div class="q-pa-md">
           <div class="input-field-square">
             <label>Площадь асфальтового покрытия, кв. м.</label>
-            <q-input outlined :disable="disable" type="number" v-model.number="data.asphalt_area"/>
+            <q-input outlined :disable="disable" step="0.001" type="number" v-model.number="data.asphalt_area"/>
           </div>
           <q-card flat bordered class="my-card">
             <label>Техническое состояние асфальтового покрытия:</label>
@@ -17,20 +17,20 @@
                     <h6 class="col">Работоспособное состояние</h6>
                     <div class="input-field-roof-square col">
                       <label>% от общего асфальтового покрытия</label>
-                      <q-input outlined :disable="disable" type="number" v-model="data.asphalt_ok_percent"/>
+                      <q-input outlined :disable="disable" step="0.001" type="number" v-model="data.asphalt_ok_percent"/>
                     </div>
                 </q-item>
                 <q-item class="column">
                     <h6 class="col">Ограниченно работоспособное состояние</h6>
                     <div class="input-field-roof-square col">
                       <label>% от общего асфальтового покрытия</label>
-                      <q-input outlined :disable="disable" type="number" v-model="data.asphalt_warning_percent"/>
+                      <q-input outlined :disable="disable" step="0.001" type="number" v-model="data.asphalt_warning_percent"/>
                     </div>
                 </q-item><q-item class="column">
                     <h6 class="col">Ограниченно работоспособное состояние</h6>
                     <div class="input-field-roof-square col">
                       <label>% от общего асфальтового покрытия</label>
-                      <q-input outlined :disable="disable" type="number" v-model="data.asphalt_emergency_percent"/>
+                      <q-input outlined :disable="disable" step="0.001" type="number" v-model="data.asphalt_emergency_percent"/>
                     </div>
                 </q-item>
               </q-list>
@@ -112,7 +112,5 @@ export default {
 </script>
 
 <style scoped>
-.select {
-  margin-bottom: 1px;
-}
+
 </style>

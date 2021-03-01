@@ -25,7 +25,8 @@
           </div>
           <div class="input-field-window-count">
             <label>Сумма на обслуживание АПС и СОУЭ в год, тыс.руб.</label>
-            <q-input outlined :disable="disable" type="number" v-model.number="data.price_for_APS_and_SOUE_per_year"/>
+            <q-input outlined :disable="disable" step="0.00001" type="number"
+                     v-model.number="data.price_for_APS_and_SOUE_per_year"/>
           </div>
           <div class="input-field-year">
             <label>Год модернизации АПС</label>

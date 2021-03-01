@@ -2,7 +2,7 @@
   <div class="container">
     <Loader v-if="loading"/>
     <div v-else>
-      <h4 class="center">Учереждение
+      <h4 class="center">Учреждение
         <router-link :to="`/schoolcard/${this.$route.params['school']}`"> {{ mainInfo.shortname }}</router-link>
       </h4>
       <div class="card" >

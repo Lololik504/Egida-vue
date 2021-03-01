@@ -192,6 +192,7 @@
 
 <script>
 import {server_path} from "@/local_settings";
+import messages from "@/utils/messages";
 
 export default {
   name: "Documents",
@@ -226,6 +227,12 @@ export default {
         message: `${rejectedEntries.length} file(s) did not pass validation constraints`
       })
     },
+    showMessage(text) {
+      if (messages[text]) {
+        // window.scrollTo(0, 0)
+        this.$message(messages[text])
+      }
+    },
     showDoc(url) {
       const link = document.createElement('a');
       link.href = server_path + url;
@@ -238,13 +245,19 @@ export default {
         // const obj_url = window.URL.createObjectURL(this.passport_BTI);
         // const iframe = document.getElementsByClassName('viewer');
         // iframe.setAttribute('src', obj_url);
-        let formData = new FormData();
-        formData.append('file', file.url)
-        await this.$store.dispatch('sendDocs', {file: formData, inn: this.$route.params['id'], id: name})
-        file.hasUrl = true
-        await this.fetchDocs()
+        if (file.url) {
+          let formData = new FormData();
+          formData.append('file', file.url)
+          await this.$store.dispatch('sendDocs', {file: formData, inn: this.$route.params['id'], id: name})
+          file.hasUrl = true
+          await this.fetchDocs()
+          this.showMessage('successUploadFile')
+        } else {
+          this.showMessage('failUploadFile')
+        }
       } catch (e) {
         console.log(e)
+        this.showMessage('error')
       }
     },
     async fetchDocs() {

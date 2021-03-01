@@ -13,7 +13,7 @@
           </div>
           <div class="input-field-window-percent">
             <label>Процент остекления энергосберегающими стеклопакетами , %.</label>
-            <q-input outlined type="number" :disable="disable" v-model.number="data.energy_saving_window_percent"/>
+            <q-input outlined type="number" :disable="disable" step="0.001" v-model.number="data.energy_saving_window_percent"/>
           </div>
           <div class="input-field-window-count">
             <label>Количество окон, шт.</label>
@@ -21,7 +21,7 @@
           </div>
           <div class="input-field-window-square">
             <label>Площадь окон, кв. м.</label>
-            <q-input outlined type="number" :disable="disable" v-model.number="data.window_square"/>
+            <q-input outlined type="number" :disable="disable" step="0.001" v-model.number="data.window_square"/>
           </div>
           <q-card flat bordered class="my-card">
             <label>Общее техническое состояние окон:</label>
@@ -99,19 +99,19 @@
             </div>
           </q-card>
           <br/>
-          <div class="input-roof-photo">
-            <label>Акт обследования технического состояния (экспертной оценки специализированной организации)</label>
-            <q-file
-                v-model="data.act"
-                outlined
-                :disable="disable"
-                hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"
-                multiple
-                max-total-size="25165824"
-                accept=".jpg, image/jpeg, .pdf"
-                @rejected="onRejected"
-            />
-          </div>
+<!--          <div class="input-roof-photo">-->
+<!--            <label>Акт обследования технического состояния (экспертной оценки специализированной организации)</label>-->
+<!--            <q-file-->
+<!--                v-model="data.act"-->
+<!--                outlined-->
+<!--                :disable="disable"-->
+<!--                hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"-->
+<!--                multiple-->
+<!--                max-total-size="25165824"-->
+<!--                accept=".jpg, image/jpeg, .pdf"-->
+<!--                @rejected="onRejected"-->
+<!--            />-->
+<!--          </div>-->
           <button class="btn waves-effect waves" @click.prevent="disable = false" v-if="disable">
             Редактирование
           </button>

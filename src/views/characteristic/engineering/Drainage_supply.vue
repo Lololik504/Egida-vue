@@ -14,7 +14,7 @@
 
           <div class="input-field-roof-square" v-if="data.centralized_storm_sewer_system">
             <label>Количество колодцев системы ливневой канализации на территории учреждения</label>
-            <q-input outlined v-model="data.the_number_of_wells_of_the_storm_sewer_system" :disable="disable"/>
+            <q-input outlined type="number" v-model.number="data.the_number_of_wells_of_the_storm_sewer_system" :disable="disable"/>
           </div>
           <div class="checkbox">
             <q-checkbox v-model="data.storm_water_inlet" dense :disable="disable" left-label
@@ -22,7 +22,7 @@
           </div>
           <div class="input-field-roof-square" v-if="data.storm_water_inlet">
             <label>Количество дождеприемников на территории учреждения</label>
-            <q-input outlined v-model="data.number_of_storm_water_inlets" :disable="disable"/>
+            <q-input outlined type="number" v-model.number="data.number_of_storm_water_inlets" :disable="disable"/>
           </div>
           <div class="checkbox">
             <q-checkbox v-model="data.water_occurs_onto_low_relief" :disable="disable" dense left-label

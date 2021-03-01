@@ -48,18 +48,17 @@
                          hint="в формате гггг(начиная от 1900 г, не ранее)"
                          mask="####"
                          unmasked-value
-                         lazy-rules
                          :rules="[val => val > 1899 && val <= new Date().getFullYear() || 'начиная от 1900 г, не ранее, до текущего']"
                 />
 
               </div>
               <div class="input-field-building-square">
                 <label>Площадь здания, Кв. м.</label>
-                <q-input outlined v-model.number="data.building_square"/>
+                <q-input outlined type="number" step="0.001" v-model.number="data.building_square"/>
               </div>
               <div class="input-field-land-square">
                 <label>Площадь земельного участка, Кв. м.</label>
-                <q-input outlined type="number" v-model.number="data.land_square"/>
+                <q-input outlined type="number" step="0.001" v-model.number="data.land_square"/>
               </div>
               <div class="input-field-number-of-storeys">
                 <label>Этажность здания</label>
@@ -67,7 +66,7 @@
               </div>
               <div class="input-field-build-height">
                 <label>Высота здания (м)</label>
-                <q-input outlined type="number" v-model.number="data.build_height"/>
+                <q-input outlined type="number" step="0.001" v-model.number="data.build_height"/>
               </div>
               <q-card flat bordered class="my-card">
                 <label>Здания (помещения), сдаваемые в аренду или безвозмездное пользование:</label>
@@ -97,11 +96,11 @@
                 <label>Неиспользуемые здания (помещения):</label>
                 <div class="input-field-unused-square">
                   <label>Общая площадь, Кв. м.</label>
-                  <q-input outlined type="number" v-model.number="data.unused_square"/>
+                  <q-input outlined type="number" step="0.001" v-model.number="data.unused_square"/>
                 </div>
                 <div class="input-field-arend-repair-need-square">
                   <label>Площадь, требующая ремонта, Кв. м.</label>
-                  <q-input outlined type="number" v-model.number="data.repair_need_square"/>
+                  <q-input outlined type="number" step="0.001" v-model.number="data.repair_need_square"/>
                 </div>
               </q-card>
               <br/>
@@ -189,7 +188,6 @@
                          mask="####"
                          ref="year"
                          unmasked-value
-                         lazy-rules
                          :rules="[val => val > 1899 && val <= new Date().getFullYear() || 'начиная от 1900 г, не ранее, до текущего']"
                 />
               </div>
@@ -206,18 +204,17 @@
                        mask="####"
                        ref="year"
                        unmasked-value
-                       lazy-rules
                        :rules="[val => val > 1899 && val <= new Date().getFullYear() || 'начиная от 1900 г, не ранее, до текущего']"
               />
 
             </div>
             <div class="input-field-building-square">
               <label>Площадь занимаемых помещений, Кв. м.</label>
-              <q-input outlined type="number" v-model.number="data.building_square"/>
+              <q-input outlined type="number" step="0.001" v-model.number="data.building_square"/>
             </div>
             <div class="input-field-land-square">
               <label>Площадь земельного участка, Кв. м.</label>
-              <q-input outlined type="number" v-model.number="data.land_square"/>
+              <q-input outlined type="number" step="0.001" v-model.number="data.land_square"/>
             </div>
             <div class="input-field-number-of-storeys">
               <label>Этажность всего здания</label>
@@ -227,11 +224,11 @@
               <label>Наполняемость:</label>
               <div class="input-field-occupancy-proj">
                 <label>Проектная</label>
-                <q-input outlined type="number" v-model.number="data.occupancy_proj"/>
+                <q-input outlined type="number" step="0.001" v-model.number="data.occupancy_proj"/>
               </div>
               <div class="input-field-arend-occupancy-fact">
                 <label>Фактическая</label>
-                <q-input outlined type="number" v-model.number="data.occupancy_fact"/>
+                <q-input outlined type="number" step="0.001" v-model.number="data.occupancy_fact"/>
               </div>
             </q-card>
             <br/>
@@ -239,11 +236,11 @@
               <label>Неиспользуемые здания (помещения):</label>
               <div class="input-field-unused-square">
                 <label>Общая площадь, Кв. м.</label>
-                <q-input outlined type="number" v-model.number="data.unused_square"/>
+                <q-input outlined type="number" step="0.001" v-model.number="data.unused_square"/>
               </div>
               <div class="input-field-arend-repair-need-square">
                 <label>Площадь, требующая ремонта, Кв. м.</label>
-                <q-input outlined type="number" v-model.number="data.repair_need_square"/>
+                <q-input outlined type="number" step="0.001" v-model.number="data.repair_need_square"/>
               </div>
             </q-card>
             <br/>
@@ -330,7 +327,6 @@
                        mask="####"
                        ref="year"
                        unmasked-value
-                       lazy-rules
                        :rules="[val => val > 1899 && val <= new Date().getFullYear() || 'начиная от 1900 г, не ранее, до текущего']"
               />
             </div>
@@ -355,18 +351,17 @@
                          mask="####"
                          ref="year"
                          unmasked-value
-                         lazy-rules
                          :rules="[val => val > 1899 && val <= new Date().getFullYear() || 'начиная от 1900 г, не ранее, до текущего']"
                 />
 
               </div>
               <div class="input-field-building-square">
                 <label>Площадь занимаемого помещения, Кв. м.</label>
-                <q-input outlined type="number" v-model.number="data.building_square"/>
+                <q-input outlined type="number" step="0.001" v-model.number="data.building_square"/>
               </div>
               <div class="input-field-land-square">
                 <label>Площадь земельного участка, Кв. м.</label>
-                <q-input outlined type="number" v-model.number="data.land_square"/>
+                <q-input outlined type="number" step="0.001" v-model.number="data.land_square"/>
               </div>
               <div class="input-field-number-of-storeys">
                 <label>Этажность пристройки</label>
@@ -374,13 +369,13 @@
               </div>
               <div class="input-field-build-height">
                 <label>Высота пристройки (м)</label>
-                <q-input outlined type="number" v-model.number="data.build_height"/>
+                <q-input outlined type="number" step="0.001" v-model.number="data.build_height"/>
               </div>
               <q-card flat bordered class="my-card">
                 <label>Здания (помещения), сдаваемые в аренду или безвозмездное пользование:</label>
                 <div class="input-field-arend-square">
                   <label>Площадь, Кв. м.</label>
-                  <q-input outlined type="number" v-model.number="data.arend_square"/>
+                  <q-input outlined type="number" step="0.001" v-model.number="data.arend_square"/>
                 </div>
                 <div class="input-field-arend-use-type">
                   <label>Вид использования</label>
@@ -392,11 +387,11 @@
                 <label>Наполняемость:</label>
                 <div class="input-field-occupancy-proj">
                   <label>Проектная</label>
-                  <q-input outlined type="number" v-model.number="data.occupancy_proj"/>
+                  <q-input outlined type="number" step="0.001" v-model.number="data.occupancy_proj"/>
                 </div>
                 <div class="input-field-arend-occupancy-fact">
                   <label>Фактическая</label>
-                  <q-input outlined type="number" v-model.number="data.occupancy_fact"/>
+                  <q-input outlined type="number" step="0.001" v-model.number="data.occupancy_fact"/>
                 </div>
               </q-card>
               <br/>
@@ -404,11 +399,11 @@
                 <label>Неиспользуемые здания (помещения):</label>
                 <div class="input-field-unused-square">
                   <label>Общая площадь, Кв. м.</label>
-                  <q-input outlined type="number" v-model.number="data.unused_square"/>
+                  <q-input outlined type="number" step="0.001" v-model.number="data.unused_square"/>
                 </div>
                 <div class="input-field-arend-repair-need-square">
                   <label>Площадь, требующая ремонта, Кв. м.</label>
-                  <q-input outlined type="number" v-model.number="data.repair_need_square"/>
+                  <q-input outlined type="number" step="0.001" v-model.number="data.repair_need_square"/>
                 </div>
               </q-card>
               <br/>
@@ -496,7 +491,6 @@
                          mask="####"
                          ref="year"
                          unmasked-value
-                         lazy-rules
                          :rules="[val => val > 1899 && val <= new Date().getFullYear() || 'начиная от 1900 г, не ранее, до текущего']"
                 />
               </div>

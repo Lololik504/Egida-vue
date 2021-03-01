@@ -10,6 +10,7 @@
             <q-input outlined
                      :disable="disable"
                      type="number"
+                     step="0.001"
                      hint="подсказка «Зелёные насажде́ния — совокупность древесных, кустарниковых и травянистых растений на определённой территории»"
                      v-model.number="green_area_square"/>
           </div>
@@ -94,7 +95,5 @@ export default {
 </script>
 
 <style scoped>
-.select {
-  margin-bottom: 1px;
-}
+
 </style>

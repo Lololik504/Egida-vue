@@ -15,38 +15,38 @@
                   <h6 class="col">Работоспособное состояние</h6>
                   <div class="input-field-roof-square col">
                     <label>Процент актовых залов</label>
-                    <q-input outlined type="number" :disable="disable" v-model="data.auditorium_ok_percent"/>
+                    <q-input outlined type="number" step="0.001" :disable="disable" v-model="data.auditorium_ok_percent"/>
                   </div>
                 </q-item>
                 <q-item class="column">
                   <h6 class="col">Ограниченно работоспособное состояние</h6>
                   <div class="input-field-roof-square col">
                     <label>Процент актовых залов</label>
-                    <q-input outlined type="number" :disable="disable" v-model="data.auditorium_warning_percent"/>
+                    <q-input outlined type="number" step="0.001" :disable="disable" v-model="data.auditorium_warning_percent"/>
                   </div>
                 </q-item>
                 <q-item class="column">
                   <h6 class="col">Ограниченно работоспособное состояние</h6>
                   <div class="input-field-roof-square col">
                     <label>Процент актовых залов</label>
-                    <q-input outlined type="number" :disable="disable" v-model="data.auditorium_emergency_percent"/>
+                    <q-input outlined type="number" step="0.001" :disable="disable" v-model="data.auditorium_emergency_percent"/>
                   </div>
                 </q-item>
               </q-list>
             </div>
-            <div class="input-roof-photo">
-              <label>Акт обследования технического состояния (экспертной оценки специализированной организации)</label>
-              <q-file
-                  v-model="act"
-                  outlined
-                  :disable="disable"
-                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"
-                  multiple
-                  max-total-size="25165824"
-                  accept=".jpg, image/jpeg, .pdf"
-                  @rejected="onRejected"
-              />
-            </div>
+<!--            <div class="input-roof-photo">-->
+<!--              <label>Акт обследования технического состояния (экспертной оценки специализированной организации)</label>-->
+<!--              <q-file-->
+<!--                  v-model="act"-->
+<!--                  outlined-->
+<!--                  :disable="disable"-->
+<!--                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"-->
+<!--                  multiple-->
+<!--                  max-total-size="25165824"-->
+<!--                  accept=".jpg, image/jpeg, .pdf"-->
+<!--                  @rejected="onRejected"-->
+<!--              />-->
+<!--            </div>-->
           </q-card>
           <br/>
           <div class="select-type-field">

@@ -22,7 +22,7 @@
           </div>
           <div class="input-field-window-count">
             <label>Сумма на обслуживание системы автоматического дымоудаления в год, тыс.руб.</label>
-            <q-input outlined :disable="disable" type="number" v-model.number="data.price_for_ASE_per_year"/>
+            <q-input outlined :disable="disable" step="0.00001" type="number" v-model.number="data.price_for_ASE_per_year"/>
           </div>
           <button class="btn waves-effect waves" @click.prevent="disable = false" v-if="disable">
             Редактирование

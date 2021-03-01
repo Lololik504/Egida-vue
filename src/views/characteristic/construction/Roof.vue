@@ -7,21 +7,21 @@
         <div class="q-pa-md">
           <div class="input-field-roof-square">
             <label>Площадь кровли, кв. м.</label>
-            <q-input outlined :disable="disable" type="number" v-model.number="data.roof_square"/>
+            <q-input outlined :disable="disable" step="0.001" type="number" v-model.number="data.roof_square"/>
           </div>
-          <div class="input-roof-photo">
-            <label>Фото кровли</label>
-            <q-file
-                v-model="data.photo"
-                outlined
-                :disable="disable"
-                hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"
-                multiple
-                max-total-size="25165824"
-                accept=".jpg, image/jpeg, .pdf"
-                @rejected="onRejected"
-            />
-          </div>
+<!--          <div class="input-roof-photo">-->
+<!--            <label>Фото кровли</label>-->
+<!--            <q-file-->
+<!--                v-model="data.photo"-->
+<!--                outlined-->
+<!--                :disable="disable"-->
+<!--                hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"-->
+<!--                multiple-->
+<!--                max-total-size="25165824"-->
+<!--                accept=".jpg, image/jpeg, .pdf"-->
+<!--                @rejected="onRejected"-->
+<!--            />-->
+<!--          </div>-->
           <div class="select-type-field">
             <label>Тип кровли</label>
             <div class="select">
@@ -113,19 +113,19 @@
             </div>
           </q-card>
           <br/>
-          <div class="input-roof-photo">
-            <label>Акт обследования технического состояния (экспертной оценки специализированной организации)</label>
-            <q-file
-                v-model="data.act"
-                :disable="disable"
-                outlined
-                hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"
-                multiple
-                max-total-size="25165824"
-                accept=".jpg, image/jpeg, .pdf"
-                @rejected="onRejected"
-            />
-          </div>
+<!--          <div class="input-roof-photo">-->
+<!--            <label>Акт обследования технического состояния (экспертной оценки специализированной организации)</label>-->
+<!--            <q-file-->
+<!--                v-model="data.act"-->
+<!--                :disable="disable"-->
+<!--                outlined-->
+<!--                hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"-->
+<!--                multiple-->
+<!--                max-total-size="25165824"-->
+<!--                accept=".jpg, image/jpeg, .pdf"-->
+<!--                @rejected="onRejected"-->
+<!--            />-->
+<!--          </div>-->
           <button class="btn waves-effect waves" @click.prevent="disable = false" v-if="disable">
             Редактирование
           </button>

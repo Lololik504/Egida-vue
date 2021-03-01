@@ -10,7 +10,8 @@
           <div class="select-type-field">
             <label>Энергоснабжающая организация</label>
             <div class="select">
-              <q-select outlined :disable="disable" v-model="data.heat_power_supply_organization" :options="organizations"/>
+              <q-select outlined :disable="disable" v-model="data.heat_power_supply_organization"
+                        :options="organizations"/>
             </div>
           </div>
           <div v-if="data.heat_power_supply_organization === organizations[2]">
@@ -62,27 +63,35 @@
           <div class="input-field-roof-square">
             <label>Питание от камеры №</label>
             <q-input outlined :disable="disable" v-model="data.heat_powered_by_camera"/>
+            <q-tooltip anchor="bottom middle" self="bottom middle">Взять из акта балансового разграничения</q-tooltip>
           </div>
           <div class="input-field-roof-square">
             <label>Питание от магистрали №</label>
             <q-input outlined :disable="disable" v-model="data.heat_power_supply_from_line"/>
+            <q-tooltip anchor="bottom middle" self="bottom middle">Взять из акта балансового разграничения</q-tooltip>
           </div>
           <div class="select-type-field">
             <label>Граница эксплуатационной ответственности</label>
             <div class="select">
-              <q-select outlined :disable="disable" v-model="data.operational_responsibility_boundary" :options="borders"/>
+              <q-select outlined :disable="disable" v-model="data.operational_responsibility_boundary"
+                        :options="borders"/>
             </div>
           </div>
           <div class="select-type-field">
             <label>Схема подключение горячего водоснабжения</label>
             <div class="select">
               <q-select outlined :disable="disable" v-model="data.hot_water_connection_diagram" :options="schemas"/>
+              <q-tooltip anchor="bottom middle" self="bottom middle"
+                         v-if="data.hot_water_connection_diagram === schemas[2]">Электрический водонагреватель не
+                относится к ВПУ!
+              </q-tooltip>
             </div>
           </div>
           <div class="select-type-field">
             <label>Тип присоединения системы отопления</label>
             <div class="select">
-              <q-select outlined :disable="disable" v-model="data.heating_system_connection_type" :options="schema_types"/>
+              <q-select outlined :disable="disable" v-model="data.heating_system_connection_type"
+                        :options="schema_types"/>
             </div>
           </div>
           <div class="input-field-mask">
@@ -104,19 +113,19 @@
           <div class="row">
             <div class="col">
               <label>Отопление</label>
-              <q-input outlined :disable="disable" type="number" v-model.number="data.thermal_loads_heating"/>
+              <q-input outlined :disable="disable" step="0.001" type="number" v-model.number="data.thermal_loads_heating"/>
             </div>
             <div class="col">
               <label>Горячее водоснабжение</label>
-              <q-input outlined :disable="disable" type="number" v-model.number="data.thermal_loads_hot_water_supply"/>
+              <q-input outlined :disable="disable" step="0.001" type="number" v-model.number="data.thermal_loads_hot_water_supply"/>
             </div>
             <div class="col">
               <label>Вентиляция</label>
-              <q-input outlined :disable="disable" type="number" v-model.number="data.thermal_loads_ventilation"/>
+              <q-input outlined :disable="disable" step="0.001" type="number" v-model.number="data.thermal_loads_ventilation"/>
             </div>
             <div class="col">
               <label>Суммарная</label>
-              <q-input outlined :disable="disable" type="number" v-model.number="data.thermal_loads_total"/>
+              <q-input outlined :disable="disable" step="0.001" type="number" v-model.number="data.thermal_loads_total"/>
             </div>
           </div>
           <div class="input-field-roof-square">
@@ -125,7 +134,8 @@
           </div>
           <div class="input-field-roof-square">
             <label>Количество систем автоматического регулирования приточной установки</label>
-            <q-input outlined :disable="disable" type="number" v-model="data.number_of_automatic_control_systems_for_the_air_handling_unit"/>
+            <q-input outlined :disable="disable" type="number"
+                     v-model="data.number_of_automatic_control_systems_for_the_air_handling_unit"/>
           </div>
           <q-card flat bordered class="my-card">
             <label>Техническое состояние системы отопления:</label>
@@ -133,7 +143,8 @@
               <q-list>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio :disable="disable" v-model="data.technical_condition_of_the_heating_system" val="Работоспособное состояние"/>
+                    <q-radio :disable="disable" v-model="data.technical_condition_of_the_heating_system"
+                             val="Работоспособное состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Работоспособное состояние</q-item-label>
@@ -148,7 +159,8 @@
                 </q-item>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio :disable="disable" v-model="data.technical_condition_of_the_heating_system" val="Ограниченно работоспособное состояние"/>
+                    <q-radio :disable="disable" v-model="data.technical_condition_of_the_heating_system"
+                             val="Ограниченно работоспособное состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Ограниченно работоспособное состояние</q-item-label>
@@ -162,7 +174,8 @@
                 </q-item>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio :disable="disable" v-model="data.technical_condition_of_the_heating_system" val="Аварийное состояние"/>
+                    <q-radio :disable="disable" v-model="data.technical_condition_of_the_heating_system"
+                             val="Аварийное состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Аварийное состояние</q-item-label>
@@ -174,19 +187,19 @@
                 </q-item>
               </q-list>
             </div>
-            <div class="input-roof-photo">
-              <label>Акт обследования технического состояния (экспертной оценки специализированной организации)</label>
-              <q-file
-                  v-model="data.act_heating"
-                  outlined
-                  :disable="disable"
-                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"
-                  multiple
-                  max-total-size="25165824"
-                  accept=".jpg, image/jpeg, .pdf"
-                  @rejected="onRejected"
-              />
-            </div>
+<!--            <div class="input-roof-photo">-->
+<!--              <label>Акт обследования технического состояния (экспертной оценки специализированной организации)</label>-->
+<!--              <q-file-->
+<!--                  v-model="data.act_heating"-->
+<!--                  outlined-->
+<!--                  :disable="disable"-->
+<!--                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"-->
+<!--                  multiple-->
+<!--                  max-total-size="25165824"-->
+<!--                  accept=".jpg, image/jpeg, .pdf"-->
+<!--                  @rejected="onRejected"-->
+<!--              />-->
+<!--            </div>-->
           </q-card>
           <br/>
           <q-card flat bordered class="my-card">
@@ -195,7 +208,8 @@
               <q-list>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio :disable="disable" v-model="data.technical_condition_of_the_ventilation_system" val="Работоспособное состояние"/>
+                    <q-radio :disable="disable" v-model="data.technical_condition_of_the_ventilation_system"
+                             val="Работоспособное состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Работоспособное состояние</q-item-label>
@@ -210,7 +224,8 @@
                 </q-item>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio :disable="disable" v-model="data.technical_condition_of_the_ventilation_system" val="Ограниченно работоспособное состояние"/>
+                    <q-radio :disable="disable" v-model="data.technical_condition_of_the_ventilation_system"
+                             val="Ограниченно работоспособное состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Ограниченно работоспособное состояние</q-item-label>
@@ -224,7 +239,8 @@
                 </q-item>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio :disable="disable" v-model="data.technical_condition_of_the_ventilation_system" val="Аварийное состояние"/>
+                    <q-radio :disable="disable" v-model="data.technical_condition_of_the_ventilation_system"
+                             val="Аварийное состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Аварийное состояние</q-item-label>
@@ -236,19 +252,19 @@
                 </q-item>
               </q-list>
             </div>
-            <div class="input-roof-photo">
-              <label>Акт обследования технического состояния (экспертной оценки специализированной организации)</label>
-              <q-file
-                  v-model="data.act_ventilation"
-                  outlined
-                  :disable="disable"
-                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"
-                  multiple
-                  max-total-size="25165824"
-                  accept=".jpg, image/jpeg, .pdf"
-                  @rejected="onRejected"
-              />
-            </div>
+<!--            <div class="input-roof-photo">-->
+<!--              <label>Акт обследования технического состояния (экспертной оценки специализированной организации)</label>-->
+<!--              <q-file-->
+<!--                  v-model="data.act_ventilation"-->
+<!--                  outlined-->
+<!--                  :disable="disable"-->
+<!--                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"-->
+<!--                  multiple-->
+<!--                  max-total-size="25165824"-->
+<!--                  accept=".jpg, image/jpeg, .pdf"-->
+<!--                  @rejected="onRejected"-->
+<!--              />-->
+<!--            </div>-->
           </q-card>
           <br/>
           <q-card flat bordered class="my-card">
@@ -257,7 +273,8 @@
               <q-list>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio :disable="disable" v-model="data.technical_condition_of_the_hot_water_supply_system" val="Работоспособное состояние"/>
+                    <q-radio :disable="disable" v-model="data.technical_condition_of_the_hot_water_supply_system"
+                             val="Работоспособное состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Работоспособное состояние</q-item-label>
@@ -272,7 +289,8 @@
                 </q-item>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio :disable="disable" v-model="data.technical_condition_of_the_hot_water_supply_system" val="Ограниченно работоспособное состояние"/>
+                    <q-radio :disable="disable" v-model="data.technical_condition_of_the_hot_water_supply_system"
+                             val="Ограниченно работоспособное состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Ограниченно работоспособное состояние</q-item-label>
@@ -286,7 +304,8 @@
                 </q-item>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio :disable="disable" v-model="data.technical_condition_of_the_hot_water_supply_system" val="Аварийное состояние"/>
+                    <q-radio :disable="disable" v-model="data.technical_condition_of_the_hot_water_supply_system"
+                             val="Аварийное состояние"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Аварийное состояние</q-item-label>
@@ -298,136 +317,136 @@
                 </q-item>
               </q-list>
             </div>
-            <div class="input-roof-photo">
-              <label>Акт обследования технического состояния (экспертной оценки специализированной организации)</label>
-              <q-file
-                  v-model="data.act_water_supply"
-                  outlined
-                  :disable="disable"
-                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"
-                  multiple
-                  max-total-size="25165824"
-                  accept=".jpg, image/jpeg, .pdf"
-                  @rejected="onRejected"
-              />
-            </div>
+<!--            <div class="input-roof-photo">-->
+<!--              <label>Акт обследования технического состояния (экспертной оценки специализированной организации)</label>-->
+<!--              <q-file-->
+<!--                  v-model="data.act_water_supply"-->
+<!--                  outlined-->
+<!--                  :disable="disable"-->
+<!--                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"-->
+<!--                  multiple-->
+<!--                  max-total-size="25165824"-->
+<!--                  accept=".jpg, image/jpeg, .pdf"-->
+<!--                  @rejected="onRejected"-->
+<!--              />-->
+<!--            </div>-->
           </q-card>
           <br/>
-<!--          <h5><strong>Документация</strong></h5>-->
-<!--          <div class="row">-->
-<!--            <div class="col">-->
-<!--              <label>Паспорт ввода</label>-->
-<!--              <q-file-->
-<!--                  v-model="inputPassportDoc"-->
-<!--                  outlined-->
-<!--                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"-->
-<!--                  multiple-->
-<!--                  max-total-size="25165824"-->
-<!--                  accept=".jpg, image/jpeg, .pdf"-->
-<!--                  @rejected="onRejected"-->
-<!--              />-->
-<!--            </div>-->
-<!--            <div class="col">-->
-<!--              <label>Схема ввода</label>-->
-<!--              <q-file-->
-<!--                  v-model="inputSchemaDoc"-->
-<!--                  outlined-->
-<!--                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"-->
-<!--                  multiple-->
-<!--                  max-total-size="25165824"-->
-<!--                  accept=".jpg, image/jpeg, .pdf"-->
-<!--                  @rejected="onRejected"-->
-<!--              />-->
-<!--            </div>-->
-<!--            <div class="col">-->
-<!--              <label>Паспорт ИТП</label>-->
-<!--              <q-file-->
-<!--                  v-model="passportITPDoc"-->
-<!--                  outlined-->
-<!--                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"-->
-<!--                  multiple-->
-<!--                  max-total-size="25165824"-->
-<!--                  accept=".jpg, image/jpeg, .pdf"-->
-<!--                  @rejected="onRejected"-->
-<!--              />-->
-<!--            </div>-->
-<!--          </div>-->
-<!--          <div class="row">-->
-<!--            <div class="col">-->
-<!--              <label>Схема ИТП</label>-->
-<!--              <q-file-->
-<!--                  v-model="schemaITPDoc"-->
-<!--                  outlined-->
-<!--                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"-->
-<!--                  multiple-->
-<!--                  max-total-size="25165824"-->
-<!--                  accept=".jpg, image/jpeg, .pdf"-->
-<!--                  @rejected="onRejected"-->
-<!--              />-->
-<!--            </div>-->
-<!--            <div class="col">-->
-<!--              <label>Акт балансового разграничения</label>-->
-<!--              <q-file-->
-<!--                  v-model="balanceActDoc"-->
-<!--                  outlined-->
-<!--                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"-->
-<!--                  multiple-->
-<!--                  max-total-size="25165824"-->
-<!--                  accept=".jpg, image/jpeg, .pdf"-->
-<!--                  @rejected="onRejected"-->
-<!--              />-->
-<!--            </div>-->
-<!--            <div class="col">-->
-<!--              <label>Схема балансового разграничения</label>-->
-<!--              <q-file-->
-<!--                  v-model="balanceSchemaDoc"-->
-<!--                  outlined-->
-<!--                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"-->
-<!--                  multiple-->
-<!--                  max-total-size="25165824"-->
-<!--                  accept=".jpg, image/jpeg, .pdf"-->
-<!--                  @rejected="onRejected"-->
-<!--              />-->
-<!--            </div>-->
-<!--          </div>-->
-<!--          <div class="row">-->
-<!--            <div class="col">-->
-<!--              <label>Справка о тепловых нагрузках</label>-->
-<!--              <q-file-->
-<!--                  v-model="referenceDoc"-->
-<!--                  outlined-->
-<!--                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"-->
-<!--                  multiple-->
-<!--                  max-total-size="25165824"-->
-<!--                  accept=".jpg, image/jpeg, .pdf"-->
-<!--                  @rejected="onRejected"-->
-<!--              />-->
-<!--            </div>-->
-<!--            <div class="col">-->
-<!--              <label>Расчет тепловых потерь</label>-->
-<!--              <q-file-->
-<!--                  v-model="paymentDoc"-->
-<!--                  outlined-->
-<!--                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"-->
-<!--                  multiple-->
-<!--                  max-total-size="25165824"-->
-<!--                  accept=".jpg, image/jpeg, .pdf"-->
-<!--                  @rejected="onRejected"-->
-<!--              />-->
-<!--            </div>-->
-<!--            <div class="col">-->
-<!--              <label>Топоснова</label>-->
-<!--              <q-file-->
-<!--                  v-model="toposnovaDoc"-->
-<!--                  outlined-->
-<!--                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"-->
-<!--                  multiple-->
-<!--                  max-total-size="25165824"-->
-<!--                  accept=".jpg, image/jpeg, .pdf"-->
-<!--                  @rejected="onRejected"-->
-<!--              />-->
-<!--            </div>-->
-<!--          </div>-->
+          <!--          <h5><strong>Документация</strong></h5>-->
+          <!--          <div class="row">-->
+          <!--            <div class="col">-->
+          <!--              <label>Паспорт ввода</label>-->
+          <!--              <q-file-->
+          <!--                  v-model="inputPassportDoc"-->
+          <!--                  outlined-->
+          <!--                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"-->
+          <!--                  multiple-->
+          <!--                  max-total-size="25165824"-->
+          <!--                  accept=".jpg, image/jpeg, .pdf"-->
+          <!--                  @rejected="onRejected"-->
+          <!--              />-->
+          <!--            </div>-->
+          <!--            <div class="col">-->
+          <!--              <label>Схема ввода</label>-->
+          <!--              <q-file-->
+          <!--                  v-model="inputSchemaDoc"-->
+          <!--                  outlined-->
+          <!--                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"-->
+          <!--                  multiple-->
+          <!--                  max-total-size="25165824"-->
+          <!--                  accept=".jpg, image/jpeg, .pdf"-->
+          <!--                  @rejected="onRejected"-->
+          <!--              />-->
+          <!--            </div>-->
+          <!--            <div class="col">-->
+          <!--              <label>Паспорт ИТП</label>-->
+          <!--              <q-file-->
+          <!--                  v-model="passportITPDoc"-->
+          <!--                  outlined-->
+          <!--                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"-->
+          <!--                  multiple-->
+          <!--                  max-total-size="25165824"-->
+          <!--                  accept=".jpg, image/jpeg, .pdf"-->
+          <!--                  @rejected="onRejected"-->
+          <!--              />-->
+          <!--            </div>-->
+          <!--          </div>-->
+          <!--          <div class="row">-->
+          <!--            <div class="col">-->
+          <!--              <label>Схема ИТП</label>-->
+          <!--              <q-file-->
+          <!--                  v-model="schemaITPDoc"-->
+          <!--                  outlined-->
+          <!--                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"-->
+          <!--                  multiple-->
+          <!--                  max-total-size="25165824"-->
+          <!--                  accept=".jpg, image/jpeg, .pdf"-->
+          <!--                  @rejected="onRejected"-->
+          <!--              />-->
+          <!--            </div>-->
+          <!--            <div class="col">-->
+          <!--              <label>Акт балансового разграничения</label>-->
+          <!--              <q-file-->
+          <!--                  v-model="balanceActDoc"-->
+          <!--                  outlined-->
+          <!--                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"-->
+          <!--                  multiple-->
+          <!--                  max-total-size="25165824"-->
+          <!--                  accept=".jpg, image/jpeg, .pdf"-->
+          <!--                  @rejected="onRejected"-->
+          <!--              />-->
+          <!--            </div>-->
+          <!--            <div class="col">-->
+          <!--              <label>Схема балансового разграничения</label>-->
+          <!--              <q-file-->
+          <!--                  v-model="balanceSchemaDoc"-->
+          <!--                  outlined-->
+          <!--                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"-->
+          <!--                  multiple-->
+          <!--                  max-total-size="25165824"-->
+          <!--                  accept=".jpg, image/jpeg, .pdf"-->
+          <!--                  @rejected="onRejected"-->
+          <!--              />-->
+          <!--            </div>-->
+          <!--          </div>-->
+          <!--          <div class="row">-->
+          <!--            <div class="col">-->
+          <!--              <label>Справка о тепловых нагрузках</label>-->
+          <!--              <q-file-->
+          <!--                  v-model="referenceDoc"-->
+          <!--                  outlined-->
+          <!--                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"-->
+          <!--                  multiple-->
+          <!--                  max-total-size="25165824"-->
+          <!--                  accept=".jpg, image/jpeg, .pdf"-->
+          <!--                  @rejected="onRejected"-->
+          <!--              />-->
+          <!--            </div>-->
+          <!--            <div class="col">-->
+          <!--              <label>Расчет тепловых потерь</label>-->
+          <!--              <q-file-->
+          <!--                  v-model="paymentDoc"-->
+          <!--                  outlined-->
+          <!--                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"-->
+          <!--                  multiple-->
+          <!--                  max-total-size="25165824"-->
+          <!--                  accept=".jpg, image/jpeg, .pdf"-->
+          <!--                  @rejected="onRejected"-->
+          <!--              />-->
+          <!--            </div>-->
+          <!--            <div class="col">-->
+          <!--              <label>Топоснова</label>-->
+          <!--              <q-file-->
+          <!--                  v-model="toposnovaDoc"-->
+          <!--                  outlined-->
+          <!--                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"-->
+          <!--                  multiple-->
+          <!--                  max-total-size="25165824"-->
+          <!--                  accept=".jpg, image/jpeg, .pdf"-->
+          <!--                  @rejected="onRejected"-->
+          <!--              />-->
+          <!--            </div>-->
+          <!--          </div>-->
           <button class="btn waves-effect waves" @click.prevent="disable = false" v-if="disable">
             Редактирование
           </button>
@@ -548,7 +567,7 @@ export default {
     },
     showMessage(text) {
       if (messages[text]) {
-        window.scrollTo(0,0)
+        window.scrollTo(0, 0)
         this.$message(messages[text])
       }
     }

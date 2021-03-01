@@ -90,19 +90,19 @@
             </div>
           </q-card>
           <br/>
-          <div class="input-roof-photo">
-            <label>Акт обследования технического состояния (экспертной оценки специализированной организации)</label>
-            <q-file
-                v-model="data.act"
-                outlined
-                :disable="disable"
-                hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"
-                multiple
-                max-total-size="25165824"
-                accept=".jpg, image/jpeg, .pdf"
-                @rejected="onRejected"
-            />
-          </div>
+<!--          <div class="input-roof-photo">-->
+<!--            <label>Акт обследования технического состояния (экспертной оценки специализированной организации)</label>-->
+<!--            <q-file-->
+<!--                v-model="data.act"-->
+<!--                outlined-->
+<!--                :disable="disable"-->
+<!--                hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"-->
+<!--                multiple-->
+<!--                max-total-size="25165824"-->
+<!--                accept=".jpg, image/jpeg, .pdf"-->
+<!--                @rejected="onRejected"-->
+<!--            />-->
+<!--          </div>-->
           <button class="btn waves-effect waves" @click.prevent="disable = false" v-if="disable">
             Редактирование
           </button>

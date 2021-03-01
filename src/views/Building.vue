@@ -61,11 +61,11 @@
             </div>
             <div class="input-field-building-square">
               <label>Площадь здания, Кв. м.</label>
-              <q-input outlined :disable="disable" v-model.number="d.building_square"/>
+              <q-input outlined :disable="disable" step="0.001" type="number" v-model.number="d.building_square"/>
             </div>
             <div class="input-field-land-square">
               <label>Площадь земельного участка, Кв. м.</label>
-              <q-input outlined :disable="disable" type="number" v-model.number="d.land_square"/>
+              <q-input outlined :disable="disable"  step="0.001" type="number" v-model.number="d.land_square"/>
             </div>
             <div class="input-field-number-of-storeys">
               <label>Этажность здания</label>
@@ -73,17 +73,17 @@
             </div>
             <div class="input-field-build-height">
               <label>Высота здания (м)</label>
-              <q-input outlined :disable="disable" type="number" v-model.number="d.build_height"/>
+              <q-input outlined :disable="disable" step="0.001" type="number" v-model.number="d.build_height"/>
             </div>
             <q-card flat bordered class="my-card">
               <label>Здания (помещения), сдаваемые в аренду или безвозмездное пользование:</label>
               <div class="input-field-arend-square">
                 <label>Площадь, Кв. м.</label>
-                <q-input outlined :disable="disable" type="number" v-model.number="d.arend_square"/>
+                <q-input outlined :disable="disable" step="0.001" type="number" v-model.number="d.arend_square"/>
               </div>
               <div class="input-field-arend-use-type">
                 <label>Вид использования</label>
-                <q-input outlined :disable="disable" type="text" v-model="d.arend_use_type"/>
+                <q-input outlined :disable="disable" step="0.001" type="text" v-model="d.arend_use_type"/>
               </div>
             </q-card>
             <br/>
@@ -91,11 +91,11 @@
               <label>Наполняемость:</label>
               <div class="input-field-occupancy-proj">
                 <label>Проектная</label>
-                <q-input outlined :disable="disable" type="number" v-model.number="d.occupancy_proj"/>
+                <q-input outlined :disable="disable" step="0.001" type="number" v-model.number="d.occupancy_proj"/>
               </div>
               <div class="input-field-arend-occupancy-fact">
                 <label>Фактическая</label>
-                <q-input outlined :disable="disable" type="number" v-model.number="d.occupancy_fact"/>
+                <q-input outlined :disable="disable" step="0.001" type="number" v-model.number="d.occupancy_fact"/>
               </div>
             </q-card>
             <br/>
@@ -103,11 +103,11 @@
               <label>Неиспользуемые здания (помещения):</label>
               <div class="input-field-unused-square">
                 <label>Общая площадь, Кв. м.</label>
-                <q-input outlined :disable="disable" type="number" v-model.number="d.unused_square"/>
+                <q-input outlined :disable="disable" step="0.001" type="number" v-model.number="d.unused_square"/>
               </div>
               <div class="input-field-arend-repair-need-square">
                 <label>Площадь, требующая ремонта, Кв. м.</label>
-                <q-input outlined :disable="disable" type="number" v-model.number="d.repair_need_square"/>
+                <q-input outlined :disable="disable" step="0.001" type="number" v-model.number="d.repair_need_square"/>
               </div>
             </q-card>
             <br/>
@@ -220,11 +220,11 @@
           </div>
           <div class="input-field-building-square">
             <label>Площадь занимаемых помещений, Кв. м.</label>
-            <q-input outlined :disable="disable" type="number" v-model.number="d.building_square"/>
+            <q-input outlined :disable="disable" step="0.001" type="number" v-model.number="d.building_square"/>
           </div>
           <div class="input-field-land-square">
             <label>Площадь земельного участка, Кв. м.</label>
-            <q-input outlined :disable="disable" type="number" v-model.number="d.land_square"/>
+            <q-input outlined :disable="disable" step="0.001" type="number" v-model.number="d.land_square"/>
           </div>
           <div class="input-field-number-of-storeys">
             <label>Этажность всего здания</label>
@@ -246,11 +246,11 @@
             <label>Неиспользуемые здания (помещения):</label>
             <div class="input-field-unused-square">
               <label>Общая площадь, Кв. м.</label>
-              <q-input outlined :disable="disable" type="number" v-model.number="d.unused_square"/>
+              <q-input outlined :disable="disable" step="0.001" type="number" v-model.number="d.unused_square"/>
             </div>
             <div class="input-field-arend-repair-need-square">
               <label>Площадь, требующая ремонта, Кв. м.</label>
-              <q-input outlined :disable="disable" type="number" v-model.number="d.repair_need_square"/>
+              <q-input outlined :disable="disable" step="0.001" type="number" v-model.number="d.repair_need_square"/>
             </div>
           </q-card>
           <br/>
@@ -370,11 +370,11 @@
             </div>
             <div class="input-field-building-square">
               <label>Площадь занимаемого помещения, Кв. м.</label>
-              <q-input outlined :disable="disable" type="number" v-model.number="d.building_square"/>
+              <q-input outlined :disable="disable" step="0.001" type="number" v-model.number="d.building_square"/>
             </div>
             <div class="input-field-land-square">
               <label>Площадь земельного участка, Кв. м.</label>
-              <q-input outlined :disable="disable" type="number" v-model.number="d.land_square"/>
+              <q-input outlined :disable="disable" step="0.001" type="number" v-model.number="d.land_square"/>
             </div>
             <div class="input-field-number-of-storeys">
               <label>Этажность пристройки</label>
@@ -382,17 +382,17 @@
             </div>
             <div class="input-field-build-height">
               <label>Высота пристройки (м)</label>
-              <q-input outlined :disable="disable" type="number" v-model.number="d.build_height"/>
+              <q-input outlined :disable="disable" step="0.001" type="number" v-model.number="d.build_height"/>
             </div>
             <q-card flat bordered class="my-card">
               <label>Здания (помещения), сдаваемые в аренду или безвозмездное пользование:</label>
               <div class="input-field-arend-square">
                 <label>Площадь, Кв. м.</label>
-                <q-input outlined :disable="disable" type="number" v-model.number="d.arend_square"/>
+                <q-input outlined :disable="disable" step="0.001" type="number" v-model.number="d.arend_square"/>
               </div>
               <div class="input-field-arend-use-type">
                 <label>Вид использования</label>
-                <q-input outlined :disable="disable" type="text" v-model="d.arend_use_type"/>
+                <q-input outlined :disable="disable"  type="text" v-model="d.arend_use_type"/>
               </div>
             </q-card>
             <br/>
@@ -412,11 +412,11 @@
               <label>Неиспользуемые здания (помещения):</label>
               <div class="input-field-unused-square">
                 <label>Общая площадь, Кв. м.</label>
-                <q-input outlined :disable="disable" type="number" v-model.number="d.unused_square"/>
+                <q-input outlined :disable="disable" step="0.001" type="number" v-model.number="d.unused_square"/>
               </div>
               <div class="input-field-arend-repair-need-square">
                 <label>Площадь, требующая ремонта, Кв. м.</label>
-                <q-input outlined :disable="disable" type="number" v-model.number="d.repair_need_square"/>
+                <q-input outlined :disable="disable" step="0.001" type="number" v-model.number="d.repair_need_square"/>
               </div>
             </q-card>
             <br/>

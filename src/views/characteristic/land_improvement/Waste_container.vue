@@ -16,33 +16,38 @@
                         :options="[{label: 'Есть', value: true}, {label: 'Нет', value: false}]"/>
             </div>
           </div>
-          <div class="select-material-field">
-            <label>Материал покрытия контейнерной площадки</label>
-            <div class="select">
-              <q-select outlined :disable="disable" v-model="data.container_site_material" :options="['Бетон', 'Асфальт', 'Иное']"/>
+          <div v-if="data.container_site">
+            <div class="select-material-field">
+              <label>Материал покрытия контейнерной площадки</label>
+              <div class="select">
+                <q-select outlined :disable="disable" v-model="data.container_site_material"
+                          :options="['Бетон', 'Асфальт', 'Иное']"/>
+              </div>
             </div>
-          </div>
-          <div v-if="data.container_site_material === 'Иное'">
-            <label>Введите материал покрытия контейнерной площадки</label>
-            <q-input outlined :disable="disable" v-model="data.other_material"/>
-          </div>
-          <div class="input-field-window-percent">
-            <label>Площадь контейнерной площадки, м2</label>
-            <q-input outlined :disable="disable" type="number" v-model.number="data.container_site_square"/>
-          </div>
-          <div class="select-type-field">
-            <label>Наличие ограждения контейнерной площадки</label>
-            <div class="select">
-              <q-select outlined v-model="data.container_site_fence"
-                        :disable="disable"
-                        emit-value
-                        map-options
-                        :options="[{label: 'Есть', value: true}, {label: 'Нет', value: false}]"/>
+            <div v-if="data.container_site_material === 'Иное'">
+              <label>Введите материал покрытия контейнерной площадки</label>
+              <q-input outlined :disable="disable" v-model="data.other_material"/>
             </div>
-          </div>
-          <div class="input-field-window-count">
-            <label>Суммарный объем контейнеров, м3</label>
-            <q-input outlined :disable="disable" type="number" v-model.number="data.total_container_volume"/>
+            <div class="input-field-window-percent">
+              <label>Площадь контейнерной площадки, м2</label>
+              <q-input outlined :disable="disable" step="0.001" type="number"
+                       v-model.number="data.container_site_square"/>
+            </div>
+            <div class="select-type-field">
+              <label>Наличие ограждения контейнерной площадки</label>
+              <div class="select">
+                <q-select outlined v-model="data.container_site_fence"
+                          :disable="disable"
+                          emit-value
+                          map-options
+                          :options="[{label: 'Есть', value: true}, {label: 'Нет', value: false}]"/>
+              </div>
+            </div>
+            <div class="input-field-window-count">
+              <label>Суммарный объем контейнеров, м3</label>
+              <q-input outlined :disable="disable" step="0.001" type="number"
+                       v-model.number="data.total_container_volume"/>
+            </div>
           </div>
           <button class="btn waves-effect waves" @click.prevent="disable = false" v-if="disable">
             Редактирование

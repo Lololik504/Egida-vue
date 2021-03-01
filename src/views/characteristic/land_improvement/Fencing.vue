@@ -7,7 +7,7 @@
         <div class="q-pa-md">
           <div class="input-field-square">
             <label>Объем ограждения, м.пог.</label>
-            <q-input outlined :disable="disable" type="number" v-model.number="data.fence_volume"/>
+            <q-input outlined :disable="disable" step="0.001" type="number" v-model.number="data.fence_volume"/>
           </div>
           <q-card flat bordered class="my-card">
             <label>Техническое состояние ограждения:</label>
@@ -17,20 +17,20 @@
                   <h6 class="col">Работоспособное состояние</h6>
                   <div class="input-field-roof-square col">
                     <label>Объем дефектного ограждения, м.пог</label>
-                    <q-input outlined :disable="disable" type="number" v-model="data.fence_ok_volume"/>
+                    <q-input outlined :disable="disable" step="0.001" type="number" v-model="data.fence_ok_volume"/>
                   </div>
                 </q-item>
                 <q-item class="column">
                   <h6 class="col">Ограниченно работоспособное состояние</h6>
                   <div class="input-field-roof-square col">
                     <label>Объем дефектного ограждения, м.пог</label>
-                    <q-input outlined :disable="disable" type="number" v-model="data.fence_warning_volume"/>
+                    <q-input outlined :disable="disable" step="0.001" type="number" v-model="data.fence_warning_volume"/>
                   </div>
                 </q-item><q-item class="column">
                 <h6 class="col">Ограниченно работоспособное состояние</h6>
                 <div class="input-field-roof-square col">
                   <label>Объем дефектного ограждения, м.пог</label>
-                  <q-input outlined :disable="disable" type="number" v-model="data.fence_emergency_volume"/>
+                  <q-input outlined :disable="disable" step="0.001" type="number" v-model="data.fence_emergency_volume"/>
                 </div>
               </q-item>
               </q-list>

@@ -31,12 +31,12 @@
           <div class="row">
             <div class="col">
               <label>Фактическая</label>
-              <q-input outlined :disable="disable" type="number"
+              <q-input outlined :disable="disable" type="number" step="0.001"
                        v-model.number="data.actual_power_supply_reliability_category"/>
             </div>
             <div class="col">
               <label>Требуемая</label>
-              <q-input outlined :disable="disable" type="number"
+              <q-input outlined :disable="disable" type="number" step="0.001"
                        v-model.number="data.required_power_supply_reliability_category"/>
             </div>
           </div>
@@ -49,7 +49,7 @@
           </div>
           <div class="input-field-roof-square">
             <label>Разрешенная мощность, кВт</label>
-            <q-input outlined :disable="disable" type="number" v-model.number="data.permitted_power"/>
+            <q-input outlined :disable="disable" step="0.001" type="number" v-model.number="data.permitted_power"/>
           </div>
           <div class="select-type-field">
             <label>Наличие контура заземления</label>
@@ -132,19 +132,19 @@
                 </q-item>
               </q-list>
             </div>
-            <div class="input-roof-photo">
-              <label>Акт обследования технического состояния (экспертной оценки специализированной организации)</label>
-              <q-file
-                  v-model="data.act_inside"
-                  outlined
-                  :disable="disable"
-                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"
-                  multiple
-                  max-total-size="25165824"
-                  accept=".jpg, image/jpeg, .pdf"
-                  @rejected="onRejected"
-              />
-            </div>
+<!--            <div class="input-roof-photo">-->
+<!--              <label>Акт обследования технического состояния (экспертной оценки специализированной организации)</label>-->
+<!--              <q-file-->
+<!--                  v-model="data.act_inside"-->
+<!--                  outlined-->
+<!--                  :disable="disable"-->
+<!--                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"-->
+<!--                  multiple-->
+<!--                  max-total-size="25165824"-->
+<!--                  accept=".jpg, image/jpeg, .pdf"-->
+<!--                  @rejected="onRejected"-->
+<!--              />-->
+<!--            </div>-->
           </q-card>
           <br/>
           <q-card flat bordered class="my-card">
@@ -197,19 +197,19 @@
                 </q-item>
               </q-list>
             </div>
-            <div class="input-roof-photo">
-              <label>Акт обследования технического состояния (экспертной оценки специализированной организации)</label>
-              <q-file
-                  v-model="data.act_outside"
-                  outlined
-                  :disable="disable"
-                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"
-                  multiple
-                  max-total-size="25165824"
-                  accept=".jpg, image/jpeg, .pdf"
-                  @rejected="onRejected"
-              />
-            </div>
+<!--            <div class="input-roof-photo">-->
+<!--              <label>Акт обследования технического состояния (экспертной оценки специализированной организации)</label>-->
+<!--              <q-file-->
+<!--                  v-model="data.act_outside"-->
+<!--                  outlined-->
+<!--                  :disable="disable"-->
+<!--                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"-->
+<!--                  multiple-->
+<!--                  max-total-size="25165824"-->
+<!--                  accept=".jpg, image/jpeg, .pdf"-->
+<!--                  @rejected="onRejected"-->
+<!--              />-->
+<!--            </div>-->
           </q-card>
           <br/>
           <!--          <h5><strong>Документация</strong></h5>-->

@@ -5,5 +5,7 @@ export default {
     'wrong-password': 'Введен неверный пароль!',
     'auth/email-already-in-use': 'Пользователь с данным Email уже существует',
     'error': 'Произошла ошибка!',
-    'saveSuccess': 'Данные успешно сохранены!'
+    'saveSuccess': 'Данные успешно сохранены!',
+    'failUploadFile': 'Файл не выбран!',
+    'successUploadFile': 'Файл загружен!'
 }

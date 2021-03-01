@@ -27,7 +27,8 @@ export default {
   data: () => ({
     loading: true,
     shortname: '',
-    permission: localStorage.getItem('permission') <= 10
+    permission: localStorage.getItem('permission') <= 10,
+    age: null
   }),
   methods: {
     mainInfo() {
