@@ -110,7 +110,7 @@
                   <q-list>
                     <q-item tag="label" v-ripple>
                       <q-item-section avatar top>
-                        <q-radio v-model="data.TECHNICAL_CONDITION" val="Исправное состояние"/>
+                        <q-radio v-model="data.technical_condition" val="Исправное состояние"/>
                       </q-item-section>
                       <q-item-section>
                         <q-item-label>Исправное состояние</q-item-label>
@@ -122,7 +122,7 @@
                     </q-item>
                     <q-item tag="label" v-ripple>
                       <q-item-section avatar top>
-                        <q-radio v-model="data.TECHNICAL_CONDITION" val="Работоспособное состояние"/>
+                        <q-radio v-model="data.technical_condition" val="Работоспособное состояние"/>
                       </q-item-section>
                       <q-item-section>
                         <q-item-label>Работоспособное состояние</q-item-label>
@@ -137,7 +137,7 @@
                     </q-item>
                     <q-item tag="label" v-ripple>
                       <q-item-section avatar top>
-                        <q-radio v-model="data.TECHNICAL_CONDITION" val="Ограниченно работоспособное состояние"/>
+                        <q-radio v-model="data.technical_condition" val="Ограниченно работоспособное состояние"/>
                       </q-item-section>
                       <q-item-section>
                         <q-item-label>Ограниченно работоспособное состояние</q-item-label>
@@ -151,7 +151,7 @@
                     </q-item>
                     <q-item tag="label" v-ripple>
                       <q-item-section avatar top>
-                        <q-radio v-model="data.TECHNICAL_CONDITION" val="Недопустимое состояние"/>
+                        <q-radio v-model="data.technical_condition" val="Недопустимое состояние"/>
                       </q-item-section>
                       <q-item-section>
                         <q-item-label>Недопустимое состояние</q-item-label>
@@ -165,7 +165,7 @@
                     </q-item>
                     <q-item tag="label" v-ripple>
                       <q-item-section avatar top>
-                        <q-radio v-model="data.TECHNICAL_CONDITION" val="Аварийное состояние"/>
+                        <q-radio v-model="data.technical_condition" val="Аварийное состояние"/>
                       </q-item-section>
                       <q-item-section>
                         <q-item-label>Аварийное состояние</q-item-label>
@@ -250,7 +250,7 @@
                 <q-list>
                   <q-item tag="label" v-ripple>
                     <q-item-section avatar top>
-                      <q-radio v-model="data.TECHNICAL_CONDITION" val="Исправное состояние"/>
+                      <q-radio v-model="data.technical_condition" val="Исправное состояние"/>
                     </q-item-section>
                     <q-item-section>
                       <q-item-label>Исправное состояние</q-item-label>
@@ -262,7 +262,7 @@
                   </q-item>
                   <q-item tag="label" v-ripple>
                     <q-item-section avatar top>
-                      <q-radio v-model="data.TECHNICAL_CONDITION" val="Работоспособное состояние"/>
+                      <q-radio v-model="data.technical_condition" val="Работоспособное состояние"/>
                     </q-item-section>
                     <q-item-section>
                       <q-item-label>Работоспособное состояние</q-item-label>
@@ -277,7 +277,7 @@
                   </q-item>
                   <q-item tag="label" v-ripple>
                     <q-item-section avatar top>
-                      <q-radio v-model="data.TECHNICAL_CONDITION" val="Ограниченно работоспособное состояние"/>
+                      <q-radio v-model="data.technical_condition" val="Ограниченно работоспособное состояние"/>
                     </q-item-section>
                     <q-item-section>
                       <q-item-label>Ограниченно работоспособное состояние</q-item-label>
@@ -291,7 +291,7 @@
                   </q-item>
                   <q-item tag="label" v-ripple>
                     <q-item-section avatar top>
-                      <q-radio v-model="data.TECHNICAL_CONDITION" val="Недопустимое состояние"/>
+                      <q-radio v-model="data.technical_condition" val="Недопустимое состояние"/>
                     </q-item-section>
                     <q-item-section>
                       <q-item-label>Недопустимое состояние</q-item-label>
@@ -413,7 +413,7 @@
                   <q-list>
                     <q-item tag="label" v-ripple>
                       <q-item-section avatar top>
-                        <q-radio v-model="data.TECHNICAL_CONDITION" val="Исправное состояние"/>
+                        <q-radio v-model="data.technical_condition" val="Исправное состояние"/>
                       </q-item-section>
                       <q-item-section>
                         <q-item-label>Исправное состояние</q-item-label>
@@ -425,7 +425,7 @@
                     </q-item>
                     <q-item tag="label" v-ripple>
                       <q-item-section avatar top>
-                        <q-radio v-model="data.TECHNICAL_CONDITION" val="Работоспособное состояние"/>
+                        <q-radio v-model="data.technical_condition" val="Работоспособное состояние"/>
                       </q-item-section>
                       <q-item-section>
                         <q-item-label>Работоспособное состояние</q-item-label>
@@ -440,7 +440,7 @@
                     </q-item>
                     <q-item tag="label" v-ripple>
                       <q-item-section avatar top>
-                        <q-radio v-model="data.TECHNICAL_CONDITION" val="Ограниченно работоспособное состояние"/>
+                        <q-radio v-model="data.technical_condition" val="Ограниченно работоспособное состояние"/>
                       </q-item-section>
                       <q-item-section>
                         <q-item-label>Ограниченно работоспособное состояние</q-item-label>
@@ -454,7 +454,7 @@
                     </q-item>
                     <q-item tag="label" v-ripple>
                       <q-item-section avatar top>
-                        <q-radio v-model="data.TECHNICAL_CONDITION" val="Недопустимое состояние"/>
+                        <q-radio v-model="data.technical_condition" val="Недопустимое состояние"/>
                       </q-item-section>
                       <q-item-section>
                         <q-item-label>Недопустимое состояние</q-item-label>
@@ -468,7 +468,7 @@
                     </q-item>
                     <q-item tag="label" v-ripple>
                       <q-item-section avatar top>
-                        <q-radio v-model="data.TECHNICAL_CONDITION" val="Аварийное состояние"/>
+                        <q-radio v-model="data.technical_condition" val="Аварийное состояние"/>
                       </q-item-section>
                       <q-item-section>
                         <q-item-label>Аварийное состояние</q-item-label>
@@ -516,7 +516,7 @@ export default {
       street: null,
       street_number: null,
       unused_square: null,
-      TECHNICAL_CONDITION: null,
+      technical_condition: null,
       repair_need_square: null,
       occupancy_proj: null,
       occupancy_fact: null,
