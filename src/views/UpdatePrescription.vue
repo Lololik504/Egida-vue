@@ -73,7 +73,7 @@
             <button class="btn waves-effect waves" @click.prevent="returnBackPage">
               Отменить
             </button>
-            <button class="btn waves-effect waves" @click.prevent="removePrescription">
+            <button v-if="checkPermission" class="btn waves-effect waves" @click.prevent="removePrescription">
               Удалить
             </button>
           </div>
@@ -90,6 +90,7 @@ export default {
   name: "CreatePrescription",
   data: () => ({
     loading: true,
+    checkPermission: localStorage.getItem('permission') <= 10,
     allPrescriptions: ['Роспотребнадзор', 'Госпожнадзор', 'Ростехнадзор', 'Судебные решения', 'Прочие надзорные органы'],
     allPrescriptionsURL: ['rospotreb', 'gospozh', 'rostech', 'sudeb', 'otherorders'],
     itemsRepair: ['Строительные конструкции', 'Инженерные коммуникации', 'Внутренние помещения', 'Система безопасности', 'Благоустройство территории', 'Спортивные сооружения/теневые навесы'],
@@ -199,18 +200,21 @@ export default {
     },
     async removePrescription() {
       try {
-        const token = localStorage.getItem('token')
-        const inn = localStorage.getItem('currentINN')
-        const url = this.$route.params['source']
-        const id = this.$route.params['id']
-        await this.$store.dispatch('deletePrescription', {
-          url,
-          token,
-          inn,
-          id
-        })
-        this.showMessage('deleteSuccess')
-        await this.returnBackPage()
+        const isConfirmed = confirm('Удалить данное предписание?')
+        if (isConfirmed) {
+          const token = localStorage.getItem('token')
+          const inn = localStorage.getItem('currentINN')
+          const url = this.$route.params['source']
+          const id = this.$route.params['id']
+          await this.$store.dispatch('deletePrescription', {
+            url,
+            token,
+            inn,
+            id
+          })
+          this.showMessage('deleteSuccess')
+          await this.returnBackPage()
+        }
       } catch (e) {
         console.log(e)
         this.showMessage('error')
