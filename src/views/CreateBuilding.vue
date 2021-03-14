@@ -304,7 +304,7 @@
                   </q-item>
                   <q-item tag="label" v-ripple>
                     <q-item-section avatar top>
-                      <q-radio v-model="data.TECHNICAL_CONDITION" val="Аварийное состояние"/>
+                      <q-radio v-model="data.technical_condition" val="Аварийное состояние"/>
                     </q-item-section>
                     <q-item-section>
                       <q-item-label>Аварийное состояние</q-item-label>
@@ -496,8 +496,13 @@
               </div>
             </div>
           </div>
-          <div class="b">
-            <q-btn color="primary" label="Сохранить" type="submit"/>
+          <div class="q-gutter-sm">
+            <button class="btn waves-effect waves-light" type="submit">
+              Сохранить
+            </button>
+            <button class="btn waves-effect waves" @click.prevent="cancelCreation">
+              Отменить
+            </button>
           </div>
         </div>
       </form>
@@ -546,6 +551,9 @@ export default {
   },
   name: 'CreateBuilding',
   methods: {
+    async cancelCreation() {
+      await this.$router.go(-1)
+    },
     async createBuild() {
       if (this.$v.$invalid) {
         this.$v.$touch()

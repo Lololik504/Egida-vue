@@ -1,4 +1,3 @@
-/* eslint-disable */
 import axios from "axios";
 import {server_path} from "@/local_settings";
 
@@ -38,8 +37,7 @@ export default {
                                 "Authorization": "auth " + token,
                                 'Content-Type': 'multipart/form-data',
                                 'INN': inn,
-                                'doc-id': id,
-                                'FILES': file
+                                'doc-id': id
                             },
                             responseType: "blob"
                         })

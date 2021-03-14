@@ -152,6 +152,7 @@ export default {
     roof_types: ['Скатная', 'Мягкая', 'Скатная/мягкая'],
     roof_materials: [
       'Битумный наплавляемый',
+      'Битумный наплавляемый',
       'Полимерная или резиновая мембрана',
       'Напыляемое многослойное покрытие',
       'Волнистые асбестоцементные листы (шифер)',
@@ -184,6 +185,7 @@ export default {
         if (this.other_material) {
           this.data.roof_material = this.other_material
         }
+        console.log(this.data)
         const resp = await this.$store.dispatch('sendConstructionInfo', this.data)
         if (resp['status'] === 200) {
           this.showMessage('saveSuccess')

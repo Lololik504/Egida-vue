@@ -12,6 +12,10 @@
 </template>
 
 <style>
+.list {
+  margin-top: 10px;
+}
+
 .list-item {
   position: relative;
   display: block;

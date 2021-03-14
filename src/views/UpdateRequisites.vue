@@ -31,7 +31,7 @@
             <label>Территориальная принадлежность</label>
             <q-select outlined hint="Выберите район" v-model="requisites.district" :options="districts"/>
           </div>
-          <div class="input-field-shortname">
+          <div class="input-field-date">
             <label>Дата образования юр. лица</label>
             <q-input v-model="requisites.formation_date" outlined type="date"/>
           </div>

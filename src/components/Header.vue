@@ -2,39 +2,33 @@
   <div>
     <div class="main-header">
       <div class="welcome-header">
-        <img data-entity-type="file" src="@/assets/gerb.png" class="image">
+        <img data-entity-type="file" src="@/assets/gerb.png" class="image" alt="Герб">
         <div class="text-header">
-          <p class="welcome-header" style="margin: 0">МЭРИЯ ГОРОДА НОВОСИБИРСКА<br>
-            ДЕПАРТАМЕНТ ОБРАЗОВАНИЯ</p>
-          <br>
-          <!--          <h4 v-if="username!==''" class="welcome-header" style="margin: 0">Вы вошли как {{ username }} </h4>-->
+          <p class="welcome-header">МЭРИЯ ГОРОДА НОВОСИБИРСКА <br> ДЕПАРТАМЕНТ ОБРАЗОВАНИЯ</p>
         </div>
-        <img data-entity-type="file" src="@/assets/gerb-2.png" class="image">
+        <img data-entity-type="file" src="@/assets/gerb-2.png" class="image" alt="Герб 2">
       </div>
       <div class="second-row">
         <div class="btn-container">
           <div class="q-pa-md q-gutter-sm">
-            <q-btn v-if="!isLoggedIn" color="white" text-color="black" label="Войти" @click.prevent="toLogin"
-                   class="login-but"/>
-            <q-btn v-else-if="isLoggedIn"
-                   color='blue-10' text-color="white" label="Выйти" @click.prevent="logout"
-                   class="login-but"/>
-            <q-btn v-if="isLoggedIn && getPermission === '15'"
-                   color='blue-10' text-color="white" label="Карточка" @click.prevent="toCard"
-                   class="login-but"/>
-            <q-btn v-else-if="isLoggedIn && (getPermission === '5' || getPermission === '1')"
-                   color='blue-10' text-color="white" label="Районы" @click.prevent="toDistr"
-                   class="login-but"/>
+            <button v-if="!isLoggedIn" class="btn waves-effect blue darken-4" @click.prevent="toLogin">Войти</button>
+            <button v-else-if="isLoggedIn" class="btn waves-effect blue darken-4" @click.prevent="logout">Выйти</button>
+            <button v-if="isLoggedIn && getPermission === '15'" class="btn waves-effect blue darken-4"
+                    @click.prevent="toCard">Карточка
+            </button>
+            <button v-if="isLoggedIn && getPermission < 15" class="btn waves-effect blue darken-4"
+                    @click.prevent="toDistr">Районы
+            </button>
           </div>
         </div>
         <div class="to-home-text">
-          <router-link to="/" class="router-text">УПРАВЛЕНИЕ ОБЕСПЕЧЕНИЯ БЮДЖЕТНОГО ПРОЦЕССА, МОНИТОРИНГА ОРГАНИЗАЦИИ
+          <router-link to="/" class="router-text">
+            УПРАВЛЕНИЕ ОБЕСПЕЧЕНИЯ БЮДЖЕТНОГО ПРОЦЕССА, МОНИТОРИНГА ОРГАНИЗАЦИИ
             ПИТАНИЯ И РЕСУРСНОГО СОПРОВОЖДЕНИЯ УЧРЕЖДЕНИЙ В СФЕРЕ ОБРАЗОВАНИЯ
           </router-link>
         </div>
       </div>
     </div>
-    <hr>
   </div>
 </template>
 
@@ -79,6 +73,7 @@ export default {
 </script>
 
 <style scoped>
+
 .router-text {
   color: white;
   text-decoration: none;
@@ -91,6 +86,10 @@ export default {
   min-height: 50px;
 }
 
+.btn-container {
+  min-height: 0;
+}
+
 .to-home-text {
   width: 40%;
   margin: auto;
@@ -99,12 +98,10 @@ export default {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-
 }
 
 .image {
-  margin-left: 20px;
-  margin-right: 20px;
+  margin: 0 20px;
 }
 
 .main-header {
@@ -118,20 +115,23 @@ export default {
   justify-content: center;
   text-align: center;
   font-size: large;
+  margin-bottom: 10px;
 }
 
-.text-header {
-  margin-top: 15px;
-}
+@media (max-width: 480px) {
+  .image {
+    width: 20%;
+    height: 20%;
+  }
 
-.btn-container {
-  flex: 0 0 auto;
-  margin-left: 3%;
-}
+  .to-home-text {
+    margin: auto 10px;
+    font-size: xx-small;
+  }
 
-.login-but {
-  left: 5px;
-  margin-right: 5px;
+  .welcome-header {
+    font-size: small;
+  }
 }
 
 </style>

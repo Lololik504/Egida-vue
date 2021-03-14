@@ -6,6 +6,8 @@ export default {
     'auth/email-already-in-use': 'Пользователь с данным Email уже существует',
     'error': 'Произошла ошибка!',
     'saveSuccess': 'Данные успешно сохранены!',
+    'deleteSuccess': 'Данные успешно удалены!',
     'failUploadFile': 'Файл не выбран!',
-    'successUploadFile': 'Файл загружен!'
+    'successUploadFile': 'Файл загружен!',
+    'fillFields': 'Заполните необходимые поля!'
 }

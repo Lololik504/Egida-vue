@@ -78,7 +78,6 @@ export default {
       console.log(e)
     }
   },
-
   methods: {
     async clickHandler() {
       try {
@@ -91,7 +90,6 @@ export default {
           shortname: this.shortname,
           district: this.district
         }
-        console.log(dataForm)
         if (dataForm.district && dataForm.shortname && dataForm.INN) {
           await this.$store.dispatch('createSchool', dataForm)
           await this.$router.push('/districts')

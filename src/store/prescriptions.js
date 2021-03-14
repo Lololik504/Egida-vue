@@ -3,20 +3,19 @@ import {server_path} from "@/local_settings";
 
 export default {
     actions: {
-        async fetchTemperatures({commit}, inn) {
+        async fetchPrescription({commit}, {token, inn, url}) {
             try {
-                const token = localStorage.getItem('token')
                 return await new Promise((resolve, reject) => {
-                    axios.get(server_path + "/api/temperature",
+                    axios.get(server_path + "/api/orders/" + url + "/",
                         {
                             headers: {
                                 "Authorization": "auth " + token,
                                 'Content-Type': 'application/json',
-                                "INN": inn
+                                'INN': inn,
+                                'get-all': 'get-all'
                             }
                         })
                         .then(resp => {
-                            console.log(resp)
                             resolve(resp.data.data)
                         })
                         .catch(err => {
@@ -28,16 +27,40 @@ export default {
                 throw e
             }
         },
-        async addTemperature({commit}, data) {
+        async fetchPrescriptionById({commit}, {token, inn, url, id}) {
             try {
-                const token = localStorage.getItem('token')
                 return await new Promise((resolve, reject) => {
-                    axios.post(server_path + "/api/temperature/",
-                        data,
+                    axios.get(server_path + "/api/orders/" + url + "/",
                         {
                             headers: {
-                                'Content-Type': 'application/json',
                                 "Authorization": "auth " + token,
+                                'Content-Type': 'application/json',
+                                'INN': inn,
+                                'order-id': id
+                            }
+                        })
+                        .then(resp => {
+                            resolve(resp.data.data)
+                        })
+                        .catch(err => {
+                            reject(err)
+                        })
+                })
+            } catch (e) {
+                commit('setError', e)
+                throw e
+            }
+        },
+        async createPrescription({commit}, {file, url, token, inn}) {
+            try {
+                return await new Promise((resolve, reject) => {
+                    axios.post(server_path + "/api/orders/" + url + "/",
+                        file,
+                        {
+                            headers: {
+                                'Content-Type': 'multipart/form-data',
+                                "Authorization": "auth " + token,
+                                'INN': inn
                             }
                         })
                         .then(resp => {
@@ -52,20 +75,20 @@ export default {
                 throw e
             }
         },
-        async deleteTemperature({commit}, data) {
+        async updatePrescription({commit}, {file, url, token, inn, id}) {
             try {
-                const token = localStorage.getItem('token')
                 return await new Promise((resolve, reject) => {
-                    axios.delete(server_path + "/api/temperature/",
+                    axios.put(server_path + "/api/orders/" + url + "/",
+                        file,
                         {
                             headers: {
-                                'Content-Type': 'application/json',
-                                'Authorization': 'auth ' + token,
-                                'data': JSON.stringify(data)
+                                'Content-Type': 'multipart/form-data',
+                                "Authorization": "auth " + token,
+                                'INN': inn,
+                                'order-id': id
                             }
                         })
                         .then(resp => {
-                            console.log(resp)
                             resolve(resp)
                         })
                         .catch(err => {
@@ -77,19 +100,19 @@ export default {
                 throw e
             }
         },
-        async updateTemperature({commit}, data) {
+        async deletePrescription({commit}, {url, token, inn, id}) {
             try {
-                const token = localStorage.getItem('token')
                 return await new Promise((resolve, reject) => {
-                    axios.put(server_path + "/api/temperature/", data,
+                    axios.delete(server_path + "/api/orders/" + url + "/",
                         {
                             headers: {
-                                'Content-Type': 'application/json',
-                                'Authorization': 'auth ' + token
+                                'Content-Type': 'multipart/form-data',
+                                "Authorization": "auth " + token,
+                                'INN': inn,
+                                'order-id': id
                             }
                         })
                         .then(resp => {
-                            console.log(resp)
                             resolve(resp)
                         })
                         .catch(err => {

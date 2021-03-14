@@ -2,15 +2,6 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import store from './store/index'
 
-// const originalPush = Router.prototype.push
-// Router.prototype.push = function push(location) {
-//   return originalPush.call(this, location).catch(err => err)
-// }
-
-// const RView = {
-//     template: '<template><div><router-view/></div></template>'
-// }
-
 Vue.use(Router)
 
 let router = new Router({
@@ -134,6 +125,30 @@ let router = new Router({
                 requiresAuth: true
             },
             component: () => import('./views/Documents'),
+        },
+        {
+            path: '/prescriptions/:id',
+            name: 'Prescriptions',
+            meta: {
+                requiresAuth: true
+            },
+            component: () => import('./views/Prescriptions'),
+        },
+        {
+            path: '/create_prescription/:id',
+            name: 'CreatePrescription',
+            meta: {
+                requiresAuth: true
+            },
+            component: () => import('./views/CreatePrescription'),
+        },
+        {
+            path: '/update_prescription/:source/:id',
+            name: 'CreatePrescription',
+            meta: {
+                requiresAuth: true
+            },
+            component: () => import('./views/UpdatePrescription'),
         },
         {
             path: '/characteristic/:id',

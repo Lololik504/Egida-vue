@@ -5,6 +5,7 @@
     <Footer class="footer"/>
   </div>
 </template>
+
 <script>
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -39,14 +40,12 @@ export default {
 
 @import '~materialize-css/dist/css/materialize.min.css';
 
-{
-  margin: 0;
-  padding: 0;
-}
-
 html,
 body {
   height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 .wrapper {
