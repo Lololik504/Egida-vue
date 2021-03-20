@@ -9,19 +9,31 @@
             <label>Площадь фасада, кв. м.</label>
             <q-input outlined :disable="disable" type="number" step="0.001" v-model.number="data.facade_square"/>
           </div>
-<!--          <div class="input-roof-photo">-->
-<!--            <label>Фото фасада</label>-->
-<!--            <q-file-->
-<!--                v-model="data.photo"-->
-<!--                outlined-->
-<!--                :disable="disable"-->
-<!--                hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"-->
-<!--                multiple-->
-<!--                max-total-size="25165824"-->
-<!--                accept=".jpg, image/jpeg, .pdf"-->
-<!--                @rejected="onRejected"-->
-<!--            />-->
-<!--          </div>-->
+          <div v-if="!data.facade_photo" class="input-roof-photo">
+            <label>Фото фасада</label>
+            <q-file
+                v-model="data.facade_photo"
+                outlined
+                :disable="disable"
+                hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"
+                max-total-size="25165824"
+                accept=".jpg, image/jpeg, .pdf"
+                @rejected="onRejected"
+                @input="changedPhoto = true"
+            />
+          </div>
+          <div v-else style="margin-bottom: 25px">
+            <label>Фото фасада загружено</label>
+            <div class="q-gutter-sm">
+              <button v-if="!changedPhoto" class="btn blue" @click.prevent="showDoc(data.facade_photo)">
+                Просмотреть файл
+              </button>
+              <button class="btn blue"
+                      @click.prevent="data.facade_photo = null;">
+                Изменить файл
+              </button>
+            </div>
+          </div>
           <div class="select-type-field">
             <label>Тип фасада</label>
             <div class="select">
@@ -108,19 +120,31 @@
             </div>
           </q-card>
           <br/>
-<!--          <div class="input-roof-photo">-->
-<!--            <label>Акт обследования технического состояния (экспертной оценки специализированной организации)</label>-->
-<!--            <q-file-->
-<!--                v-model="data.act"-->
-<!--                outlined-->
-<!--                :disable="disable"-->
-<!--                hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"-->
-<!--                multiple-->
-<!--                max-total-size="25165824"-->
-<!--                accept=".jpg, image/jpeg, .pdf"-->
-<!--                @rejected="onRejected"-->
-<!--            />-->
-<!--          </div>-->
+          <div v-if="!data.facade_act" class="input-roof-photo">
+            <label>Акт обследования технического состояния (экспертной оценки специализированной организации)</label>
+            <q-file
+                v-model="data.facade_act"
+                outlined
+                :disable="disable"
+                hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"
+                max-total-size="25165824"
+                accept=".jpg, image/jpeg, .pdf"
+                @rejected="onRejected"
+                @input="changedAct = true"
+            />
+          </div>
+          <div v-else style="margin-bottom: 25px">
+            <label>Акт обследования технического состояния загружен</label>
+            <div class="q-gutter-sm">
+              <button v-if="!changedAct" class="btn blue" @click.prevent="showDoc(data.facade_act)">
+                Просмотреть файл
+              </button>
+              <button class="btn blue"
+                      @click.prevent="data.facade_act = null;">
+                Изменить файл
+              </button>
+            </div>
+          </div>
           <button class="btn waves-effect waves" @click.prevent="disable = false" v-if="disable">
             Редактирование
           </button>
@@ -140,6 +164,7 @@
 
 <script>
 import messages from "@/utils/messages";
+import {server_path} from "@/local_settings";
 
 export default {
   name: "Facade",
@@ -153,14 +178,16 @@ export default {
     ],
     loading: true,
     other_type: null,
+    changedPhoto: false,
+    changedAct: false,
     disable: true,
     data: {
       id: null,
       facade_status: null,
       facade_type: null,
-      act: null,
+      facade_act: null,
       facade_square: null,
-      photo: null
+      facade_photo: null
     }
   }),
   methods: {
@@ -175,34 +202,64 @@ export default {
         if (this.other_type) {
           this.data.facade_type = this.other_type
         }
-        const resp = await this.$store.dispatch('sendConstructionInfo', this.data)
+        let form_data = new FormData();
+        for (let key in this.data) {
+          if ((key === 'facade_photo' && typeof this.data[key] === 'string') || (key === 'facade_act' && typeof this.data[key] === 'string')) {
+            continue
+          }
+          (key === 'facade_square' && (this.data[key] === '' || this.data[key] == null)) ? this.data[key] = 0 : null
+          form_data.append(key, this.data[key]);
+        }
+        const resp = await this.$store.dispatch('sendConstructionInfo', form_data)
         if (resp['status'] === 200) {
           this.showMessage('saveSuccess')
           this.disable = true
+          this.other_type = null
+          this.changedAct = false
+          this.changedPhoto = false
+          await this.loadingPage()
         }
       } catch (e) {
         console.log(e)
         this.showMessage('error')
       }
     },
+    showDoc(url) {
+      const link = document.createElement('a');
+      link.href = server_path + url;
+      link.target = '_blank'
+      document.body.appendChild(link);
+      link.click();
+    },
     showMessage(text) {
       if (messages[text]) {
         window.scrollTo(0, 0)
         this.$message(messages[text])
       }
+    },
+    async loadingPage() {
+      this.loading = true
+      const token = localStorage.getItem('token')
+      const id = this.$route.params['id']
+      try {
+        const info = await this.$store.dispatch('fetchConstruction', {token, id})
+        const tmp = Object.keys(this.data)
+        for (let item in info) {
+          info[item] === '/media/null' ? info[item] = null : null
+          info[item] === 'null' ? info[item] = null : null
+          if (tmp.includes(item)) {
+            this.data[item] = info[item]
+          }
+        }
+        this.data['id'] = id
+        this.loading = false
+      } catch (e) {
+        console.log(e)
+      }
     }
   },
   async mounted() {
-    const token = localStorage.getItem('token')
-    const id = this.$route.params['id']
-    try {
-      const info = await this.$store.dispatch('fetchConstruction', {token, id})
-      Object.assign(this.data, info)
-      this.data['id'] = id
-      this.loading = false
-    } catch (e) {
-      console.log(e)
-    }
+    await this.loadingPage()
   }
 }
 </script>

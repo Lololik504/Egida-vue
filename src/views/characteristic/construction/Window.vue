@@ -99,19 +99,31 @@
             </div>
           </q-card>
           <br/>
-<!--          <div class="input-roof-photo">-->
-<!--            <label>Акт обследования технического состояния (экспертной оценки специализированной организации)</label>-->
-<!--            <q-file-->
-<!--                v-model="data.act"-->
-<!--                outlined-->
-<!--                :disable="disable"-->
-<!--                hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"-->
-<!--                multiple-->
-<!--                max-total-size="25165824"-->
-<!--                accept=".jpg, image/jpeg, .pdf"-->
-<!--                @rejected="onRejected"-->
-<!--            />-->
-<!--          </div>-->
+          <div v-if="!data.window_act" class="input-roof-photo">
+            <label>Акт обследования технического состояния (экспертной оценки специализированной организации)</label>
+            <q-file
+                v-model="data.window_act"
+                outlined
+                :disable="disable"
+                hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"
+                max-total-size="25165824"
+                accept=".jpg, image/jpeg, .pdf"
+                @rejected="onRejected"
+                @input="changedAct = true"
+            />
+          </div>
+          <div v-else style="margin-bottom: 25px">
+            <label>Акт обследования технического состояния загружен</label>
+            <div class="q-gutter-sm">
+              <button v-if="!changedAct" class="btn blue" @click.prevent="showDoc(data.window_act)">
+                Просмотреть файл
+              </button>
+              <button class="btn blue"
+                      @click.prevent="data.window_act = null;">
+                Изменить файл
+              </button>
+            </div>
+          </div>
           <button class="btn waves-effect waves" @click.prevent="disable = false" v-if="disable">
             Редактирование
           </button>
@@ -126,25 +138,25 @@
         </div>
       </form>
     </div>
-
-
   </div>
 </template>
 
 <script>
 import messages from "@/utils/messages";
+import {server_path} from "@/local_settings";
 
 export default {
   name: "Window",
   data: () => ({
     window_materials: ['Деревянные рамы', 'Энергосберегающие (пластик/дерево)'],
     loading: true,
+    changedAct: false,
     disable: true,
     data: {
       id: null,
       window_material: null,
       window_status: null,
-      act: null,
+      window_act: null,
       window_square: null,
       energy_saving_window_percent: null,
       window_count: null
@@ -159,34 +171,64 @@ export default {
     },
     async save() {
       try {
-        const resp = await this.$store.dispatch('sendConstructionInfo', this.data)
+        let form_data = new FormData();
+        for (let key in this.data) {
+          if (key === 'window_act' && typeof this.data[key] === 'string') {
+            continue
+          }
+          (key === 'window_square' && (this.data[key] === '' || this.data[key] == null)) ? this.data[key] = 0 : null;
+          (key === 'energy_saving_window_percent' && (this.data[key] === '' || this.data[key] == null)) ? this.data[key] = 0 : null;
+          (key === 'window_count' && (this.data[key] === '' || this.data[key] == null)) ? this.data[key] = 0 : null;
+          form_data.append(key, this.data[key]);
+        }
+        const resp = await this.$store.dispatch('sendConstructionInfo', form_data)
         if (resp['status'] === 200) {
           this.showMessage('saveSuccess')
           this.disable = true
+          this.changedAct = false
+          await this.loadingPage()
         }
       } catch (e) {
         console.log(e)
         this.showMessage('error')
       }
     },
+    showDoc(url) {
+      const link = document.createElement('a');
+      link.href = server_path + url;
+      link.target = '_blank'
+      document.body.appendChild(link);
+      link.click();
+    },
     showMessage(text) {
       if (messages[text]) {
         window.scrollTo(0, 0)
         this.$message(messages[text])
       }
+    },
+    async loadingPage() {
+      this.loading = true
+      const token = localStorage.getItem('token')
+      const id = this.$route.params['id']
+      try {
+        const info = await this.$store.dispatch('fetchConstruction', {token, id})
+        const tmp = Object.keys(this.data)
+        for (let item in info) {
+          info[item] === '/media/null' ? info[item] = null : null
+          info[item] === 'null' ? info[item] = null : null
+          if (tmp.includes(item)) {
+            this.data[item] = info[item]
+          }
+        }
+        this.data['id'] = id
+        this.loading = false
+      } catch (e) {
+        console.log(e)
+      }
     }
   },
   async mounted() {
-    const token = localStorage.getItem('token')
-    const id = this.$route.params['id']
-    try {
-      const info = await this.$store.dispatch('fetchConstruction', {token, id})
-      Object.assign(this.data, info)
-      this.data['id'] = id
-      this.loading = false
-    } catch (e) {
-      console.log(e)
-    }
+    await this.loadingPage()
   }
 }
 </script>

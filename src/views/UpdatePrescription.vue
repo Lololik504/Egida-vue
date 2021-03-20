@@ -47,7 +47,7 @@
             <label>Срок исполнения</label>
             <q-input v-model="data.period_execution" outlined type="date"/>
           </div>
-          <div class="input-file">
+          <div v-if="!data.order" class="input-file">
             <label>Скан предписания</label>
             <q-file
                 v-model="data.order"
@@ -57,6 +57,18 @@
                 accept=".pdf"
                 @rejected="onRejected"
             />
+          </div>
+          <div v-else style="margin-bottom: 25px">
+            <label>Скан предписания загружен</label>
+            <div class="q-gutter-sm">
+              <button class="btn waves-effect waves-light" @click.prevent="showDoc(data.order)">
+                Просмотреть файл
+              </button>
+              <button class="btn waves-effect waves-light"
+                      @click.prevent="data.order = null;">
+                Изменить файл
+              </button>
+            </div>
           </div>
           <div class="checkbox col">
             <q-checkbox v-model="data.vkluchenie" dense left-label
@@ -85,6 +97,7 @@
 
 <script>
 import messages from "@/utils/messages";
+import {server_path} from "@/local_settings";
 
 export default {
   name: "CreatePrescription",
@@ -161,6 +174,13 @@ export default {
         message: `${rejectedEntries.length} file(s) did not pass validation constraints`
       })
     },
+    showDoc(url) {
+      const link = document.createElement('a');
+      link.href = server_path + url;
+      link.target = '_blank'
+      document.body.appendChild(link);
+      link.click();
+    },
     showMessage(text) {
       if (messages[text]) {
         // window.scrollTo(0, 0)
@@ -177,13 +197,20 @@ export default {
           this.summa = null
         }
         let file = new FormData();
-        file.append('file', this.data.order)
-        file.append('date_order', this.data.date_order)
-        file.append('executed', this.data.executed)
-        file.append('vkluchenie', this.data.vkluchenie)
-        file.append('period_execution', this.data.period_execution)
-        file.append('type_work', this.data.type_work)
-        file.append('summa', this.data.summa)
+        for (let key in this.data) {
+          if (key === 'order') {
+            file.append('file', this.data[key])
+          } else {
+            file.append(key, this.data[key])
+          }
+        }
+        // file.append('file', this.data.order)
+        // file.append('date_order', this.data.date_order)
+        // file.append('executed', this.data.executed)
+        // file.append('vkluchenie', this.data.vkluchenie)
+        // file.append('period_execution', this.data.period_execution)
+        // file.append('type_work', this.data.type_work)
+        // file.append('summa', this.data.summa)
         await this.$store.dispatch('updatePrescription', {
           file,
           url,

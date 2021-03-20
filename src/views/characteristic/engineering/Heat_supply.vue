@@ -113,19 +113,23 @@
           <div class="row">
             <div class="col">
               <label>Отопление</label>
-              <q-input outlined :disable="disable" step="0.001" type="number" v-model.number="data.thermal_loads_heating"/>
+              <q-input outlined :disable="disable" step="0.001" type="number"
+                       v-model.number="data.thermal_loads_heating"/>
             </div>
             <div class="col">
               <label>Горячее водоснабжение</label>
-              <q-input outlined :disable="disable" step="0.001" type="number" v-model.number="data.thermal_loads_hot_water_supply"/>
+              <q-input outlined :disable="disable" step="0.001" type="number"
+                       v-model.number="data.thermal_loads_hot_water_supply"/>
             </div>
             <div class="col">
               <label>Вентиляция</label>
-              <q-input outlined :disable="disable" step="0.001" type="number" v-model.number="data.thermal_loads_ventilation"/>
+              <q-input outlined :disable="disable" step="0.001" type="number"
+                       v-model.number="data.thermal_loads_ventilation"/>
             </div>
             <div class="col">
               <label>Суммарная</label>
-              <q-input outlined :disable="disable" step="0.001" type="number" v-model.number="data.thermal_loads_total"/>
+              <q-input outlined :disable="disable" step="0.001" type="number"
+                       v-model.number="data.thermal_loads_total"/>
             </div>
           </div>
           <div class="input-field-roof-square">
@@ -187,19 +191,32 @@
                 </q-item>
               </q-list>
             </div>
-<!--            <div class="input-roof-photo">-->
-<!--              <label>Акт обследования технического состояния (экспертной оценки специализированной организации)</label>-->
-<!--              <q-file-->
-<!--                  v-model="data.act_heating"-->
-<!--                  outlined-->
-<!--                  :disable="disable"-->
-<!--                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"-->
-<!--                  multiple-->
-<!--                  max-total-size="25165824"-->
-<!--                  accept=".jpg, image/jpeg, .pdf"-->
-<!--                  @rejected="onRejected"-->
-<!--              />-->
-<!--            </div>-->
+            <div v-if="!data.technical_condition_of_the_heating_system_act" class="input-roof-photo">
+              <label>Акт обследования технического состояния (экспертной оценки специализированной организации)</label>
+              <q-file
+                  v-model="data.technical_condition_of_the_heating_system_act"
+                  outlined
+                  :disable="disable"
+                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"
+                  max-total-size="25165824"
+                  accept=".jpg, image/jpeg, .pdf"
+                  @rejected="onRejected"
+                  @input="changedHeatAct = true"
+              />
+            </div>
+            <div v-else style="margin-bottom: 25px">
+              <label>Акт обследования технического состояния загружен</label>
+              <div class="q-gutter-sm">
+                <button v-if="!changedHeatAct" class="btn blue"
+                        @click.prevent="showDoc(data.technical_condition_of_the_heating_system_act)">
+                  Просмотреть файл
+                </button>
+                <button class="btn blue"
+                        @click.prevent="data.technical_condition_of_the_heating_system_act = null;">
+                  Изменить файл
+                </button>
+              </div>
+            </div>
           </q-card>
           <br/>
           <q-card flat bordered class="my-card">
@@ -252,19 +269,32 @@
                 </q-item>
               </q-list>
             </div>
-<!--            <div class="input-roof-photo">-->
-<!--              <label>Акт обследования технического состояния (экспертной оценки специализированной организации)</label>-->
-<!--              <q-file-->
-<!--                  v-model="data.act_ventilation"-->
-<!--                  outlined-->
-<!--                  :disable="disable"-->
-<!--                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"-->
-<!--                  multiple-->
-<!--                  max-total-size="25165824"-->
-<!--                  accept=".jpg, image/jpeg, .pdf"-->
-<!--                  @rejected="onRejected"-->
-<!--              />-->
-<!--            </div>-->
+            <div v-if="!data.technical_condition_of_the_ventilation_system_act" class="input-roof-photo">
+              <label>Акт обследования технического состояния (экспертной оценки специализированной организации)</label>
+              <q-file
+                  v-model="data.technical_condition_of_the_ventilation_system_act"
+                  outlined
+                  :disable="disable"
+                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"
+                  max-total-size="25165824"
+                  accept=".jpg, image/jpeg, .pdf"
+                  @rejected="onRejected"
+                  @input="changedVentAct = true"
+              />
+            </div>
+            <div v-else style="margin-bottom: 25px">
+              <label>Акт обследования технического состояния загружен</label>
+              <div class="q-gutter-sm">
+                <button v-if="!changedVentAct" class="btn blue"
+                        @click.prevent="showDoc(data.technical_condition_of_the_ventilation_system_act)">
+                  Просмотреть файл
+                </button>
+                <button class="btn blue"
+                        @click.prevent="data.technical_condition_of_the_ventilation_system_act = null;">
+                  Изменить файл
+                </button>
+              </div>
+            </div>
           </q-card>
           <br/>
           <q-card flat bordered class="my-card">
@@ -317,136 +347,275 @@
                 </q-item>
               </q-list>
             </div>
-<!--            <div class="input-roof-photo">-->
-<!--              <label>Акт обследования технического состояния (экспертной оценки специализированной организации)</label>-->
-<!--              <q-file-->
-<!--                  v-model="data.act_water_supply"-->
-<!--                  outlined-->
-<!--                  :disable="disable"-->
-<!--                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"-->
-<!--                  multiple-->
-<!--                  max-total-size="25165824"-->
-<!--                  accept=".jpg, image/jpeg, .pdf"-->
-<!--                  @rejected="onRejected"-->
-<!--              />-->
-<!--            </div>-->
+            <div v-if="!data.technical_condition_of_the_hot_water_supply_system_act" class="input-roof-photo">
+              <label>Акт обследования технического состояния (экспертной оценки специализированной организации)</label>
+              <q-file
+                  v-model="data.technical_condition_of_the_hot_water_supply_system_act"
+                  outlined
+                  :disable="disable"
+                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"
+                  max-total-size="25165824"
+                  accept=".jpg, image/jpeg, .pdf"
+                  @rejected="onRejected"
+                  @input="changedHotAct = true"
+              />
+            </div>
+            <div v-else style="margin-bottom: 25px">
+              <label>Акт обследования технического состояния загружен</label>
+              <div class="q-gutter-sm">
+                <button v-if="!changedHotAct" class="btn blue"
+                        @click.prevent="showDoc(data.technical_condition_of_the_hot_water_supply_system_act)">
+                  Просмотреть файл
+                </button>
+                <button class="btn blue"
+                        @click.prevent="data.technical_condition_of_the_hot_water_supply_system_act = null;">
+                  Изменить файл
+                </button>
+              </div>
+            </div>
           </q-card>
           <br/>
-          <!--          <h5><strong>Документация</strong></h5>-->
-          <!--          <div class="row">-->
-          <!--            <div class="col">-->
-          <!--              <label>Паспорт ввода</label>-->
-          <!--              <q-file-->
-          <!--                  v-model="inputPassportDoc"-->
-          <!--                  outlined-->
-          <!--                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"-->
-          <!--                  multiple-->
-          <!--                  max-total-size="25165824"-->
-          <!--                  accept=".jpg, image/jpeg, .pdf"-->
-          <!--                  @rejected="onRejected"-->
-          <!--              />-->
-          <!--            </div>-->
-          <!--            <div class="col">-->
-          <!--              <label>Схема ввода</label>-->
-          <!--              <q-file-->
-          <!--                  v-model="inputSchemaDoc"-->
-          <!--                  outlined-->
-          <!--                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"-->
-          <!--                  multiple-->
-          <!--                  max-total-size="25165824"-->
-          <!--                  accept=".jpg, image/jpeg, .pdf"-->
-          <!--                  @rejected="onRejected"-->
-          <!--              />-->
-          <!--            </div>-->
-          <!--            <div class="col">-->
-          <!--              <label>Паспорт ИТП</label>-->
-          <!--              <q-file-->
-          <!--                  v-model="passportITPDoc"-->
-          <!--                  outlined-->
-          <!--                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"-->
-          <!--                  multiple-->
-          <!--                  max-total-size="25165824"-->
-          <!--                  accept=".jpg, image/jpeg, .pdf"-->
-          <!--                  @rejected="onRejected"-->
-          <!--              />-->
-          <!--            </div>-->
-          <!--          </div>-->
-          <!--          <div class="row">-->
-          <!--            <div class="col">-->
-          <!--              <label>Схема ИТП</label>-->
-          <!--              <q-file-->
-          <!--                  v-model="schemaITPDoc"-->
-          <!--                  outlined-->
-          <!--                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"-->
-          <!--                  multiple-->
-          <!--                  max-total-size="25165824"-->
-          <!--                  accept=".jpg, image/jpeg, .pdf"-->
-          <!--                  @rejected="onRejected"-->
-          <!--              />-->
-          <!--            </div>-->
-          <!--            <div class="col">-->
-          <!--              <label>Акт балансового разграничения</label>-->
-          <!--              <q-file-->
-          <!--                  v-model="balanceActDoc"-->
-          <!--                  outlined-->
-          <!--                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"-->
-          <!--                  multiple-->
-          <!--                  max-total-size="25165824"-->
-          <!--                  accept=".jpg, image/jpeg, .pdf"-->
-          <!--                  @rejected="onRejected"-->
-          <!--              />-->
-          <!--            </div>-->
-          <!--            <div class="col">-->
-          <!--              <label>Схема балансового разграничения</label>-->
-          <!--              <q-file-->
-          <!--                  v-model="balanceSchemaDoc"-->
-          <!--                  outlined-->
-          <!--                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"-->
-          <!--                  multiple-->
-          <!--                  max-total-size="25165824"-->
-          <!--                  accept=".jpg, image/jpeg, .pdf"-->
-          <!--                  @rejected="onRejected"-->
-          <!--              />-->
-          <!--            </div>-->
-          <!--          </div>-->
-          <!--          <div class="row">-->
-          <!--            <div class="col">-->
-          <!--              <label>Справка о тепловых нагрузках</label>-->
-          <!--              <q-file-->
-          <!--                  v-model="referenceDoc"-->
-          <!--                  outlined-->
-          <!--                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"-->
-          <!--                  multiple-->
-          <!--                  max-total-size="25165824"-->
-          <!--                  accept=".jpg, image/jpeg, .pdf"-->
-          <!--                  @rejected="onRejected"-->
-          <!--              />-->
-          <!--            </div>-->
-          <!--            <div class="col">-->
-          <!--              <label>Расчет тепловых потерь</label>-->
-          <!--              <q-file-->
-          <!--                  v-model="paymentDoc"-->
-          <!--                  outlined-->
-          <!--                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"-->
-          <!--                  multiple-->
-          <!--                  max-total-size="25165824"-->
-          <!--                  accept=".jpg, image/jpeg, .pdf"-->
-          <!--                  @rejected="onRejected"-->
-          <!--              />-->
-          <!--            </div>-->
-          <!--            <div class="col">-->
-          <!--              <label>Топоснова</label>-->
-          <!--              <q-file-->
-          <!--                  v-model="toposnovaDoc"-->
-          <!--                  outlined-->
-          <!--                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"-->
-          <!--                  multiple-->
-          <!--                  max-total-size="25165824"-->
-          <!--                  accept=".jpg, image/jpeg, .pdf"-->
-          <!--                  @rejected="onRejected"-->
-          <!--              />-->
-          <!--            </div>-->
-          <!--          </div>-->
+          <h5><strong>Документация</strong></h5>
+          <div class="row">
+            <div v-if="!data.passport_vvoda" class="col">
+              <label>Паспорт ввода</label>
+              <q-file
+                  v-model="data.passport_vvoda"
+                  :disable="disable"
+                  outlined
+                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"
+                  max-total-size="25165824"
+                  accept=".jpg, image/jpeg, .pdf"
+                  @rejected="onRejected"
+                  @input="changedPassVvoda = true"
+              />
+            </div>
+            <div v-else class="col">
+              <label>Паспорт ввода загружен</label>
+              <div class="q-gutter-sm column">
+                <button v-if="!changedPassVvoda" class="btn blue"
+                        @click.prevent="showDoc(data.passport_vvoda)">
+                  Просмотреть файл
+                </button>
+                <button class="btn blue"
+                        @click.prevent="data.passport_vvoda = null;">
+                  Изменить файл
+                </button>
+              </div>
+            </div>
+            <div v-if="!data.schema_vvoda" class="col">
+              <label>Схема ввода</label>
+              <q-file
+                  v-model="data.schema_vvoda"
+                  :disable="disable"
+                  outlined
+                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"
+                  max-total-size="25165824"
+                  accept=".jpg, image/jpeg, .pdf"
+                  @rejected="onRejected"
+                  @input="changedSchemaVvoda = true"
+              />
+            </div>
+            <div v-else class="col">
+              <label>Схема ввода загружена</label>
+              <div class="q-gutter-sm column">
+                <button v-if="!changedSchemaVvoda" class="btn blue"
+                        @click.prevent="showDoc(data.schema_vvoda)">
+                  Просмотреть файл
+                </button>
+                <button class="btn blue"
+                        @click.prevent="data.schema_vvoda = null;">
+                  Изменить файл
+                </button>
+              </div>
+            </div>
+            <div v-if="!data.passport_itp" class="col">
+              <label>Паспорт ИТП</label>
+              <q-file
+                  v-model="data.passport_itp"
+                  :disable="disable"
+                  outlined
+                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"
+                  max-total-size="25165824"
+                  accept=".jpg, image/jpeg, .pdf"
+                  @rejected="onRejected"
+                  @input="changedPassITP = true"
+              />
+            </div>
+            <div v-else class="col">
+              <label>Паспорт ИТП загружен</label>
+              <div class="q-gutter-sm column">
+                <button v-if="!changedPassITP" class="btn blue"
+                        @click.prevent="showDoc(data.passport_itp)">
+                  Просмотреть файл
+                </button>
+                <button class="btn blue"
+                        @click.prevent="data.passport_itp = null;">
+                  Изменить файл
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div v-if="!data.schema_itp" class="col">
+              <label>Схема ИТП</label>
+              <q-file
+                  v-model="data.schema_itp"
+                  :disable="disable"
+                  outlined
+                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"
+                  max-total-size="25165824"
+                  accept=".jpg, image/jpeg, .pdf"
+                  @rejected="onRejected"
+                  @input="changedSchemaITP = true"
+              />
+            </div>
+            <div v-else class="col">
+              <label>Схема ИТП загружена</label>
+              <div class="q-gutter-sm column">
+                <button v-if="!changedSchemaITP" class="btn blue"
+                        @click.prevent="showDoc(data.schema_itp)">
+                  Просмотреть файл
+                </button>
+                <button class="btn blue"
+                        @click.prevent="data.schema_itp = null;">
+                  Изменить файл
+                </button>
+              </div>
+            </div>
+            <div v-if="!data.act_balance_razgranich" class="col">
+              <label>Акт балансового разграничения</label>
+              <q-file
+                  :disable="disable"
+                  v-model="data.act_balance_razgranich"
+                  outlined
+                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"
+                  max-total-size="25165824"
+                  accept=".jpg, image/jpeg, .pdf"
+                  @rejected="onRejected"
+                  @input="changedBalanceAct = true"
+              />
+            </div>
+            <div v-else class="col">
+              <label>Акт балансового разграничения загружен</label>
+              <div class="q-gutter-sm column">
+                <button v-if="!changedBalanceAct" class="btn blue"
+                        @click.prevent="showDoc(data.act_balance_razgranich)">
+                  Просмотреть файл
+                </button>
+                <button class="btn blue"
+                        @click.prevent="data.act_balance_razgranich = null;">
+                  Изменить файл
+                </button>
+              </div>
+            </div>
+            <div v-if="!data.schema_balance_razgranich" class="col">
+              <label>Схема балансового разграничения</label>
+              <q-file
+                  v-model="data.schema_balance_razgranich"
+                  :disable="disable"
+                  outlined
+                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"
+                  max-total-size="25165824"
+                  accept=".jpg, image/jpeg, .pdf"
+                  @rejected="onRejected"
+                  @input="changedBalanceSchema = true"
+              />
+            </div>
+            <div v-else class="col">
+              <label>Схема разграничения загружена</label>
+              <div class="q-gutter-sm column">
+                <button v-if="!changedBalanceSchema" class="btn blue"
+                        @click.prevent="showDoc(data.schema_balance_razgranich)">
+                  Просмотреть файл
+                </button>
+                <button class="btn blue"
+                        @click.prevent="data.schema_balance_razgranich = null;">
+                  Изменить файл
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div v-if="!data.spravka_teplov_nagruz" class="col">
+              <label>Справка о тепловых нагрузках</label>
+              <q-file
+                  v-model="data.spravka_teplov_nagruz"
+                  :disable="disable"
+                  outlined
+                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"
+                  max-total-size="25165824"
+                  accept=".jpg, image/jpeg, .pdf"
+                  @rejected="onRejected"
+                  @input="changedSpravka = true"
+              />
+            </div>
+            <div v-else class="col">
+              <label>Справка о тепловых нагрузках загружена</label>
+              <div class="q-gutter-sm column">
+                <button v-if="!changedSpravka" class="btn blue"
+                        @click.prevent="showDoc(data.spravka_teplov_nagruz)">
+                  Просмотреть файл
+                </button>
+                <button class="btn blue"
+                        @click.prevent="data.spravka_teplov_nagruz = null;">
+                  Изменить файл
+                </button>
+              </div>
+            </div>
+            <div v-if="!data.raschet_teplov_poter" class="col">
+              <label>Расчет тепловых потерь</label>
+              <q-file
+                  v-model="data.raschet_teplov_poter"
+                  :disable="disable"
+                  outlined
+                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"
+                  max-total-size="25165824"
+                  accept=".jpg, image/jpeg, .pdf"
+                  @rejected="onRejected"
+                  @input="changedRaschet = true"
+              />
+            </div>
+            <div v-else class="col">
+              <label>Расчет тепловых потерь загружен</label>
+              <div class="q-gutter-sm column">
+                <button v-if="!changedRaschet" class="btn blue"
+                        @click.prevent="showDoc(data.raschet_teplov_poter)">
+                  Просмотреть файл
+                </button>
+                <button class="btn blue"
+                        @click.prevent="data.raschet_teplov_poter = null;">
+                  Изменить файл
+                </button>
+              </div>
+            </div>
+            <div v-if="!data.toposnova" class="col">
+              <label>Топоснова</label>
+              <q-file
+                  v-model="data.toposnova"
+                  :disable="disable"
+                  outlined
+                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"
+                  max-total-size="25165824"
+                  accept=".jpg, image/jpeg, .pdf"
+                  @rejected="onRejected"
+                  @input="changedToposnova = true"
+              />
+            </div>
+            <div v-else class="col">
+              <label>Топоснова загружена</label>
+              <div class="q-gutter-sm column">
+                <button v-if="!changedToposnova" class="btn blue"
+                        @click.prevent="showDoc(data.toposnova)">
+                  Просмотреть файл
+                </button>
+                <button class="btn blue"
+                        @click.prevent="data.toposnova = null;">
+                  Изменить файл
+                </button>
+              </div>
+            </div>
+          </div>
           <button class="btn waves-effect waves" @click.prevent="disable = false" v-if="disable">
             Редактирование
           </button>
@@ -461,13 +630,12 @@
         </div>
       </form>
     </div>
-
-
   </div>
 </template>
 
 <script>
 import messages from "@/utils/messages";
+import {server_path} from "@/local_settings";
 
 export default {
   name: "Heat_supply",
@@ -502,6 +670,18 @@ export default {
       'Нижний розлив'
     ],
     disable: true,
+    changedHeatAct: false,
+    changedHotAct: false,
+    changedVentAct: false,
+    changedPassVvoda: false,
+    changedSchemaVvoda: false,
+    changedPassITP: false,
+    changedSchemaITP: false,
+    changedBalanceAct: false,
+    changedBalanceSchema: false,
+    changedSpravka: false,
+    changedRaschet: false,
+    changedToposnova: false,
     data: {
       id: null,
       heating_system_connection_type: null,
@@ -523,20 +703,20 @@ export default {
       number_of_automatic_heat_control_systems: null,
       number_of_automatic_control_systems_for_the_air_handling_unit: null,
       technical_condition_of_the_heating_system: null,
-      act_heating: null,
+      technical_condition_of_the_heating_system_act: null,
       technical_condition_of_the_ventilation_system: null,
-      act_ventilation: null,
+      technical_condition_of_the_ventilation_system_act: null,
       technical_condition_of_the_hot_water_supply_system: null,
-      act_water_supply: null,
-      inputPassportDoc: null,
-      inputSchemaDoc: null,
-      passportITPDoc: null,
-      schemaITPDoc: null,
-      balanceActDoc: null,
-      balanceSchemaDoc: null,
-      referenceDoc: null,
-      paymentDoc: null,
-      toposnovaDoc: null,
+      technical_condition_of_the_hot_water_supply_system_act: null,
+      passport_vvoda: null,
+      schema_vvoda: null,
+      passport_itp: null,
+      schema_itp: null,
+      act_balance_razgranich: null,
+      schema_balance_razgranich: null,
+      spravka_teplov_nagruz: null,
+      raschet_teplov_poter: null,
+      toposnova: null,
     },
     loading: true,
   }),
@@ -555,34 +735,93 @@ export default {
         if (this.other_warm_source) {
           this.data.heat_supply_source = this.other_warm_source
         }
-        const resp = await this.$store.dispatch('sendEngineeringInfo', this.data)
+        let form_data = new FormData();
+        for (let key in this.data) {
+          if ((key === 'technical_condition_of_the_hot_water_supply_system_act' && typeof this.data[key] === 'string') ||
+              (key === 'technical_condition_of_the_ventilation_system_act' && typeof this.data[key] === 'string') ||
+              (key === 'technical_condition_of_the_heating_system_act' && typeof this.data[key] === 'string') ||
+              (key === 'passport_vvoda' && typeof this.data[key] === 'string') ||
+              (key === 'schema_vvoda' && typeof this.data[key] === 'string') ||
+              (key === 'passport_itp' && typeof this.data[key] === 'string') ||
+              (key === 'schema_itp' && typeof this.data[key] === 'string') ||
+              (key === 'act_balance_razgranich' && typeof this.data[key] === 'string') ||
+              (key === 'schema_balance_razgranich' && typeof this.data[key] === 'string') ||
+              (key === 'spravka_teplov_nagruz' && typeof this.data[key] === 'string') ||
+              (key === 'raschet_teplov_poter' && typeof this.data[key] === 'string') ||
+              (key === 'toposnova' && typeof this.data[key] === 'string')) {
+            continue
+          }
+          (key === 'thermal_loads_heating' && (this.data[key] === '' || this.data[key] == null)) ? this.data[key] = 0 : null;
+          (key === 'thermal_loads_hot_water_supply' && (this.data[key] === '' || this.data[key] == null)) ? this.data[key] = 0 : null;
+          (key === 'thermal_loads_ventilation' && (this.data[key] === '' || this.data[key] == null)) ? this.data[key] = 0 : null;
+          (key === 'thermal_loads_total' && (this.data[key] === '' || this.data[key] == null)) ? this.data[key] = 0 : null;
+          (key === 'number_of_automatic_heat_control_systems' && (this.data[key] === '' || this.data[key] == null)) ? this.data[key] = 0 : null;
+          (key === 'number_of_automatic_control_systems_for_the_air_handling_unit' && (this.data[key] === '' || this.data[key] == null)) ? this.data[key] = 0 : null;
+          (key === 'ITP_commissioning_year' && (this.data[key] === '' || this.data[key] == null)) ? this.data[key] = 0 : null;
+          (key === 'year_of_acceptance_on_maintenance' && (this.data[key] === '' || this.data[key] == null)) ? this.data[key] = 0 : null;
+          form_data.append(key, this.data[key]);
+        }
+        const resp = await this.$store.dispatch('sendEngineeringInfo', form_data)
         if (resp['status'] === 200) {
           this.showMessage('saveSuccess')
           this.disable = true
+          this.changedHeatAct = false
+          this.changedHotAct = false
+          this.changedVentAct = false
+          this.other_organization = null
+          this.other_warm_source = null
+          this.changedPassVvoda = false
+          this.changedSchemaVvoda = false
+          this.changedPassITP = false
+          this.changedSchemaITP = false
+          this.changedBalanceAct = false
+          this.changedBalanceSchema = false
+          this.changedSpravka = false
+          this.changedRaschet = false
+          this.changedToposnova = false
+          await this.loadingPage()
         }
       } catch (e) {
         console.log(e)
         this.showMessage('error')
       }
     },
+    showDoc(url) {
+      const link = document.createElement('a');
+      link.href = server_path + url;
+      link.target = '_blank'
+      document.body.appendChild(link);
+      link.click();
+    },
     showMessage(text) {
       if (messages[text]) {
         window.scrollTo(0, 0)
         this.$message(messages[text])
       }
+    },
+    async loadingPage() {
+      this.loading = true
+      const token = localStorage.getItem('token')
+      const id = this.$route.params['id']
+      try {
+        const info = await this.$store.dispatch('fetchEngineering', {token, id})
+        const tmp = Object.keys(this.data)
+        for (let item in info) {
+          info[item] === '/media/null' ? info[item] = null : null
+          info[item] === 'null' ? info[item] = null : null
+          if (tmp.includes(item)) {
+            this.data[item] = info[item]
+          }
+        }
+        this.data['id'] = id
+        this.loading = false
+      } catch (e) {
+        console.log(e)
+      }
     }
   },
   async mounted() {
-    const token = localStorage.getItem('token')
-    const id = this.$route.params['id']
-    try {
-      const info = await this.$store.dispatch('fetchEngineering', {token, id})
-      Object.assign(this.data, info)
-      this.data['id'] = id
-      this.loading = false
-    } catch (e) {
-      console.log(e)
-    }
+    await this.loadingPage()
   }
 }
 </script>
