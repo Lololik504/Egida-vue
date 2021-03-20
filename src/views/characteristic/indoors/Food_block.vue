@@ -54,19 +54,32 @@
                 </q-item>
               </q-list>
             </div>
-<!--            <div class="input-roof-photo">-->
-<!--              <label>Акт обследования технического состояния (экспертной оценки специализированной организации)</label>-->
-<!--              <q-file-->
-<!--                  v-model="act"-->
-<!--                  outlined-->
-<!--                  :disable="disable"-->
-<!--                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"-->
-<!--                  multiple-->
-<!--                  max-total-size="25165824"-->
-<!--                  accept=".jpg, image/jpeg, .pdf"-->
-<!--                  @rejected="onRejected"-->
-<!--              />-->
-<!--            </div>-->
+            <div v-if="!data.food_block_act" class="input-roof-photo" style="margin-left: 25px">
+              <label>Акт обследования технического состояния (экспертной оценки специализированной организации)</label>
+              <q-file
+                  v-model="data.food_block_act"
+                  outlined
+                  :disable="disable"
+                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"
+                  max-total-size="25165824"
+                  accept=".jpg, image/jpeg, .pdf"
+                  @rejected="onRejected"
+                  @input="changedAct = true"
+              />
+            </div>
+            <div v-else style="margin-bottom: 25px; margin-left: 25px">
+              <label>Акт обследования технического состояния загружен</label>
+              <div class="q-gutter-sm">
+                <button v-if="!changedAct" class="btn blue"
+                        @click.prevent="showDoc(data.food_block_act)">
+                  Просмотреть файл
+                </button>
+                <button class="btn blue"
+                        @click.prevent="data.food_block_act = null;">
+                  Изменить файл
+                </button>
+              </div>
+            </div>
           </q-card>
           <br/>
           <div class="select-type-field">
@@ -130,7 +143,7 @@
             <button class="btn waves-effect waves-light" type="submit">
               Сохранить
             </button>
-            <button class="btn waves-effect waves" @click.prevent="disable = true">
+            <button class="btn waves-effect waves" @click.prevent="cancel">
               Отменить
             </button>
           </div>
@@ -142,12 +155,14 @@
 
 <script>
 import messages from "@/utils/messages";
+import {server_path} from "@/local_settings";
 
 export default {
   name: "Food_block",
   data: () => ({
     act: null,
     disable: true,
+    changedAct: false,
     data: {
       id: null,
       food_block_technical_condition: null,
@@ -157,10 +172,22 @@ export default {
       food_block_supply_ventilation_is_workable: null,
       food_block_ventilation_type: null,
       food_block_air_heater_type: null,
+      food_block_act: null,
     },
     loading: false,
   }),
   methods: {
+    showDoc(url) {
+      const link = document.createElement('a');
+      link.href = server_path + url;
+      link.target = '_blank'
+      document.body.appendChild(link);
+      link.click();
+    },
+    async cancel() {
+      this.disable = true
+      await this.loadingPage()
+    },
     onRejected(rejectedEntries) {
       this.$q.notify({
         type: 'negative',
@@ -169,10 +196,23 @@ export default {
     },
     async save() {
       try {
-        const resp = await this.$store.dispatch('sendIndoorInfo', this.data)
+        let form_data = new FormData()
+        for (let key in this.data) {
+          if (key === 'food_block_act' && typeof this.data[key] === 'string') {
+            continue
+          }
+          (key === 'total_classroom_count' && (this.data[key] === '' || this.data[key] == null)) ? this.data[key] = 0 : null;
+          (key === 'classroom_ok_count' && (this.data[key] === '' || this.data[key] == null)) ? this.data[key] = 0 : null;
+          (key === 'classroom_warning_count' && (this.data[key] === '' || this.data[key] == null)) ? this.data[key] = 0 : null;
+          (key === 'classroom_emergency_count' && (this.data[key] === '' || this.data[key] == null)) ? this.data[key] = 0 : null;
+          form_data.append(key, this.data[key])
+        }
+        const resp = await this.$store.dispatch('sendIndoorInfo', form_data)
         if (resp['status'] === 200) {
           this.showMessage('saveSuccess')
           this.disable = true
+          this.changedAct = false;
+          await this.loadingPage()
         }
       } catch (e) {
         console.log(e)
@@ -184,19 +224,30 @@ export default {
         window.scrollTo(0,0)
         this.$message(messages[text])
       }
+    },
+    async loadingPage() {
+      this.loading = true
+      const token = localStorage.getItem('token')
+      const id = this.$route.params['id']
+      try {
+        const info = await this.$store.dispatch('fetchIndoors', {token, id})
+        const tmp = Object.keys(this.data)
+        for (let item in info) {
+          info[item] === '/media/null' ? info[item] = null : null
+          info[item] === 'null' ? info[item] = null : null
+          if (tmp.includes(item)) {
+            this.data[item] = info[item]
+          }
+        }
+        this.data['id'] = id
+        this.loading = false
+      } catch (e) {
+        console.log(e)
+      }
     }
   },
   async mounted() {
-    const token = localStorage.getItem('token')
-    const id = this.$route.params['id']
-    try {
-      const info = await this.$store.dispatch('fetchIndoors', {token, id})
-      Object.assign(this.data, info)
-      this.data['id'] = id
-      this.loading = false
-    } catch (e) {
-      console.log(e)
-    }
+    await this.loadingPage()
   }
 }
 </script>

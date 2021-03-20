@@ -9,19 +9,31 @@
             <label>Площадь кровли, кв. м.</label>
             <q-input outlined :disable="disable" step="0.001" type="number" v-model.number="data.roof_square"/>
           </div>
-<!--          <div class="input-roof-photo">-->
-<!--            <label>Фото кровли</label>-->
-<!--            <q-file-->
-<!--                v-model="data.photo"-->
-<!--                outlined-->
-<!--                :disable="disable"-->
-<!--                hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"-->
-<!--                multiple-->
-<!--                max-total-size="25165824"-->
-<!--                accept=".jpg, image/jpeg, .pdf"-->
-<!--                @rejected="onRejected"-->
-<!--            />-->
-<!--          </div>-->
+          <div v-if="!data.roof_photo" class="input-roof-photo">
+            <label>Фото кровли</label>
+            <q-file
+                v-model="data.roof_photo"
+                outlined
+                :disable="disable"
+                hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"
+                max-total-size="25165824"
+                accept=".jpg, image/jpeg, .pdf"
+                @rejected="onRejected"
+                @input="changedPhoto = true"
+            />
+          </div>
+          <div v-else style="margin-bottom: 25px">
+            <label>Фото кровли загружено</label>
+            <div class="q-gutter-sm">
+              <button v-if="!changedPhoto" class="btn blue" @click.prevent="showDoc(data.roof_photo)">
+                Просмотреть файл
+              </button>
+              <button class="btn blue"
+                      @click.prevent="data.roof_photo = null;">
+                Изменить файл
+              </button>
+            </div>
+          </div>
           <div class="select-type-field">
             <label>Тип кровли</label>
             <div class="select">
@@ -113,19 +125,32 @@
             </div>
           </q-card>
           <br/>
-<!--          <div class="input-roof-photo">-->
-<!--            <label>Акт обследования технического состояния (экспертной оценки специализированной организации)</label>-->
-<!--            <q-file-->
-<!--                v-model="data.act"-->
-<!--                :disable="disable"-->
-<!--                outlined-->
-<!--                hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"-->
-<!--                multiple-->
-<!--                max-total-size="25165824"-->
-<!--                accept=".jpg, image/jpeg, .pdf"-->
-<!--                @rejected="onRejected"-->
-<!--            />-->
-<!--          </div>-->
+          <div v-if="!data.roof_act" class="input-roof-photo">
+            <label>Акт обследования технического состояния (экспертной оценки специализированной организации)</label>
+            <q-file
+                v-model="data.roof_act"
+                :disable="disable"
+                outlined
+                hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"
+                max-total-size="25165824"
+                accept=".jpg, image/jpeg, .pdf"
+                @rejected="onRejected"
+                @input="changedAct = true"
+            />
+          </div>
+          <div v-else style="margin-bottom: 25px">
+            <label>Акт обследования технического состояния загружен</label>
+            <div class="q-gutter-sm">
+              <button v-if="!changedAct" class="btn blue"
+                      @click.prevent="showDoc(data.roof_act)">
+                Просмотреть файл
+              </button>
+              <button class="btn blue"
+                      @click.prevent="data.roof_act = null;">
+                Изменить файл
+              </button>
+            </div>
+          </div>
           <button class="btn waves-effect waves" @click.prevent="disable = false" v-if="disable">
             Редактирование
           </button>
@@ -145,13 +170,13 @@
 
 <script>
 import messages from "@/utils/messages";
+import {server_path} from "@/local_settings";
 
 export default {
   name: "Roof",
   data: () => ({
     roof_types: ['Скатная', 'Мягкая', 'Скатная/мягкая'],
     roof_materials: [
-      'Битумный наплавляемый',
       'Битумный наплавляемый',
       'Полимерная или резиновая мембрана',
       'Напыляемое многослойное покрытие',
@@ -163,14 +188,16 @@ export default {
     other_material: null,
     loading: true,
     disable: true,
+    changedPhoto: false,
+    changedAct: false,
     data: {
       id: null,
       roof_type: null,
       roof_material: null,
       roof_status: null,
-      act: null,
+      roof_act: null,
       roof_square: null,
-      photo: null
+      roof_photo: null
     }
   }),
   methods: {
@@ -180,16 +207,34 @@ export default {
         message: `${rejectedEntries.length} file(s) did not pass validation constraints`
       })
     },
+    showDoc(url) {
+      const link = document.createElement('a');
+      link.href = server_path + url;
+      link.target = '_blank'
+      document.body.appendChild(link);
+      link.click();
+    },
     async save() {
       try {
         if (this.other_material) {
           this.data.roof_material = this.other_material
         }
-        console.log(this.data)
-        const resp = await this.$store.dispatch('sendConstructionInfo', this.data)
+        let form_data = new FormData();
+        for (let key in this.data) {
+          if ((key === 'roof_photo' && typeof this.data[key] === 'string') || (key === 'roof_act' && typeof this.data[key] === 'string')) {
+            continue
+          }
+          (key === 'roof_square' && (this.data[key] === '' || this.data[key] == null)) ? this.data[key] = 0 : null
+          form_data.append(key, this.data[key]);
+        }
+        const resp = await this.$store.dispatch('sendConstructionInfo', form_data)
         if (resp['status'] === 200) {
           this.showMessage('saveSuccess')
           this.disable = true
+          this.other_material = null
+          this.changedPhoto = false;
+          this.changedAct = false;
+          await this.loadingPage()
         }
       } catch (e) {
         console.log(e)
@@ -201,19 +246,30 @@ export default {
         window.scrollTo(0, 0)
         this.$message(messages[text])
       }
+    },
+    async loadingPage() {
+      this.loading = true
+      const token = localStorage.getItem('token')
+      const id = this.$route.params['id']
+      try {
+        const info = await this.$store.dispatch('fetchConstruction', {token, id})
+        const tmp = Object.keys(this.data)
+        for (let item in info) {
+          info[item] === '/media/null' ? info[item] = null : null
+          info[item] === 'null' ? info[item] = null : null
+          if (tmp.includes(item)) {
+            this.data[item] = info[item]
+          }
+        }
+        this.data['id'] = id
+        this.loading = false
+      } catch (e) {
+        console.log(e)
+      }
     }
   },
   async mounted() {
-    const token = localStorage.getItem('token')
-    const id = this.$route.params['id']
-    try {
-      const info = await this.$store.dispatch('fetchConstruction', {token, id})
-      Object.assign(this.data, info)
-      this.data['id'] = id
-      this.loading = false
-    } catch (e) {
-      console.log(e)
-    }
+    await this.loadingPage()
   }
 
 }

@@ -165,17 +165,16 @@ export default {
                 throw e
             }
         },
-        async sendConstructionInfo({dispatch, commit}, data) {
+        async sendConstructionInfo({dispatch, commit}, file) {
             try {
                 const token = localStorage.getItem('token')
                 return await new Promise((resolve, reject) => {
                     axios.put(server_path + "/api/building/building_construction/",
-                        data,
+                        file,
                         {
                             headers: {
-                                "Authorization": "auth " + token,
-                                'Content-Type': 'application/json',
-                                "id": data.id
+                                'Content-Type': 'multipart/form-data',
+                                "Authorization": "auth " + token
                             }
                         })
                         .then(resp => {
@@ -199,8 +198,31 @@ export default {
                         {
                             headers: {
                                 "Authorization": "auth " + token,
-                                'Content-Type': 'application/json',
-                                "id": data.id
+                                'Content-Type': 'multipart/form-data'
+                            }
+                        })
+                        .then(resp => {
+                            resolve(resp)
+                        })
+                        .catch(err => {
+                            reject(err)
+                        })
+                })
+            } catch (e) {
+                commit('setError', e)
+                throw e
+            }
+        },
+        async sendEngineeringInfoJSON({dispatch, commit}, data) {
+            try {
+                const token = localStorage.getItem('token')
+                return await new Promise((resolve, reject) => {
+                    axios.put(server_path + "/api/building/engineering_communication/",
+                        data,
+                        {
+                            headers: {
+                                "Authorization": "auth " + token,
+                                'Content-Type': 'application/json'
                             }
                         })
                         .then(resp => {
@@ -224,8 +246,7 @@ export default {
                         {
                             headers: {
                                 "Authorization": "auth " + token,
-                                'Content-Type': 'application/json',
-                                "id": data.id
+                                'Content-Type': 'multipart/form-data'
                             }
                         })
                         .then(resp => {

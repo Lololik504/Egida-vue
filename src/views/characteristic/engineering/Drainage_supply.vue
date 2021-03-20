@@ -71,7 +71,9 @@ export default {
     },
     async save() {
       try {
-        const resp = await this.$store.dispatch('sendEngineeringInfo', this.data)
+        (this.data.number_of_storm_water_inlets === '' || this.data.number_of_storm_water_inlets == null) ? this.data.number_of_storm_water_inlets = 0 : null;
+        (this.data.the_number_of_wells_of_the_storm_sewer_system === '' || this.data.the_number_of_wells_of_the_storm_sewer_system == null) ? this.data.the_number_of_wells_of_the_storm_sewer_system = 0 : null;
+        const resp = await this.$store.dispatch('sendEngineeringInfoJSON', this.data)
         if (resp['status'] === 200) {
           this.showMessage('saveSuccess')
           this.disable = true
@@ -89,11 +91,19 @@ export default {
     }
   },
   async mounted() {
+    this.loading = true
     const token = localStorage.getItem('token')
     const id = this.$route.params['id']
     try {
       const info = await this.$store.dispatch('fetchEngineering', {token, id})
-      Object.assign(this.data, info)
+      const tmp = Object.keys(this.data)
+      for (let item in info) {
+        info[item] === '/media/null' ? info[item] = null : null
+        info[item] === 'null' ? info[item] = null : null
+        if (tmp.includes(item)) {
+          this.data[item] = info[item]
+        }
+      }
       this.data['id'] = id
       this.loading = false
     } catch (e) {

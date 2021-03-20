@@ -132,19 +132,32 @@
                 </q-item>
               </q-list>
             </div>
-<!--            <div class="input-roof-photo">-->
-<!--              <label>Акт обследования технического состояния (экспертной оценки специализированной организации)</label>-->
-<!--              <q-file-->
-<!--                  v-model="data.act_inside"-->
-<!--                  outlined-->
-<!--                  :disable="disable"-->
-<!--                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"-->
-<!--                  multiple-->
-<!--                  max-total-size="25165824"-->
-<!--                  accept=".jpg, image/jpeg, .pdf"-->
-<!--                  @rejected="onRejected"-->
-<!--              />-->
-<!--            </div>-->
+            <div v-if="!data.technical_condition_of_the_internal_power_supply_system_act" class="input-roof-photo">
+              <label>Акт обследования технического состояния (экспертной оценки специализированной организации)</label>
+              <q-file
+                  v-model="data.technical_condition_of_the_internal_power_supply_system_act"
+                  outlined
+                  :disable="disable"
+                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"
+                  max-total-size="25165824"
+                  accept=".jpg, image/jpeg, .pdf"
+                  @rejected="onRejected"
+                  @input="changedInternalAct = true"
+              />
+            </div>
+            <div v-else style="margin-bottom: 25px">
+              <label>Акт обследования технического состояния загружен</label>
+              <div class="q-gutter-sm">
+                <button v-if="!changedInternalAct" class="btn blue"
+                        @click.prevent="showDoc(data.technical_condition_of_the_internal_power_supply_system_act)">
+                  Просмотреть файл
+                </button>
+                <button class="btn blue"
+                        @click.prevent="data.technical_condition_of_the_internal_power_supply_system_act = null;">
+                  Изменить файл
+                </button>
+              </div>
+            </div>
           </q-card>
           <br/>
           <q-card flat bordered class="my-card">
@@ -197,74 +210,143 @@
                 </q-item>
               </q-list>
             </div>
-<!--            <div class="input-roof-photo">-->
-<!--              <label>Акт обследования технического состояния (экспертной оценки специализированной организации)</label>-->
-<!--              <q-file-->
-<!--                  v-model="data.act_outside"-->
-<!--                  outlined-->
-<!--                  :disable="disable"-->
-<!--                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"-->
-<!--                  multiple-->
-<!--                  max-total-size="25165824"-->
-<!--                  accept=".jpg, image/jpeg, .pdf"-->
-<!--                  @rejected="onRejected"-->
-<!--              />-->
-<!--            </div>-->
+            <div v-if="!data.technical_condition_of_the_external_power_supply_system_act" class="input-roof-photo">
+              <label>Акт обследования технического состояния (экспертной оценки специализированной организации)</label>
+              <q-file
+                  v-model="data.technical_condition_of_the_external_power_supply_system_act"
+                  outlined
+                  :disable="disable"
+                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"
+                  max-total-size="25165824"
+                  accept=".jpg, image/jpeg, .pdf"
+                  @rejected="onRejected"
+                  @input="changedExternalAct = true"
+              />
+            </div>
+            <div v-else style="margin-bottom: 25px">
+              <label>Акт обследования технического состояния загружен</label>
+              <div class="q-gutter-sm">
+                <button v-if="!changedExternalAct" class="btn blue"
+                        @click.prevent="showDoc(data.technical_condition_of_the_external_power_supply_system_act)">
+                  Просмотреть файл
+                </button>
+                <button class="btn blue"
+                        @click.prevent="data.technical_condition_of_the_external_power_supply_system_act = null;">
+                  Изменить файл
+                </button>
+              </div>
+            </div>
           </q-card>
           <br/>
-          <!--          <h5><strong>Документация</strong></h5>-->
-          <!--          <div class="row">-->
-          <!--            <div class="col">-->
-          <!--              <label>Акт балансового разграничени</label>-->
-          <!--              <q-file-->
-          <!--                  v-model="balanceActDoc"-->
-          <!--                  outlined-->
-          <!--                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"-->
-          <!--                  multiple-->
-          <!--                  max-total-size="25165824"-->
-          <!--                  accept=".jpg, image/jpeg, .pdf"-->
-          <!--                  @rejected="onRejected"-->
-          <!--              />-->
-          <!--            </div>-->
-          <!--            <div class="col">-->
-          <!--              <label>Схема балансового разграничения</label>-->
-          <!--              <q-file-->
-          <!--                  v-model="balanceSchemaDoc"-->
-          <!--                  outlined-->
-          <!--                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"-->
-          <!--                  multiple-->
-          <!--                  max-total-size="25165824"-->
-          <!--                  accept=".jpg, image/jpeg, .pdf"-->
-          <!--                  @rejected="onRejected"-->
-          <!--              />-->
-          <!--            </div>-->
-          <!--          </div>-->
-          <!--          <div class="row">-->
-          <!--            <div class="col">-->
-          <!--              <label>Однолинейная схема</label>-->
-          <!--              <q-file-->
-          <!--                  v-model="schemaDoc"-->
-          <!--                  outlined-->
-          <!--                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"-->
-          <!--                  multiple-->
-          <!--                  max-total-size="25165824"-->
-          <!--                  accept=".jpg, image/jpeg, .pdf"-->
-          <!--                  @rejected="onRejected"-->
-          <!--              />-->
-          <!--            </div>-->
-          <!--            <div class="col">-->
-          <!--              <label>Фото ВРУ</label>-->
-          <!--              <q-file-->
-          <!--                  v-model="photo"-->
-          <!--                  outlined-->
-          <!--                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"-->
-          <!--                  multiple-->
-          <!--                  max-total-size="25165824"-->
-          <!--                  accept=".jpg, image/jpeg, .pdf"-->
-          <!--                  @rejected="onRejected"-->
-          <!--              />-->
-          <!--            </div>-->
-          <!--          </div>-->
+          <h5><strong>Документация</strong></h5>
+          <div class="row">
+            <div v-if="!data.power_supply_system_act_balance_razgranich" class="col">
+              <label>Акт балансового разграничени</label>
+              <q-file
+                  v-model="data.power_supply_system_act_balance_razgranich"
+                  :disable="disable"
+                  outlined
+                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"
+                  max-total-size="25165824"
+                  accept=".jpg, image/jpeg, .pdf"
+                  @rejected="onRejected"
+                  @input="changedBalanceAct = true"
+              />
+            </div>
+            <div v-else class="col">
+              <label>Акт балансового разграничени загружен</label>
+              <div class="q-gutter-sm column">
+                <button v-if="!changedBalanceAct" class="btn blue"
+                        @click.prevent="showDoc(data.power_supply_system_act_balance_razgranich)">
+                  Просмотреть файл
+                </button>
+                <button class="btn blue"
+                        @click.prevent="data.power_supply_system_act_balance_razgranich = null;">
+                  Изменить файл
+                </button>
+              </div>
+            </div>
+            <div v-if="!data.power_supply_system_scheme_balance_razgranich" class="col">
+              <label>Схема балансового разграничения</label>
+              <q-file
+                  v-model="data.power_supply_system_scheme_balance_razgranich"
+                  :disable="disable"
+                  outlined
+                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"
+                  max-total-size="25165824"
+                  accept=".jpg, image/jpeg, .pdf"
+                  @rejected="onRejected"
+                  @input="changedBalanceScheme"
+              />
+            </div>
+            <div v-else class="col">
+              <label>Схема балансового разграничени загружена</label>
+              <div class="q-gutter-sm column">
+                <button v-if="!changedBalanceScheme" class="btn blue"
+                        @click.prevent="showDoc(data.power_supply_system_scheme_balance_razgranich)">
+                  Просмотреть файл
+                </button>
+                <button class="btn blue"
+                        @click.prevent="data.power_supply_system_scheme_balance_razgranich = null;">
+                  Изменить файл
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div v-if="!data.power_supply_system_odnolinein_schema" class="col">
+              <label>Однолинейная схема</label>
+              <q-file
+                  v-model="data.power_supply_system_odnolinein_schema"
+                  :disable="disable"
+                  outlined
+                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"
+                  max-total-size="25165824"
+                  accept=".jpg, image/jpeg, .pdf"
+                  @rejected="onRejected"
+                  @input="changedSchema = true"
+              />
+            </div>
+            <div v-else class="col">
+              <label>Однолинейная схема загружена</label>
+              <div class="q-gutter-sm column">
+                <button v-if="!changedSchema" class="btn blue"
+                        @click.prevent="showDoc(data.power_supply_system_odnolinein_schema)">
+                  Просмотреть файл
+                </button>
+                <button class="btn blue"
+                        @click.prevent="data.power_supply_system_odnolinein_schema = null;">
+                  Изменить файл
+                </button>
+              </div>
+            </div>
+            <div v-if="!data.power_supply_system_photo_vru" class="col">
+              <label>Фото ВРУ</label>
+              <q-file
+                  v-model="data.power_supply_system_photo_vru"
+                  :disable="disable"
+                  outlined
+                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"
+                  max-total-size="25165824"
+                  accept=".jpg, image/jpeg, .pdf"
+                  @rejected="onRejected"
+                  @input="changedPhoto = true"
+              />
+            </div>
+            <div v-else class="col">
+              <label>Фото ВРУ загружено</label>
+              <div class="q-gutter-sm column">
+                <button v-if="!changedPhoto" class="btn blue"
+                        @click.prevent="showDoc(data.power_supply_system_photo_vru)">
+                  Просмотреть файл
+                </button>
+                <button class="btn blue"
+                        @click.prevent="data.power_supply_system_photo_vru = null;">
+                  Изменить файл
+                </button>
+              </div>
+            </div>
+          </div>
           <button class="btn waves-effect waves" @click.prevent="disable = false" v-if="disable">
             Редактирование
           </button>
@@ -286,6 +368,7 @@
 
 <script>
 import messages from "@/utils/messages";
+import {server_path} from "@/local_settings";
 
 export default {
   name: "Power_supply",
@@ -314,6 +397,12 @@ export default {
     ],
     conturs: [{label: 'Имеется', value: true}, {label: 'Отсутствует', value: false}],
     disable: true,
+    changedInternalAct: false,
+    changedExternalAct: false,
+    changedBalanceAct: false,
+    changedBalanceScheme: false,
+    changedSchema: false,
+    changedPhoto: false,
     data: {
       id: null,
       power_supply_organization: null,
@@ -329,12 +418,12 @@ export default {
       count_of_incandescent_outdoor_lamps: null,
       technical_condition_of_the_external_power_supply_system: null,
       technical_condition_of_the_internal_power_supply_system: null,
-      act_inside: null,
-      act_outside: null,
-      schemaDoc: null,
-      balanceActDoc: null,
-      balanceSchemaDoc: null,
-      photo: null,
+      technical_condition_of_the_internal_power_supply_system_act: null,
+      technical_condition_of_the_external_power_supply_system_act: null,
+      power_supply_system_odnolinein_schema: null,
+      power_supply_system_act_balance_razgranich: null,
+      power_supply_system_scheme_balance_razgranich: null,
+      power_supply_system_photo_vru: null,
     },
     loading: true,
   }),
@@ -353,34 +442,88 @@ export default {
         if (this.other_cable) {
           this.data.electric_cable_accessory = this.other_cable
         }
-        const resp = await this.$store.dispatch('sendEngineeringInfo', this.data)
+        let form_data = new FormData();
+        for (let key in this.data) {
+          if ((key === 'technical_condition_of_the_internal_power_supply_system_act' && typeof this.data[key] === 'string') ||
+              (key === 'technical_condition_of_the_external_power_supply_system_act' && typeof this.data[key] === 'string') ||
+              (key === 'power_supply_system_odnolinein_schema' && typeof this.data[key] === 'string') ||
+              (key === 'power_supply_system_scheme_balance_razgranich' && typeof this.data[key] === 'string') ||
+              (key === 'power_supply_system_photo_vru' && typeof this.data[key] === 'string') ||
+              (key === 'power_supply_system_act_balance_razgranich' && typeof this.data[key] === 'string')) {
+            continue
+          }
+          (key === 'required_power_supply_reliability_category' && (this.data[key] === '' || this.data[key] == null)) ? this.data[key] = 0 : null;
+          (key === 'actual_power_supply_reliability_category' && (this.data[key] === '' || this.data[key] == null)) ? this.data[key] = 0 : null;
+          (key === 'permitted_power' && (this.data[key] === '' || this.data[key] == null)) ? this.data[key] = 0 : null;
+          (key === 'count_of_energy_saving_lamps_for_indoor_lighting' && (this.data[key] === '' || this.data[key] == null)) ? this.data[key] = 0 : null;
+          (key === 'count_of_incandescent_lamps_for_indoor_lighting' && (this.data[key] === '' || this.data[key] == null)) ? this.data[key] = 0 : null;
+          (key === 'count_of_energy_saving_outdoor_lamps' && (this.data[key] === '' || this.data[key] == null)) ? this.data[key] = 0 : null;
+          (key === 'count_of_incandescent_outdoor_lamps' && (this.data[key] === '' || this.data[key] == null)) ? this.data[key] = 0 : null;
+          // (key === 'ground_loop' && (this.data[key] === false || this.data[key] == null)) ? this.data[key] = false : null;
+          // if (key === 'ground_loop') {
+          //   if (this.data[key]) {
+          //     this.data[key] = 'True'
+          //   } else if (this.data[key] === false) {
+          //     this.data[key] = 'False'
+          //   } else this.data[key] = 'None'
+          // }
+          form_data.append(key, this.data[key]);
+        }
+        const resp = await this.$store.dispatch('sendEngineeringInfo', form_data)
         if (resp['status'] === 200) {
           this.showMessage('saveSuccess')
           this.disable = true
+          this.other_organization = null
+          this.other_cable = null
+          this.changedInternalAct = false
+          this.changedExternalAct = false
+          this.changedBalanceAct = false
+          this.changedBalanceScheme = false
+          this.changedSchema = false
+          this.changedPhoto = false
+          await this.loadingPage()
         }
       } catch (e) {
         console.log(e)
         this.showMessage('error')
       }
     },
+    showDoc(url) {
+      const link = document.createElement('a');
+      link.href = server_path + url;
+      link.target = '_blank'
+      document.body.appendChild(link);
+      link.click();
+    },
     showMessage(text) {
       if (messages[text]) {
         window.scrollTo(0, 0)
         this.$message(messages[text])
       }
+    },
+    async loadingPage() {
+      this.loading = true
+      const token = localStorage.getItem('token')
+      const id = this.$route.params['id']
+      try {
+        const info = await this.$store.dispatch('fetchEngineering', {token, id})
+        const tmp = Object.keys(this.data)
+        for (let item in info) {
+          info[item] === '/media/null' ? info[item] = null : null
+          info[item] === 'null' ? info[item] = null : null
+          if (tmp.includes(item)) {
+            this.data[item] = info[item]
+          }
+        }
+        this.data['id'] = id
+        this.loading = false
+      } catch (e) {
+        console.log(e)
+      }
     }
   },
   async mounted() {
-    const token = localStorage.getItem('token')
-    const id = this.$route.params['id']
-    try {
-      const info = await this.$store.dispatch('fetchEngineering', {token, id})
-      Object.assign(this.data, info)
-      this.data['id'] = id
-      this.loading = false
-    } catch (e) {
-      console.log(e)
-    }
+    await this.loadingPage()
   }
 }
 </script>
