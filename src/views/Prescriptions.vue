@@ -19,10 +19,10 @@
         <div class="menuBlock">
           <ul>
             <li><a @click.prevent="send($event.target.id)" id="rospotreb">Роспотребнадзор</a></li>
-            <li><a @click="send($event.target.id)" id="gospozh">Госпожнадзор</a></li>
-            <li><a @click="send($event.target.id)" id="rostech">Ростехнадзор</a></li>
-            <li><a @click="send($event.target.id)" id="sudeb">Судебные решения</a></li>
-            <li><a @click="send($event.target.id)" id="otherorders">Прочие надзорные органы</a></li>
+            <li><a @click.prevent="send($event.target.id)" id="gospozh">Госпожнадзор</a></li>
+            <li><a @click.prevent="send($event.target.id)" id="rostech">Ростехнадзор</a></li>
+            <li><a @click.prevent="send($event.target.id)" id="sudeb">Судебные решения</a></li>
+            <li><a @click.prevent="send($event.target.id)" id="otherorders">Прочие надзорные органы</a></li>
           </ul>
         </div>
         <div class="cardsBlock" v-if="choosenPrescription">

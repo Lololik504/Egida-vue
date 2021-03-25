@@ -40,6 +40,12 @@ export default {
 
 @import '~materialize-css/dist/css/materialize.min.css';
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 html,
 body {
   height: 100%;
@@ -47,6 +53,7 @@ body {
   margin: 0;
   padding: 0;
 }
+
 
 .wrapper {
   display: flex;
@@ -64,7 +71,7 @@ body {
 }
 
 .footer {
-  flex: 0 0 auto;
+  flex: 0 0 100%;
 }
 
 </style>

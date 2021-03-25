@@ -11,7 +11,7 @@
           <router-link
                        v-for="school in district['schools']"
                        :key="school['INN']"
-                       :to="`/schoolcard/${school['INN']}`"
+                       :to="`/${url}/${school['INN']}`"
           >
             {{school['shortname']}}
             <br/>
@@ -30,15 +30,18 @@ export default {
   props: {
     districts:{
       type: Array
+    },
+    url: {
+      type: String
     }
   },
   name: "DistrictList",
-  created() {
-    this.districts.forEach(dis => {
-      this.distrs.push(dis.name['name'])
-    })
-    // console.log(this.distrs)
-  }
+  // created() {
+  //   this.districts.forEach(dis => {
+  //     this.distrs.push(dis.name['name'])
+  //   })
+  //   // console.log(this.distrs)
+  // }
 }
 </script>
 

@@ -1,15 +1,36 @@
 <template>
   <div class="list">
     <router-link class="list-item" to="/">Приказы по капитальному и текущему ремонту ОУ</router-link>
-    <router-link class="list-item" to="/">Документация</router-link>
+    <router-link v-if="getPermission > 10" class="list-item" :to="`/documents/${getInn}`">Документация</router-link>
+    <router-link v-else class="list-item" :to="'/documents'">Документация</router-link>
     <router-link class="list-item" to="/">Муниципальное задание на содержание здания</router-link>
     <router-link class="list-item" to="/">Отчеты</router-link>
     <router-link class="list-item" to="/">Ремонтные работы</router-link>
-    <router-link class="list-item" to="/">Наказы</router-link>
-    <router-link class="list-item" to="/">Предписания надзорных органов/судебные решения</router-link>
+    <router-link v-if="getPermission > 10" class="list-item" :to="`/orders/${getInn}`">Наказы</router-link>
+    <router-link v-else class="list-item" :to="'/orders'">Наказы</router-link>
+    <router-link v-if="getPermission > 10" class="list-item" :to="`/prescriptions/${getInn}`">Предписания надзорных органов/судебные решения</router-link>
+    <router-link v-else class="list-item" :to="'/prescriptions'">Предписания надзорных органов/судебные решения</router-link>
     <router-link class="list-item" to="/">Еженедельные параметры теплоносителя и внутреннего воздуха помещений</router-link>
   </div>
 </template>
+
+<script>
+export default {
+  name: 'HomeList',
+  data: () => ({
+
+  }),
+  computed: {
+    getPermission: function () {
+      return localStorage.getItem('permission')
+    },
+    getInn: () => {
+      return localStorage.getItem('inn')
+    }
+  },
+}
+</script>
+
 
 <style>
 .list {
