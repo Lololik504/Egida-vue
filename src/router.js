@@ -127,12 +127,52 @@ let router = new Router({
             component: () => import('./views/Documents'),
         },
         {
+            path: '/documents',
+            name: 'AllDocuments',
+            meta: {
+                requiresAuth: true
+            },
+            component: () => import('./views/AllDocuments'),
+        },
+        {
             path: '/prescriptions/:id',
             name: 'Prescriptions',
             meta: {
                 requiresAuth: true
             },
             component: () => import('./views/Prescriptions'),
+        },
+        {
+            path: '/prescriptions',
+            name: 'AllPrescriptions',
+            meta: {
+                requiresAuth: true
+            },
+            component: () => import('./views/AllPrescriptions'),
+        },
+        {
+            path: '/orders/:id',
+            name: 'Orders',
+            meta: {
+                requiresAuth: true
+            },
+            component: () => import('./views/Orders'),
+        },
+        {
+            path: '/orders',
+            name: 'AllOrders',
+            meta: {
+                requiresAuth: true
+            },
+            component: () => import('./views/AllOrders'),
+        },
+        {
+            path: '/create_order/:id',
+            name: 'CreateOrder',
+            meta: {
+                requiresAuth: true
+            },
+            component: () => import('./views/CreateOrder'),
         },
         {
             path: '/create_prescription/:id',

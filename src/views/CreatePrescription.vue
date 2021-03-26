@@ -62,11 +62,11 @@
                 @rejected="onRejected"
             />
           </div>
-          <div class="checkbox col">
+          <div v-if="getPermission" class="checkbox col">
             <q-checkbox v-model="vkluchenie" dense left-label
                         label="Включение в приказ текущего года по ремонтным работам:"/>
           </div>
-          <div class="checkbox col">
+          <div v-if="getPermission" class="checkbox col">
             <q-checkbox v-model="executed" dense left-label
                         label="Исполнено:"/>
           </div>
@@ -153,6 +153,11 @@ export default {
   validations: {
     prescription: {
       required
+    }
+  },
+  computed: {
+    getPermission: function () {
+      return localStorage.getItem('permission')
     }
   },
   methods: {

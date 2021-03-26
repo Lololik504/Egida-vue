@@ -532,6 +532,7 @@
 <script>
 import {maxValue, minValue, required} from "vuelidate/lib/validators";
 import {mapGetters} from 'vuex'
+import messages from "@/utils/messages";
 
 export default {
   data: () => ({
@@ -588,11 +589,17 @@ export default {
       try {
         this.d.id = this.$route.params['id']
         const dataForm = Object.assign({}, this.d)
-        console.log(dataForm)
         await this.$store.dispatch('updateBuilding', dataForm)
         await this.$router.push(`/schoolbuilding/${localStorage.getItem('currentINN')}`)
+        this.showMessage('saveSuccess');
       } catch (e) {
         console.log(e)
+      }
+    },
+    showMessage(text) {
+      if (messages[text]) {
+        window.scrollTo(0, 0)
+        this.$message(messages[text])
       }
     },
     async deleteBuilding() {
@@ -602,6 +609,7 @@ export default {
           const id = this.$route.params['id']
           await this.$store.dispatch('deleteBuilding', id)
           await this.$router.push(`/schoolbuilding/${localStorage.getItem('currentINN')}`)
+          this.showMessage('deleteSuccess');
         }
       } catch (e) {
         console.log(e)
@@ -613,7 +621,6 @@ export default {
       const token = localStorage.getItem('token')
       const id = this.$route.params['id']
       this.d = await this.$store.dispatch('fetchBuilding', {token, id})
-      console.log(this.d)
       this.loading = false
     } catch (e) {
       console.log(e)

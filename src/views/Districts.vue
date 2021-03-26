@@ -5,6 +5,7 @@
       <h4>Список учреждений</h4>
       <DistrictList
           :districts="districts"
+          url="schoolcard"
       />
       <br/>
       <div class="q-gutter-md">

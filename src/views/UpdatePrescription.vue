@@ -70,11 +70,11 @@
               </button>
             </div>
           </div>
-          <div class="checkbox col">
+          <div v-if="getPermission" class="checkbox col">
             <q-checkbox v-model="data.vkluchenie" dense left-label
                         label="Включение в приказ текущего года по ремонтным работам:"/>
           </div>
-          <div class="checkbox col">
+          <div v-if="getPermission" class="checkbox col">
             <q-checkbox v-model="data.executed" dense left-label
                         label="Исполнено:"/>
           </div>
@@ -85,7 +85,7 @@
             <button class="btn waves-effect waves" @click.prevent="returnBackPage">
               Отменить
             </button>
-            <button v-if="checkPermission" class="btn waves-effect waves" @click.prevent="removePrescription">
+            <button v-if="getPermission < 15" class="btn waves-effect waves" @click.prevent="removePrescription">
               Удалить
             </button>
           </div>
@@ -103,7 +103,6 @@ export default {
   name: "CreatePrescription",
   data: () => ({
     loading: true,
-    checkPermission: localStorage.getItem('permission') <= 10,
     allPrescriptions: ['Роспотребнадзор', 'Госпожнадзор', 'Ростехнадзор', 'Судебные решения', 'Прочие надзорные органы'],
     allPrescriptionsURL: ['rospotreb', 'gospozh', 'rostech', 'sudeb', 'otherorders'],
     itemsRepair: ['Строительные конструкции', 'Инженерные коммуникации', 'Внутренние помещения', 'Система безопасности', 'Благоустройство территории', 'Спортивные сооружения/теневые навесы'],
@@ -164,6 +163,11 @@ export default {
       vkluchenie: false
     }
   }),
+  computed: {
+    getPermission: function () {
+      return localStorage.getItem('permission')
+    }
+  },
   methods: {
     async returnBackPage() {
       await this.$router.go(-1)
@@ -193,24 +197,15 @@ export default {
         const inn = localStorage.getItem('currentINN')
         const url = this.$route.params['source']
         const id = this.$route.params['id']
-        if (this.summa === '') {
-          this.summa = null
-        }
         let file = new FormData();
         for (let key in this.data) {
           if (key === 'order') {
             file.append('file', this.data[key])
           } else {
+            (key === 'summa' && (this.data[key] === '' || this.data[key] == null)) ? this.data[key] = 0 : null;
             file.append(key, this.data[key])
           }
         }
-        // file.append('file', this.data.order)
-        // file.append('date_order', this.data.date_order)
-        // file.append('executed', this.data.executed)
-        // file.append('vkluchenie', this.data.vkluchenie)
-        // file.append('period_execution', this.data.period_execution)
-        // file.append('type_work', this.data.type_work)
-        // file.append('summa', this.data.summa)
         await this.$store.dispatch('updatePrescription', {
           file,
           url,

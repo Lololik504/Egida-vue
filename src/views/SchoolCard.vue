@@ -10,6 +10,9 @@
         <button class="btn waves-effect waves-light" @click="toBuilding">
           Здания
         </button>
+<!--        <button class="btn waves-effect waves-light" @click="toOrders">-->
+<!--          Наказы-->
+<!--        </button>-->
         <button class="btn waves-effect waves-light" @click="toPrescriptions">
           Предписания надзорных органов / судебные решения
         </button>
@@ -42,6 +45,9 @@ export default {
     },
     toDocs() {
       this.$router.push(`/documents/${this.$route.params['card']}`)
+    },
+    toOrders() {
+      this.$router.push(`/orders/${this.$route.params['card']}`)
     },
     toPrescriptions() {
       this.$router.push(`/prescriptions/${this.$route.params['card']}`)

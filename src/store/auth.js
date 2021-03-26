@@ -29,7 +29,6 @@ export default {
                         })
                         .catch(err => {
                             commit('auth_error')
-                            console.log('remove')
                             localStorage.clear()
                             commit('logout')
                             reject(err)
