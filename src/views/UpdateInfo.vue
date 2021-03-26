@@ -57,23 +57,23 @@ export default {
     edu_types: ['Гимназия - гимназия',
       'Прогимназия - прогимназия',
       'Лицей - лицей',
-      'СОШ – средняя общеобразовательная школа',
-      'ООШ – основная общеобразовательная школа',
-      'ШИ – школа-интернат',
+      'СОШ - средняя общеобразовательная школа',
+      'ООШ - основная общеобразовательная школа',
+      'ШИ - школа-интернат',
       'В(С)Ш - вечерняя (сменная) школа',
       'С(К)Ш - специальная (коррекционная) школа',
       'С(К)ШИ - специальная (коррекционная) школа-интернат',
       'С(К)НШ - специальная (коррекционная) начальная школа',
-      'д/с – детский сад',
-      'ДО – дополнительное образование',
-      'ДПО – дополнительное профессиональное образование',
+      'д/с - детский сад',
+      'ДО - дополнительное образование',
+      'ДПО - дополнительное профессиональное образование',
       'Прочее'],
     other_edu_type: null,
     loading: true,
     mainInfo: {
       INN: null,
-      form_type: null,
-      edu_type: null,
+      form_type: '',
+      edu_type: '',
       shortname: null,
       name: null,
     }
@@ -100,19 +100,18 @@ export default {
     },
     async submitHandler() {
       try {
-        if (this.mainInfo.edu_type.includes("-")) {
+        if (this.mainInfo.edu_type.includes('-')) {
           this.mainInfo.edu_type = this.mainInfo.edu_type.slice(0, this.mainInfo.edu_type.indexOf(' '))
         }
-        if (this.mainInfo.form_type.includes("-")) {
+        if (this.mainInfo.form_type.includes('-')) {
           this.mainInfo.form_type = this.mainInfo.form_type.slice(0, this.mainInfo.form_type.indexOf(' '))
         }
         if (this.other_edu_type) {
-          if (this.other_edu_type.includes("-")) {
+          if (this.other_edu_type.includes('-')) {
             this.mainInfo.edu_type = this.other_edu_type.slice(0, this.other_edu_type.indexOf(' '))
           } else
           this.mainInfo.edu_type = this.other_edu_type
         }
-        console.log(this.mainInfo)
         await this.$store.dispatch('updateInfo', this.mainInfo)
         await this.$router.push(`/school/${this.mainInfo.INN}`)
       } catch (e) {
