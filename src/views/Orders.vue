@@ -18,7 +18,7 @@
       <div class="mainBlock">
         <div class="menuBlock">
           <ul>
-            <li><a @click="send($event.target.id)" id="sovet">Реализация наказов избирателей Совета депутатов г. Новосибирска</a></li>
+            <li><a @click.prevent="send($event.target.id)" id="sovet">Реализация наказов избирателей Совета депутатов г. Новосибирска</a></li>
             <li><a @click.prevent="send($event.target.id)" id="sobranie">Реализация наказов избирателей депутатов Законодательного собрания НСО</a></li>
           </ul>
         </div>

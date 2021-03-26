@@ -10,9 +10,9 @@
         <button class="btn waves-effect waves-light" @click="toBuilding">
           Здания
         </button>
-        <button class="btn waves-effect waves-light" @click="toOrders">
-          Наказы
-        </button>
+<!--        <button class="btn waves-effect waves-light" @click="toOrders">-->
+<!--          Наказы-->
+<!--        </button>-->
         <button class="btn waves-effect waves-light" @click="toPrescriptions">
           Предписания надзорных органов / судебные решения
         </button>

@@ -84,16 +84,11 @@ export default {
       const token = localStorage.getItem('token')
       const inn = this.$route.params['inn']
       info = await this.$store.dispatch('fetchInfo', {token, inn})
-
-
       this.mainInfo.INN = info['INN']
       this.mainInfo.name = info['name']
       this.mainInfo.edu_type = info['edu_type']
       this.mainInfo.form_type = info['form_type']
       this.mainInfo.shortname = info['shortname']
-
-
-
       this.loading = false
     } catch (e) {
       console.log(e)
@@ -105,14 +100,14 @@ export default {
     },
     async submitHandler() {
       try {
-        if (this.mainInfo.edu_type.includes('-')) {
+        if (this.mainInfo.edu_type.includes("-")) {
           this.mainInfo.edu_type = this.mainInfo.edu_type.slice(0, this.mainInfo.edu_type.indexOf(' '))
         }
-        if (this.mainInfo.form_type.includes('-')) {
+        if (this.mainInfo.form_type.includes("-")) {
           this.mainInfo.form_type = this.mainInfo.form_type.slice(0, this.mainInfo.form_type.indexOf(' '))
         }
         if (this.other_edu_type) {
-          if (this.other_edu_type.includes('-')) {
+          if (this.other_edu_type.includes("-")) {
             this.mainInfo.edu_type = this.other_edu_type.slice(0, this.other_edu_type.indexOf(' '))
           } else
           this.mainInfo.edu_type = this.other_edu_type
