@@ -200,7 +200,7 @@ export default {
           this.data.facade_type.splice(this.data.facade_type.indexOf('Прочее'), 1, this.other_type)
         }
         if (this.data.facade_type.includes('')) {
-          this.data.facade_type.splice(this.data.facade_type.indexOf(''),1)
+          this.data.facade_type.splice(this.data.facade_type.indexOf(''), 1)
         }
         let form_data = new FormData();
         for (let key in this.data) {
@@ -252,7 +252,8 @@ export default {
           }
         }
         this.data['id'] = id
-        this.data.facade_type = this.data.facade_type.split()
+        if (this.data.facade_type !== null)
+          this.data.facade_type = this.data.facade_type.split()
         this.loading = false
       } catch (e) {
         console.log(e)
