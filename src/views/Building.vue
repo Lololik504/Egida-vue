@@ -4,7 +4,7 @@
     <form v-else>
       <h4>Информация о здании
         <router-link :to="`/buildingcard/${this.$route.params['id']}`"> {{
-            d.street + ', ' + d.street_number
+            street + ', ' + street_number
           }}
         </router-link>
       </h4>
@@ -20,7 +20,7 @@
         </div>
         <div class="input-field-street-number">
           <label>Номер дома</label>
-          <q-input outlined placeholder="Введите номер дома" type="number" v-model="$v.d.street_number.$model"
+          <q-input outlined placeholder="Введите номер дома" v-model="$v.d.street_number.$model"
                    :disable="disable"
                    :class="{invalid: (!$v.d.street_number.required && $v.d.street_number.$dirty)}"
                    :error-message="!$v.d.street_number.required && $v.d.street_number.$dirty ? 'Поле не должно быть пустым': ''"
@@ -65,7 +65,7 @@
             </div>
             <div class="input-field-land-square">
               <label>Площадь земельного участка, Кв. м.</label>
-              <q-input outlined :disable="disable"  step="0.001" type="number" v-model.number="d.land_square"/>
+              <q-input outlined :disable="disable" step="0.001" type="number" v-model.number="d.land_square"/>
             </div>
             <div class="input-field-number-of-storeys">
               <label>Этажность здания</label>
@@ -392,7 +392,7 @@
               </div>
               <div class="input-field-arend-use-type">
                 <label>Вид использования</label>
-                <q-input outlined :disable="disable"  type="text" v-model="d.arend_use_type"/>
+                <q-input outlined :disable="disable" type="text" v-model="d.arend_use_type"/>
               </div>
             </q-card>
             <br/>
@@ -531,8 +531,6 @@
 
 <script>
 import {maxValue, minValue, required} from "vuelidate/lib/validators";
-import {mapGetters} from 'vuex'
-import messages from "@/utils/messages";
 
 export default {
   data: () => ({
@@ -540,6 +538,8 @@ export default {
     purposes: ['Корпус школы', 'Корпус д/с', 'Подразделение доп. образования', 'Овощехранилище', 'Мастерская', 'Теплица', 'Гараж', 'Иное'],
     loading: true,
     disable: true,
+    street: null,
+    street_number: null,
     d: {
       street: null,
       street_number: null,
@@ -577,29 +577,25 @@ export default {
       }
     }
   },
-  computed: {
-    ...mapGetters(['info'])
-  },
   methods: {
     async updateBuild() {
       if (this.$v.$invalid) {
         this.$v.$touch()
+        this.$showMessage('fillFields')
         return
       }
       try {
         this.d.id = this.$route.params['id']
-        const dataForm = Object.assign({}, this.d)
-        await this.$store.dispatch('updateBuilding', dataForm)
+        for (let item in this.d) {
+          if (this.d[item] === '') {
+            this.d[item] = null
+          }
+        }
+        await this.$store.dispatch('updateBuilding', this.d)
         await this.$router.push(`/schoolbuilding/${localStorage.getItem('currentINN')}`)
-        this.showMessage('saveSuccess');
+        this.$showMessage('saveSuccess');
       } catch (e) {
         console.log(e)
-      }
-    },
-    showMessage(text) {
-      if (messages[text]) {
-        window.scrollTo(0, 0)
-        this.$message(messages[text])
       }
     },
     async deleteBuilding() {
@@ -609,21 +605,26 @@ export default {
           const id = this.$route.params['id']
           await this.$store.dispatch('deleteBuilding', id)
           await this.$router.push(`/schoolbuilding/${localStorage.getItem('currentINN')}`)
-          this.showMessage('deleteSuccess');
+          this.$showMessage('deleteSuccess');
         }
       } catch (e) {
         console.log(e)
+        this.$showMessage('error')
       }
     }
   },
   async mounted() {
     try {
+      console.log()
       const token = localStorage.getItem('token')
       const id = this.$route.params['id']
       this.d = await this.$store.dispatch('fetchBuilding', {token, id})
+      this.street = this.d.street
+      this.street_number = this.d.street_number
       this.loading = false
     } catch (e) {
       console.log(e)
+      this.$showMessage('error')
     }
   }
 }

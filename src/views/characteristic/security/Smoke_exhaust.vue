@@ -22,7 +22,8 @@
           </div>
           <div class="input-field-window-count">
             <label>Сумма на обслуживание системы автоматического дымоудаления в год, тыс.руб.</label>
-            <q-input outlined :disable="disable" step="0.00001" type="number" v-model.number="data.price_for_ASE_per_year"/>
+            <q-input outlined :disable="disable" step="0.00001" type="number"
+                     v-model.number="data.price_for_ASE_per_year"/>
           </div>
           <button class="btn waves-effect waves" @click.prevent="disable = false" v-if="disable">
             Редактирование
@@ -42,7 +43,6 @@
 </template>
 
 <script>
-import messages from "@/utils/messages";
 
 export default {
   name: "Smoke_exhaust",
@@ -57,30 +57,18 @@ export default {
     }
   }),
   methods: {
-    onRejected(rejectedEntries) {
-      this.$q.notify({
-        type: 'negative',
-        message: `${rejectedEntries.length} file(s) did not pass validation constraints`
-      })
-    },
     async save() {
       try {
         const resp = await this.$store.dispatch('sendSecurityInfo', this.data)
         if (resp['status'] === 200) {
-          this.showMessage('saveSuccess')
+          this.$showMessage('saveSuccess')
           this.disable = true
         }
       } catch (e) {
         console.log(e)
-        this.showMessage('error')
+        this.$showMessage('error')
       }
     },
-    showMessage(text) {
-      if (messages[text]) {
-        window.scrollTo(0, 0)
-        this.$message(messages[text])
-      }
-    }
   },
   async mounted() {
     const token = localStorage.getItem('token')

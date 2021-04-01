@@ -9,17 +9,23 @@
 <script>
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import {server_path} from "@/local_settings";
 
 export default {
   components: {Footer, Header},
-  data() {
-    return {
-      key: 0
-    }
-  },
+  data: () => ({
+    key: 0
+  }),
   methods: {
     update() {
       this.key += 1
+    },
+    showDoc(url) {
+      const link = document.createElement('a');
+      link.href = server_path + url;
+      link.target = '_blank'
+      document.body.appendChild(link);
+      link.click();
     }
   },
   created: function () {
@@ -58,7 +64,6 @@ body {
 .wrapper {
   display: flex;
   flex-direction: column;
-
   min-height: 100%;
 }
 

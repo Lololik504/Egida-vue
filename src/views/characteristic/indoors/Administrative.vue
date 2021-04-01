@@ -85,7 +85,7 @@
 </template>
 
 <script>
-import messages from "@/utils/messages";
+
 import {server_path} from "@/local_settings";
 
 export default {
@@ -105,22 +105,19 @@ export default {
     loading: true,
   }),
   methods: {
+    onRejected() {
+      this.$error('Файл слишком велик!')
+    },
+    async cancel() {
+      this.disable = true
+      await this.loadingPage()
+    },
     showDoc(url) {
       const link = document.createElement('a');
       link.href = server_path + url;
       link.target = '_blank'
       document.body.appendChild(link);
       link.click();
-    },
-    async cancel() {
-      this.disable = true
-      await this.loadingPage()
-    },
-    onRejected(rejectedEntries) {
-      this.$q.notify({
-        type: 'negative',
-        message: `${rejectedEntries.length} file(s) did not pass validation constraints`
-      })
     },
     async save() {
       try {
@@ -129,28 +126,22 @@ export default {
           if (key === 'admin_room_act' && typeof this.data[key] === 'string') {
             continue
           }
-          (key === 'admin_room_total_count' && (this.data[key] === '' || this.data[key] == null)) ? this.data[key] = 0 : null;
-          (key === 'admin_room_ok_status_count' && (this.data[key] === '' || this.data[key] == null)) ? this.data[key] = 0 : null;
-          (key === 'admin_room_emergency_status_count' && (this.data[key] === '' || this.data[key] == null)) ? this.data[key] = 0 : null;
-          (key === 'admin_room_warning_status_count' && (this.data[key] === '' || this.data[key] == null)) ? this.data[key] = 0 : null;
+          if (key !== 'admin_room_act') {
+            this.data[key] = Number(this.data[key])
+          }
           form_data.append(key, this.data[key])
         }
+        console.log(this.data)
         const resp = await this.$store.dispatch('sendIndoorInfo', form_data)
         if (resp['status'] === 200) {
-          this.showMessage('saveSuccess')
+          this.$showMessage('saveSuccess')
           this.disable = true
           this.changedAct = false;
           await this.loadingPage()
         }
       } catch (e) {
         console.log(e)
-        this.showMessage('error')
-      }
-    },
-    showMessage(text) {
-      if (messages[text]) {
-        window.scrollTo(0, 0)
-        this.$message(messages[text])
+        this.$showMessage('error')
       }
     },
     async loadingPage() {
@@ -173,7 +164,8 @@ export default {
         console.log(e)
       }
     }
-  },
+  }
+  ,
   async mounted() {
     await this.loadingPage()
   }

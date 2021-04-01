@@ -9,9 +9,9 @@
       />
       <br/>
       <div class="q-gutter-md">
-<!--        <button class="btn waves-effect waves-light" v-on:click="exportData">-->
-<!--          Экспорт данных-->
-<!--        </button>-->
+        <!--        <button class="btn waves-effect waves-light" v-on:click="exportData">-->
+        <!--          Экспорт данных-->
+        <!--        </button>-->
         <button class="btn waves-effect waves-light" v-on:click="dialog = true">
           Мастер выгрузки
         </button>
@@ -63,7 +63,7 @@
                       />
                     </div>
                   </div>
-                  <div class="column inline items-baseline" v-if="isBuildInfo" >
+                  <div class="column inline items-baseline" v-if="isBuildInfo">
                     <q-checkbox class="col" v-model="isTempInfo" label="Температурный режим" color="orange"/>
                     <div class="col" style="height: 250px; width: 250px" v-if="isTempInfo">
                       <q-input v-model="dateStart" filled type="date" hint="Начало периода" autofocus
@@ -74,10 +74,14 @@
                                :class="{invalid: dateEnd > new Date().toISOString().substr(0,10) || dateEnd < dateStart}"
                                :error-message="dateEnd > new Date().toISOString().substr(0,10) || dateEnd < dateStart ? 'Некорректная дата!': ''"
                                :error="(dateEnd > new Date().toISOString().substr(0,10) || dateEnd < dateStart)"/>
-                      <q-checkbox class="col" v-model="coolant_forward_temperature" label="Температура подающего трубопровода" color="orange"/>
-                      <q-checkbox class="col" v-model="coolant_backward_temperature" label="Температура обратного трубопровода" color="orange"/>
-                      <q-checkbox class="col" v-model="forward_pressure" label="Давление на обратном трубопроводе" color="orange"/>
-                      <q-checkbox class="col" v-model="backward_pressure" label="Давление на обратном трубопроводе" color="orange"/>
+                      <q-checkbox class="col" v-model="coolant_forward_temperature"
+                                  label="Температура подающего трубопровода" color="orange"/>
+                      <q-checkbox class="col" v-model="coolant_backward_temperature"
+                                  label="Температура обратного трубопровода" color="orange"/>
+                      <q-checkbox class="col" v-model="forward_pressure" label="Давление на обратном трубопроводе"
+                                  color="orange"/>
+                      <q-checkbox class="col" v-model="backward_pressure" label="Давление на обратном трубопроводе"
+                                  color="orange"/>
                       <q-checkbox class="col" v-model="air_temperature" label="Температурный воздуха" color="orange"/>
                     </div>
                   </div>
@@ -133,7 +137,7 @@ export default {
     error: false,
     dialog: false,
     dateStart: '',
-    dateEnd: new Date().toISOString().substr(0,10) || '',
+    dateEnd: new Date().toISOString().substr(0, 10) || '',
     coolant_forward_temperature: true,
     coolant_backward_temperature: true,
     backward_pressure: true,

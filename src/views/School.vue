@@ -5,7 +5,7 @@
       <h4 class="center">Учреждение
         <router-link :to="`/schoolcard/${this.$route.params['school']}`"> {{ mainInfo.shortname }}</router-link>
       </h4>
-      <div class="card" >
+      <div class="card">
         <h4>Основные сведения учреждения</h4>
         <table class="main-info">
           <tbody>
@@ -101,7 +101,8 @@
             </tr>
             <tr class="prikaz">
               <th>Приказ о назначении ответственного</th>
-              <td>{{ contactInfo.updater.prikaz }}</td>
+              <td v-if="contactInfo.updater.prikaz" @click.prevent="showDoc(contactInfo.updater.prikaz)">Прикреплен (открыть при нажатии)</td>
+              <td v-else></td>
             </tr>
             </tbody>
           </table>
@@ -167,6 +168,8 @@
 </template>
 
 <script>
+import {server_path} from "@/local_settings";
+
 export default {
   name: 'school',
   data: () => ({
@@ -260,8 +263,14 @@ export default {
     },
     toUpdateRequisites() {
       this.$router.push(`/update_requisite_info/${this.$route.params['school']}`)
-
-    }
+    },
+    showDoc(url) {
+      const link = document.createElement('a');
+      link.href = server_path + url;
+      link.target = '_blank'
+      document.body.appendChild(link);
+      link.click();
+    },
   }
 
 }

@@ -113,22 +113,22 @@
           <div class="row">
             <div class="col">
               <label>Отопление</label>
-              <q-input outlined :disable="disable" step="0.001" type="number"
+              <q-input outlined :disable="disable" step="0.00001" type="number"
                        v-model.number="data.thermal_loads_heating"/>
             </div>
             <div class="col">
               <label>Горячее водоснабжение</label>
-              <q-input outlined :disable="disable" step="0.001" type="number"
+              <q-input outlined :disable="disable" step="0.00001" type="number"
                        v-model.number="data.thermal_loads_hot_water_supply"/>
             </div>
             <div class="col">
               <label>Вентиляция</label>
-              <q-input outlined :disable="disable" step="0.001" type="number"
+              <q-input outlined :disable="disable" step="0.00001" type="number"
                        v-model.number="data.thermal_loads_ventilation"/>
             </div>
             <div class="col">
               <label>Суммарная</label>
-              <q-input outlined :disable="disable" step="0.001" type="number"
+              <q-input outlined :disable="disable" step="0.00001" type="number"
                        v-model.number="data.thermal_loads_total"/>
             </div>
           </div>
@@ -721,11 +721,8 @@ export default {
     loading: true,
   }),
   methods: {
-    onRejected(rejectedEntries) {
-      this.$q.notify({
-        type: 'negative',
-        message: `${rejectedEntries.length} file(s) did not pass validation constraints`
-      })
+    onRejected() {
+      this.$error('Файл слишком велик!')
     },
     async save() {
       try {
@@ -735,33 +732,44 @@ export default {
         if (this.other_warm_source) {
           this.data.heat_supply_source = this.other_warm_source
         }
+
+        const arrayNamesOFFiles = [
+          'technical_condition_of_the_hot_water_supply_system_act',
+          'technical_condition_of_the_ventilation_system_act',
+          'technical_condition_of_the_heating_system_act',
+          'passport_vvoda',
+          'schema_vvoda',
+          'passport_itp',
+          'schema_itp',
+          'act_balance_razgranich',
+          'schema_balance_razgranich',
+          'spravka_teplov_nagruz',
+          'raschet_teplov_poter',
+          'toposnova'
+        ]
+        const arrayNamesOfNumbers = [
+          'thermal_loads_heating',
+          'thermal_loads_hot_water_supply',
+          'thermal_loads_ventilation',
+          'thermal_loads_total',
+          'number_of_automatic_heat_control_systems',
+          'number_of_automatic_control_systems_for_the_air_handling_unit',
+          'ITP_commissioning_year',
+          'year_of_acceptance_on_maintenance'
+        ]
+
         let form_data = new FormData();
         for (let key in this.data) {
-          if ((key === 'technical_condition_of_the_hot_water_supply_system_act' && typeof this.data[key] === 'string') ||
-              (key === 'technical_condition_of_the_ventilation_system_act' && typeof this.data[key] === 'string') ||
-              (key === 'technical_condition_of_the_heating_system_act' && typeof this.data[key] === 'string') ||
-              (key === 'passport_vvoda' && typeof this.data[key] === 'string') ||
-              (key === 'schema_vvoda' && typeof this.data[key] === 'string') ||
-              (key === 'passport_itp' && typeof this.data[key] === 'string') ||
-              (key === 'schema_itp' && typeof this.data[key] === 'string') ||
-              (key === 'act_balance_razgranich' && typeof this.data[key] === 'string') ||
-              (key === 'schema_balance_razgranich' && typeof this.data[key] === 'string') ||
-              (key === 'spravka_teplov_nagruz' && typeof this.data[key] === 'string') ||
-              (key === 'raschet_teplov_poter' && typeof this.data[key] === 'string') ||
-              (key === 'toposnova' && typeof this.data[key] === 'string')) {
+          if (arrayNamesOFFiles.includes(key) && typeof this.data[key] === 'string') {
             continue
           }
-          (key === 'thermal_loads_heating' && (this.data[key] === '' || this.data[key] == null)) ? this.data[key] = 0 : null;
-          (key === 'thermal_loads_hot_water_supply' && (this.data[key] === '' || this.data[key] == null)) ? this.data[key] = 0 : null;
-          (key === 'thermal_loads_ventilation' && (this.data[key] === '' || this.data[key] == null)) ? this.data[key] = 0 : null;
-          (key === 'thermal_loads_total' && (this.data[key] === '' || this.data[key] == null)) ? this.data[key] = 0 : null;
-          (key === 'number_of_automatic_heat_control_systems' && (this.data[key] === '' || this.data[key] == null)) ? this.data[key] = 0 : null;
-          (key === 'number_of_automatic_control_systems_for_the_air_handling_unit' && (this.data[key] === '' || this.data[key] == null)) ? this.data[key] = 0 : null;
-          (key === 'ITP_commissioning_year' && (this.data[key] === '' || this.data[key] == null)) ? this.data[key] = 0 : null;
-          (key === 'year_of_acceptance_on_maintenance' && (this.data[key] === '' || this.data[key] == null)) ? this.data[key] = 0 : null;
-          form_data.append(key, this.data[key]);
+
+          arrayNamesOfNumbers.includes(key) ? this.data[key] = Number(this.data[key]) : null;
+          form_data.append(key, this.data[key])
         }
+
         const resp = await this.$store.dispatch('sendEngineeringInfo', form_data)
+
         if (resp['status'] === 200) {
           this.showMessage('saveSuccess')
           this.disable = true

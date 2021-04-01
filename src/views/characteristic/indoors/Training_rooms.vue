@@ -116,11 +116,8 @@ export default {
       this.disable = true
       await this.loadingPage()
     },
-    onRejected(rejectedEntries) {
-      this.$q.notify({
-        type: 'negative',
-        message: `${rejectedEntries.length} file(s) did not pass validation constraints`
-      })
+    onRejected() {
+      this.$error('Файл слишком велик!')
     },
     async save() {
       try {

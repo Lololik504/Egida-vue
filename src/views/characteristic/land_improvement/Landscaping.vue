@@ -38,7 +38,6 @@
 </template>
 
 <script>
-import messages from "@/utils/messages";
 
 export default {
   name: "Landscaping",
@@ -49,12 +48,6 @@ export default {
     emergency_trees_count: null
   }),
   methods: {
-    onRejected(rejectedEntries) {
-      this.$q.notify({
-        type: 'negative',
-        message: `${rejectedEntries.length} file(s) did not pass validation constraints`
-      })
-    },
     async save() {
       try {
         const data = {
@@ -64,20 +57,14 @@ export default {
         }
         const resp = await this.$store.dispatch('sendLandImprovementInfo', data)
         if (resp['status'] === 200) {
-          this.showMessage('saveSuccess')
+          this.$showMessage('saveSuccess')
           this.disable = true
         }
       } catch (e) {
         console.log(e)
-        this.showMessage('error')
+        this.$showMessage('error')
       }
     },
-    showMessage(text) {
-      if (messages[text]) {
-        window.scrollTo(0, 0)
-        this.$message(messages[text])
-      }
-    }
   },
   async mounted() {
     const token = localStorage.getItem('token')

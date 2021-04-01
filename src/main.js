@@ -10,13 +10,13 @@ import 'materialize-css/dist/js/materialize.min.js'
 import Axios from 'axios'
 
 
-
 Vue.prototype.$http = Axios;
 const token = localStorage.getItem('token')
 
 if (token) {
-  Vue.prototype.$http.defaults.headers.common['Authorization'] = 'auth' + token
+    Vue.prototype.$http.defaults.headers.common['Authorization'] = 'auth' + token
 }
+
 
 Vue.config.productionTip = false
 Vue.component('Loader', Loader)
@@ -25,7 +25,7 @@ Vue.use(Vuelidate)
 
 
 new Vue({
-  router,
-  store,
-  render: h => h(App),
+    router,
+    store,
+    render: h => h(App)
 }).$mount('#app')

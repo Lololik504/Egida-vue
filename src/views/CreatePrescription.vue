@@ -86,7 +86,6 @@
 
 <script>
 import {required} from "vuelidate/lib/validators";
-import messages from "@/utils/messages";
 
 export default {
   name: "CreatePrescription",
@@ -161,26 +160,17 @@ export default {
     }
   },
   methods: {
+    onRejected() {
+      this.$error('Файл слишком велик!')
+    },
     async returnBackPage() {
       await this.$router.go(-1)
-    },
-    onRejected(rejectedEntries) {
-      this.$q.notify({
-        type: 'negative',
-        message: `${rejectedEntries.length} file(s) did not pass validation constraints`
-      })
-    },
-    showMessage(text) {
-      if (messages[text]) {
-        // window.scrollTo(0, 0)
-        this.$message(messages[text])
-      }
     },
     async createPrescript() {
       try {
         if (this.$v.$invalid) {
           this.$v.$touch()
-          this.showMessage('fillFields')
+          this.$showMessage('fillFields')
           return
         }
 
@@ -203,11 +193,11 @@ export default {
           token,
           inn
         })
-        this.showMessage('saveSuccess')
+        this.$showMessage('saveSuccess')
         await this.returnBackPage()
       } catch (e) {
         console.log(e)
-        this.showMessage('error')
+        this.$showMessage('error')
       }
     }
   }

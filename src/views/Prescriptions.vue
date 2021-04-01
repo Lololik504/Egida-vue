@@ -74,6 +74,7 @@
 </template>
 
 <script>
+
 import {server_path} from "@/local_settings";
 
 export default {
@@ -97,6 +98,10 @@ export default {
       this.currentPrescription = this.currentPrescription[url]
       this.loadingCards = false
     },
+    async toUpdate(id) {
+      await this.$router.push(`/update_prescription/${this.currentURL}/${id}`)
+      window.scrollTo(0, 0)
+    },
     showDoc(url) {
       const link = document.createElement('a');
       link.href = server_path + url;
@@ -104,10 +109,6 @@ export default {
       document.body.appendChild(link);
       link.click();
     },
-    async toUpdate(id) {
-      await this.$router.push(`/update_prescription/${this.currentURL}/${id}`)
-      window.scrollTo(0, 0)
-    }
   },
   async mounted() {
     try {

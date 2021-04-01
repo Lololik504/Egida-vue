@@ -61,7 +61,7 @@
           <div v-else style="margin-bottom: 25px">
             <label>Скан предписания загружен</label>
             <div class="q-gutter-sm">
-              <button class="btn waves-effect waves-light" @click.prevent="showDoc(data.order)">
+              <button class="btn waves-effect waves-light" @click.prevent="this.showDoc(data.order)">
                 Просмотреть файл
               </button>
               <button class="btn waves-effect waves-light"
@@ -169,21 +169,18 @@ export default {
     }
   },
   methods: {
-    async returnBackPage() {
-      await this.$router.go(-1)
-    },
-    onRejected(rejectedEntries) {
-      this.$q.notify({
-        type: 'negative',
-        message: `${rejectedEntries.length} file(s) did not pass validation constraints`
-      })
-    },
     showDoc(url) {
       const link = document.createElement('a');
       link.href = server_path + url;
       link.target = '_blank'
       document.body.appendChild(link);
       link.click();
+    },
+    async returnBackPage() {
+      await this.$router.go(-1)
+    },
+    onRejected() {
+      this.$error('Файл слишком велик!')
     },
     showMessage(text) {
       if (messages[text]) {

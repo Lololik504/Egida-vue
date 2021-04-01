@@ -15,7 +15,6 @@
       <br>
       <button class="btn waves-effect waves-light auth-submit" @click="login">Войти</button>
     </div>
-
   </div>
 </template>
 
