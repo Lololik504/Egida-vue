@@ -254,6 +254,7 @@ export default {
         this.data['id'] = id
         if (this.data.facade_type !== null)
           this.data.facade_type = this.data.facade_type.split()
+        else this.data.facade_type = []
         this.loading = false
       } catch (e) {
         console.log(e)
