@@ -28,7 +28,7 @@
                   </div>
                 </q-item>
                 <q-item class="column">
-                  <h6 class="col">Ограниченно работоспособное состояние</h6>
+                  <h6 class="col">Аварийное состояние</h6>
                   <div class="input-field-roof-square col">
                     <label>Количество спортивных площадок</label>
                     <q-input outlined type="number" :disable="disable" v-model="data.sport_ground_emergency_count"/>
@@ -61,7 +61,7 @@
                   </div>
                 </q-item>
                 <q-item class="column">
-                  <h6 class="col">Ограниченно работоспособное состояние</h6>
+                  <h6 class="col">Аварийное состояние</h6>
                   <div class="input-field-roof-square col">
                     <label>Количество хоккейных коробок</label>
                     <q-input outlined type="number" :disable="disable" v-model="data.hockey_rink_emergency_count"/>
@@ -82,21 +82,21 @@
                 <q-item class="column">
                   <h6 class="col">Работоспособное состояние</h6>
                   <div class="input-field-roof-square col">
-                    <label>Количество хоккейных коробок</label>
+                    <label>Количество теневых навесов</label>
                     <q-input outlined type="number" :disable="disable" v-model="data.shade_canopy_ok_count"/>
                   </div>
                 </q-item>
                 <q-item class="column">
                   <h6 class="col">Ограниченно работоспособное состояние</h6>
                   <div class="input-field-roof-square col">
-                    <label>Количество хоккейных коробок</label>
+                    <label>Количество теневых навесов</label>
                     <q-input outlined type="number" :disable="disable" v-model="data.shade_canopy_warning_count"/>
                   </div>
                 </q-item>
                 <q-item class="column">
-                  <h6 class="col">Ограниченно работоспособное состояние</h6>
+                  <h6 class="col">Аварийное состояние</h6>
                   <div class="input-field-roof-square col">
-                    <label>Количество хоккейных коробок</label>
+                    <label>Количество теневых навесов</label>
                     <q-input outlined type="number" :disable="disable" v-model="data.shade_canopy_emergency_count"/>
                   </div>
                 </q-item>
@@ -122,7 +122,6 @@
 </template>
 
 <script>
-import messages from "@/utils/messages";
 
 export default {
   name: "Sport_facility",
@@ -146,30 +145,18 @@ export default {
     }
   }),
   methods: {
-    onRejected(rejectedEntries) {
-      this.$q.notify({
-        type: 'negative',
-        message: `${rejectedEntries.length} file(s) did not pass validation constraints`
-      })
-    },
     async save() {
       try {
         const resp = await this.$store.dispatch('sendSportInfo', this.data)
         if (resp['status'] === 200) {
-          this.showMessage('saveSuccess')
+          this.$showMessage('saveSuccess')
           this.disable = true
         }
       } catch (e) {
         console.log(e)
-        this.showMessage('error')
+        this.$showMessage('error')
       }
     },
-    showMessage(text) {
-      if (messages[text]) {
-        window.scrollTo(0, 0)
-        this.$message(messages[text])
-      }
-    }
   },
   async mounted() {
     const token = localStorage.getItem('token')
@@ -181,7 +168,7 @@ export default {
       this.loading = false
     } catch (e) {
       console.log(e)
-      this.showMessage('error')
+      this.$showMessage('error')
     }
   }
 }

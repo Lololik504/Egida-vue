@@ -15,7 +15,7 @@
         <button v-if="data.length" class="btn waves-effect waves-light" @click="promptUpdateHandler">
           Изменить сведения
         </button>
-        <button v-if="data.length && permission" class="btn waves-effect waves-light" @click="promptDeleteHandler">
+        <button v-if="data.length && hasPermission" class="btn waves-effect waves-light" @click="promptDeleteHandler">
           Удалить сведения
         </button>
       </div>
@@ -37,6 +37,7 @@
                 hint="Температура подающего трубопровода"
                 type="number"
                 suffix="℃"
+                step="0.1"
                 :class="{invalid: (!$v.tempIn.required && $v.tempIn.$dirty)}"
                 :error-message="!$v.tempIn.required && $v.tempIn.$dirty ? 'Поле не должно быть пустым': ''"
                 :error="(!$v.tempIn.required && $v.tempIn.$dirty)"
@@ -49,6 +50,7 @@
                 hint="Температура обратного трубопровода"
                 type="number"
                 suffix="℃"
+                step="0.1"
                 :class="{invalid: (!$v.tempOut.required && $v.tempOut.$dirty)}"
                 :error-message="!$v.tempOut.required && $v.tempOut.$dirty ? 'Поле не должно быть пустым': ''"
                 :error="(!$v.tempOut.required && $v.tempOut.$dirty)"
@@ -61,6 +63,7 @@
                 hint="Давление на подающем трубопроводе"
                 type="number"
                 suffix="кгс/см2"
+                step="0.1"
                 :class="{invalid: (!$v.pressIn.required && $v.pressIn.$dirty)}"
                 :error-message="!$v.pressIn.required && $v.pressIn.$dirty ? 'Поле не должно быть пустым': ''"
                 :error="(!$v.pressIn.required && $v.pressIn.$dirty)"
@@ -72,6 +75,7 @@
                 v-model.number="pressOut"
                 hint="Давление на обратном трубопроводе"
                 type="number"
+                step="0.1"
                 suffix="кгс/см2"
                 :class="{invalid: (!$v.pressOut.required && $v.pressOut.$dirty)}"
                 :error-message="!$v.pressOut.required && $v.pressOut.$dirty ? 'Поле не должно быть пустым': ''"
@@ -85,14 +89,15 @@
                 hint="Минимальная температура воздуха внутри помещения"
                 type="number"
                 suffix="℃"
+                step="0.1"
                 :class="{invalid: (!$v.tempAir.required && $v.tempAir.$dirty)}"
                 :error-message="!$v.tempAir.required && $v.tempAir.$dirty ? 'Поле не должно быть пустым': ''"
                 :error="(!$v.tempAir.required && $v.tempAir.$dirty)"
             />
           </q-card-section>
           <q-card-actions align="right" class="text-primary">
-            <q-btn flat label="Добавить" v-close-popup @click.prevent="addTemperature"/>
-            <q-btn flat label="Отменить" v-close-popup/>
+            <q-btn flat label="Добавить" @click.prevent="addTemperature"/>
+            <q-btn class="exit" flat label="Отменить" v-close-popup/>
           </q-card-actions>
         </q-card>
       </q-dialog>
@@ -166,8 +171,8 @@
             />
           </q-card-section>
           <q-card-actions align="right" class="text-primary">
-            <q-btn flat label="Изменить" v-close-popup @click.prevent="updateTemperature"/>
-            <q-btn flat label="Отменить" v-close-popup/>
+            <q-btn flat label="Изменить" @click.prevent="updateTemperature"/>
+            <q-btn class="exit" flat label="Отменить" v-close-popup/>
           </q-card-actions>
         </q-card>
       </q-dialog>
@@ -181,8 +186,8 @@
                       style="max-height: 90px"/>
           </q-card-section>
           <q-card-actions align="right" class="text-primary">
-            <q-btn flat label="Удалить" v-close-popup @click.prevent="deleteTemperature"/>
-            <q-btn flat label="Отменить" v-close-popup/>
+            <q-btn flat label="Удалить" @click.prevent="deleteTemperature"/>
+            <q-btn class="exit" flat label="Отменить" v-close-popup/>
           </q-card-actions>
         </q-card>
       </q-dialog>
@@ -209,17 +214,16 @@ export default {
     loading: true,
     street: '',
     street_number: '',
-    permission: localStorage.getItem('permission') <= 10,
     promptAdd: false,
     promptDelete: false,
     promptUpdate: false,
     dates: [],
-    date: '',
-    tempIn: '',
-    tempOut: '',
-    pressOut: '',
-    pressIn: '',
-    tempAir: '',
+    date: null,
+    tempIn: null,
+    tempOut: null,
+    pressOut: null,
+    pressIn: null,
+    tempAir: null,
     data: [],
     columns: [
       {
@@ -274,6 +278,11 @@ export default {
     pressIn: required,
     tempAir: required
   },
+  computed: {
+    hasPermission() {
+      return this.$store.getters.permission <= 10;
+    }
+  },
   methods: {
     promptAddHandler() {
       this.date = new Date().toISOString().substr(0, 10)
@@ -290,6 +299,10 @@ export default {
     mainInfo() {
       this.$router.push(`/building/${this.$route.params['card']}`)
     },
+    closeDialog() {
+      const btn = document.getElementsByClassName('exit')
+      btn[0].click()
+    },
     async addTemperature() {
       if (this.$v.$invalid) {
         this.$v.$touch()
@@ -297,16 +310,17 @@ export default {
       }
       const data = {
         building: this.$route.params['id'],
-        coolant_forward_temperature: this.tempIn.toFixed(1),
-        coolant_backward_temperature: this.tempOut.toFixed(1),
-        forward_pressure: this.pressIn.toFixed(1),
-        backward_pressure: this.pressOut.toFixed(1),
-        air_temperature: this.tempAir.toFixed(1),
+        coolant_forward_temperature: this.tempIn ? this.tempIn.toFixed(1) : null,
+        coolant_backward_temperature: this.tempOut ? this.tempOut.toFixed(1) : null,
+        forward_pressure: this.pressIn ? this.pressIn.toFixed(1) : null,
+        backward_pressure: this.pressOut ? this.pressOut.toFixed(1) : null,
+        air_temperature: this.tempAir ? this.tempAir.toFixed(1) : null,
         date: this.date
       }
       try {
         await this.$store.dispatch('addTemperature', data)
         await this.refreshDates()
+        this.closeDialog()
       } catch (e) {
         console.log(e)
       }
@@ -319,6 +333,7 @@ export default {
       try {
         await this.$store.dispatch('deleteTemperature', data)
         await this.refreshDates()
+        this.closeDialog()
       } catch (e) {
         console.log(e)
       }
@@ -332,16 +347,17 @@ export default {
       const data = {
         id: obj.id,
         building: this.$route.params['id'],
-        coolant_forward_temperature: this.tempIn.toFixed(1),
-        coolant_backward_temperature: this.tempOut.toFixed(1),
-        forward_pressure: this.pressIn.toFixed(1),
-        backward_pressure: this.pressOut.toFixed(1),
-        air_temperature: this.tempAir.toFixed(1),
+        coolant_forward_temperature: this.tempIn ? this.tempIn.toFixed(1) : null,
+        coolant_backward_temperature: this.tempOut ? this.tempOut.toFixed(1) : null,
+        forward_pressure: this.pressIn ? this.pressIn.toFixed(1) : null,
+        backward_pressure: this.pressOut ? this.pressOut.toFixed(1) : null,
+        air_temperature: this.tempAir ? this.tempAir.toFixed(1) : null,
         date: this.date
       }
       try {
         await this.$store.dispatch('updateTemperature', data)
         await this.refreshDates()
+        this.closeDialog()
       } catch (e) {
         console.log(e)
       }

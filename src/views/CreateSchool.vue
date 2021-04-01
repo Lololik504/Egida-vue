@@ -83,6 +83,7 @@ export default {
       try {
         if (this.$v.$invalid) {
           this.$v.$touch()
+          this.$showMessage('fillFields')
           return
         }
         const dataForm = {
@@ -94,10 +95,11 @@ export default {
           await this.$store.dispatch('createSchool', dataForm)
           await this.$router.push('/districts')
         } else {
-          alert('Введите все поля!')
+          this.$showMessage('fillFields')
         }
       } catch (e) {
         console.log(e)
+        this.$showMessage('error')
       }
     }
   }

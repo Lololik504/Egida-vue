@@ -16,7 +16,6 @@ export default {
                             }
                         })
                         .then(resp => {
-                            console.log(resp)
                             resolve(resp.data.data)
                         })
                         .catch(err => {
@@ -65,7 +64,6 @@ export default {
                             }
                         })
                         .then(resp => {
-                            console.log(resp)
                             resolve(resp)
                         })
                         .catch(err => {
@@ -89,7 +87,6 @@ export default {
                             }
                         })
                         .then(resp => {
-                            console.log(resp)
                             resolve(resp)
                         })
                         .catch(err => {

@@ -34,7 +34,8 @@
               </div>
               <div class="input-field-email">
                 <label>Электронная почта</label>
-                <q-input outlined placeholder="Введите почту" type="email" v-model="$v.contactInfo.director.email.$model"
+                <q-input outlined placeholder="Введите почту" type="email"
+                         v-model="$v.contactInfo.director.email.$model"
                          :class="{invalid: !$v.contactInfo.director.email.email && $v.contactInfo.director.email.$dirty}"
                          error-message="Введите корректный Email"
                          :error="(!$v.contactInfo.director.email.email && $v.contactInfo.director.email.$dirty)"
@@ -111,19 +112,31 @@
                          :error="(!$v.contactInfo.updater.email.email && $v.contactInfo.updater.email.$dirty)"
                 />
               </div>
-              <div class="input-field-prikaz">
+              <div v-if="!contactInfo.updater.prikaz" class="input-field-prikaz">
                 <label>Приказ о назначении ответственного</label>
                 <q-file
                     v-model="contactInfo.updater.prikaz"
                     outlined
                     label="Приказ о назначении ответственного"
                     hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"
-                    multiple
                     max-total-size="25165824"
                     accept=".jpg, image/jpeg, .pdf"
                     @rejected="onRejected"
+                    @input="changedPrikaz = true"
                 />
-
+              </div>
+              <div v-else style="margin-bottom: 25px">
+                <label>Приказ о назначении ответственного загружен</label>
+                <div class="q-gutter-sm">
+                  <button v-if="!changedPrikaz" class="btn waves-effect waves-light"
+                          @click.prevent="showDoc(contactInfo.updater.prikaz)">
+                    Просмотреть файл
+                  </button>
+                  <button class="btn waves-effect waves-light"
+                          @click.prevent="contactInfo.updater.prikaz = null">
+                    Изменить файл
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -155,7 +168,8 @@
               </div>
               <div class="input-field-email">
                 <label>Электронная почта</label>
-                <q-input outlined placeholder="Введите почту" type="email" v-model="$v.contactInfo.bookkeeper.email.$model"
+                <q-input outlined placeholder="Введите почту" type="email"
+                         v-model="$v.contactInfo.bookkeeper.email.$model"
                          :class="{invalid: !$v.contactInfo.bookkeeper.email.email && $v.contactInfo.bookkeeper.email.$dirty}"
                          error-message="Введите корректный Email"
                          :error="(!$v.contactInfo.bookkeeper.email.email && $v.contactInfo.bookkeeper.email.$dirty)"
@@ -179,12 +193,14 @@
 
 <script>
 import {email} from 'vuelidate/lib/validators'
+import {server_path} from "@/local_settings";
 
 export default {
   name: "UpdateContacts",
   data: () => ({
     loading: true,
-    filesImages: null,
+    changedPrikaz: false,
+    prikaz: null,
     shortname: null,
     contactInfo: {
       INN: null,
@@ -240,7 +256,6 @@ export default {
       const token = localStorage.getItem('token')
       const inn = this.$route.params['inn']
       const info = await this.$store.dispatch('fetchInfo', {token, inn})
-
       const personal = await this.$store.dispatch('fetchPersonal', inn)
 
       this.contactInfo.director = personal['director']
@@ -254,13 +269,22 @@ export default {
           this.contactInfo[i].phone = 8383
         }
       }
-
       this.loading = false
     } catch (e) {
       console.log(e)
     }
   },
   methods: {
+    onRejected() {
+      this.$error('Файл слишком велик!')
+    },
+    showDoc(url) {
+      const link = document.createElement('a');
+      link.href = server_path + url;
+      link.target = '_blank'
+      document.body.appendChild(link);
+      link.click();
+    },
     async returnBack() {
       await this.$router.push(`/school/${this.$route.params['inn']}`)
     },
@@ -275,17 +299,18 @@ export default {
             this.contactInfo[i].phone = null
           }
         }
+        if (this.contactInfo.updater.prikaz && !(typeof this.contactInfo.updater.prikaz === 'string' || this.contactInfo.updater.prikaz instanceof String)) {
+          let form_data = new FormData()
+          form_data.append('prikaz', this.contactInfo.updater.prikaz)
+          form_data.append('INN', this.contactInfo.INN)
+          await this.$store.dispatch('updatePersonalPrikaz', form_data)
+        }
+        delete this.contactInfo.updater.prikaz
         await this.$store.dispatch('updatePersonal', this.contactInfo)
         await this.$router.push(`/school/${this.contactInfo.INN}`)
       } catch (e) {
         console.log(e)
       }
-    },
-    onRejected(rejectedEntries) {
-      this.$q.notify({
-        type: 'negative',
-        message: `${rejectedEntries.length} file(s) did not pass validation constraints`
-      })
     }
   }
 }

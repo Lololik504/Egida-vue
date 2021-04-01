@@ -24,15 +24,18 @@
                   <h6 class="col">Ограниченно работоспособное состояние</h6>
                   <div class="input-field-roof-square col">
                     <label>Объем дефектного ограждения, м.пог</label>
-                    <q-input outlined :disable="disable" step="0.001" type="number" v-model="data.fence_warning_volume"/>
+                    <q-input outlined :disable="disable" step="0.001" type="number"
+                             v-model="data.fence_warning_volume"/>
                   </div>
-                </q-item><q-item class="column">
-                <h6 class="col">Ограниченно работоспособное состояние</h6>
-                <div class="input-field-roof-square col">
-                  <label>Объем дефектного ограждения, м.пог</label>
-                  <q-input outlined :disable="disable" step="0.001" type="number" v-model="data.fence_emergency_volume"/>
-                </div>
-              </q-item>
+                </q-item>
+                <q-item class="column">
+                  <h6 class="col">Аварийное состояние</h6>
+                  <div class="input-field-roof-square col">
+                    <label>Объем дефектного ограждения, м.пог</label>
+                    <q-input outlined :disable="disable" step="0.001" type="number"
+                             v-model="data.fence_emergency_volume"/>
+                  </div>
+                </q-item>
               </q-list>
             </div>
           </q-card>
@@ -55,7 +58,6 @@
 </template>
 
 <script>
-import messages from "@/utils/messages";
 
 export default {
   name: "Fencing",
@@ -71,30 +73,18 @@ export default {
     }
   }),
   methods: {
-    onRejected(rejectedEntries) {
-      this.$q.notify({
-        type: 'negative',
-        message: `${rejectedEntries.length} file(s) did not pass validation constraints`
-      })
-    },
     async save() {
       try {
         const resp = await this.$store.dispatch('sendLandImprovementInfo', this.data)
         if (resp['status'] === 200) {
-          this.showMessage('saveSuccess')
+          this.$showMessage('saveSuccess')
           this.disable = true
         }
       } catch (e) {
         console.log(e)
-        this.showMessage('error')
+        this.$showMessage('error')
       }
     },
-    showMessage(text) {
-      if (messages[text]) {
-        window.scrollTo(0, 0)
-        this.$message(messages[text])
-      }
-    }
   },
   async mounted() {
     const token = localStorage.getItem('token')

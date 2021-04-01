@@ -25,7 +25,6 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
 
 export default {
   name: "BuildingCard",
@@ -35,9 +34,6 @@ export default {
     street_number: '',
     permission: localStorage.getItem('permission') <= 10
   }),
-  computed: {
-    ...mapGetters(['info'])
-  },
   methods: {
     async mainInfo() {
       await this.$router.push(`/building/${this.$route.params['card']}`)
@@ -58,9 +54,11 @@ export default {
           const id = this.$route.params['card']
           await this.$store.dispatch('deleteBuilding', id)
           await this.backPage()
+          this.$showMessage('deleteSuccess')
         }
       } catch (e) {
         console.log(e)
+        this.$showMessage('error')
       }
     }
   },
@@ -74,6 +72,7 @@ export default {
       this.loading = false
     } catch (e) {
       console.log(e)
+      this.$showMessage('error')
     }
   }
 }

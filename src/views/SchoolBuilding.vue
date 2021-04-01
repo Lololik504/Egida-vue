@@ -8,7 +8,7 @@
       <button class="btn waves-effect waves-light" @click="createBuilding">
         Создать новое здание
       </button>
-      <div class="buildings" v-if="data">
+      <div class="buildings" v-if="data.length">
         <h5>Существующие здания</h5>
         <ol>
           <li v-for="d in data"

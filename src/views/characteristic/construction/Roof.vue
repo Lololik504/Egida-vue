@@ -37,7 +37,7 @@
           <div class="select-type-field">
             <label>Тип кровли</label>
             <div class="select">
-              <q-select outlined :disable="disable" v-model="data.roof_type" :options="roof_types"/>
+              <q-select multiple outlined :disable="disable" v-model="data.roof_type" :options="roof_types"/>
             </div>
           </div>
           <div class="select-material-field">
@@ -192,7 +192,7 @@ export default {
     changedAct: false,
     data: {
       id: null,
-      roof_type: null,
+      roof_type: [],
       roof_material: null,
       roof_status: null,
       roof_act: null,
@@ -201,11 +201,8 @@ export default {
     }
   }),
   methods: {
-    onRejected(rejectedEntries) {
-      this.$q.notify({
-        type: 'negative',
-        message: `${rejectedEntries.length} file(s) did not pass validation constraints`
-      })
+    onRejected() {
+      this.$error('Файл слишком велик!')
     },
     showDoc(url) {
       const link = document.createElement('a');
@@ -219,6 +216,10 @@ export default {
         if (this.other_material) {
           this.data.roof_material = this.other_material
         }
+        if (this.data.facade_type.includes('')) {
+          this.data.facade_type.splice(this.data.facade_type.indexOf(''),1)
+        }
+
         let form_data = new FormData();
         for (let key in this.data) {
           if ((key === 'roof_photo' && typeof this.data[key] === 'string') || (key === 'roof_act' && typeof this.data[key] === 'string')) {

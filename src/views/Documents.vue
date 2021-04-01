@@ -25,8 +25,9 @@
             <q-file
                 v-model="passport_BTI.url"
                 outlined
-                hint="Выберите файл с расширением pdf размером не более 3МБ"
-                max-total-size="25165824"
+                hint="Выберите файл с расширением pdf размером не более 50МБ"
+                max-total-size="52428800"
+                counter
                 accept=".pdf"
                 @rejected="onRejected"
             />
@@ -61,8 +62,9 @@
             <q-file
                 v-model="topographic_plan.url"
                 outlined
-                hint="Выберите файл с расширением pdf размером не более 3МБ"
-                max-total-size="25165824"
+                hint="Выберите файл с расширением pdf размером не более 50МБ"
+                max-total-size="52428800"
+                counter
                 accept=".pdf"
                 @rejected="onRejected"
             />
@@ -98,8 +100,8 @@
             <q-file
                 v-model="teplosnabj_MK.url"
                 outlined
-                hint="Выберите файл с расширением pdf размером не более 3МБ"
-                max-total-size="25165824"
+                hint="Выберите файл с расширением pdf размером не более 50МБ"
+                max-total-size="52428800"
                 accept=".pdf"
                 @rejected="onRejected"
             />
@@ -134,8 +136,9 @@
             <q-file
                 v-model="vodosnabj_MK.url"
                 outlined
-                hint="Выберите файл с расширением pdf размером не более 3МБ"
-                max-total-size="25165824"
+                hint="Выберите файл с расширением pdf размером не более 50МБ"
+                max-total-size="52428800"
+                counter
                 accept=".pdf"
                 @rejected="onRejected"
             />
@@ -170,8 +173,8 @@
             <q-file
                 v-model="electrosnabj_MK.url"
                 outlined
-                hint="Выберите файл с расширением pdf размером не более 3МБ"
-                max-total-size="25165824"
+                hint="Выберите файл с расширением pdf размером не более 50МБ"
+                max-total-size="52428800"
                 accept=".pdf"
                 @rejected="onRejected"
             />
@@ -191,8 +194,8 @@
 </template>
 
 <script>
+
 import {server_path} from "@/local_settings";
-import messages from "@/utils/messages";
 
 export default {
   name: "Documents",
@@ -221,17 +224,28 @@ export default {
     }
   }),
   methods: {
-    onRejected(rejectedEntries) {
-      this.$q.notify({
-        type: 'negative',
-        message: `${rejectedEntries.length} file(s) did not pass validation constraints`
-      })
-    },
-    showMessage(text) {
-      if (messages[text]) {
-        // window.scrollTo(0, 0)
-        this.$message(messages[text])
+    async sendDoc(file, name) {
+      try {
+        this.loading = true
+        if (file.url) {
+          let formData = new FormData();
+          formData.append('file', file.url)
+          await this.$store.dispatch('sendDocs', {file: formData, inn: this.$route.params['id'], id: name})
+          file.hasUrl = true
+          await this.fetchDocs()
+          this.$showMessage('successUploadFile')
+        } else {
+          this.$showMessage('failUploadFile')
+        }
+        this.loading = false
+      } catch (e) {
+        console.log(e)
+        this.$showMessage('error')
+        this.loading = false
       }
+    },
+    onRejected() {
+      this.$error('Файл слишком велик!')
     },
     showDoc(url) {
       const link = document.createElement('a');
@@ -239,26 +253,6 @@ export default {
       link.target = '_blank'
       document.body.appendChild(link);
       link.click();
-    },
-    async sendDoc(file, name) {
-      try {
-        // const obj_url = window.URL.createObjectURL(this.passport_BTI);
-        // const iframe = document.getElementsByClassName('viewer');
-        // iframe.setAttribute('src', obj_url);
-        if (file.url) {
-          let formData = new FormData();
-          formData.append('file', file.url)
-          await this.$store.dispatch('sendDocs', {file: formData, inn: this.$route.params['id'], id: name})
-          file.hasUrl = true
-          await this.fetchDocs()
-          this.showMessage('successUploadFile')
-        } else {
-          this.showMessage('failUploadFile')
-        }
-      } catch (e) {
-        console.log(e)
-        this.showMessage('error')
-      }
     },
     async fetchDocs() {
       try {
@@ -277,6 +271,7 @@ export default {
         this.vodosnabj_MK.url ? this.vodosnabj_MK.hasUrl = true : this.vodosnabj_MK.hasUrl = false
       } catch (e) {
         console.log(e)
+        throw e
       }
     }
   },

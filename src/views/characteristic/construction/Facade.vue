@@ -37,10 +37,10 @@
           <div class="select-type-field">
             <label>Тип фасада</label>
             <div class="select">
-              <q-select outlined :disable="disable" v-model="data.facade_type" :options="facade_types"/>
+              <q-select multiple outlined :disable="disable" v-model="data.facade_type" :options="facade_types"/>
             </div>
           </div>
-          <div v-if="data.facade_type === facade_types[4]">
+          <div v-if="data.facade_type.includes(facade_types[4])">
             <label>Введите тип фасада</label>
             <q-input outlined :disable="disable" v-model="other_type"/>
           </div>
@@ -170,11 +170,11 @@ export default {
   name: "Facade",
   data: () => ({
     facade_types: [
-      'Из облицовочного кирпича',
-      'Оштукатуренный и окрашенный (с утеплением или без утепления)',
-      'Навесной вентилируемый (с утеплением или без утепления) с облицовкой (керамогранит, металлический или пластиковый сайдинг, фиброцементные панели или др.)',
-      'Сборные газобетонные (керамзитобетонные) панели',
-      'Прочее'
+      ' Из облицовочного кирпича',
+      ' Оштукатуренный и окрашенный (с утеплением или без утепления)',
+      ' Навесной вентилируемый (с утеплением или без утепления) с облицовкой (керамогранит, металлический или пластиковый сайдинг, фиброцементные панели или др.)',
+      ' Сборные газобетонные (керамзитобетонные) панели',
+      ' Прочее'
     ],
     loading: true,
     other_type: null,
@@ -184,23 +184,23 @@ export default {
     data: {
       id: null,
       facade_status: null,
-      facade_type: null,
+      facade_type: [],
       facade_act: null,
       facade_square: null,
       facade_photo: null
     }
   }),
   methods: {
-    onRejected(rejectedEntries) {
-      this.$q.notify({
-        type: 'negative',
-        message: `${rejectedEntries.length} file(s) did not pass validation constraints`
-      })
+    onRejected() {
+      this.$error('Файл слишком велик!')
     },
     async save() {
       try {
         if (this.other_type) {
-          this.data.facade_type = this.other_type
+          this.data.facade_type.splice(this.data.facade_type.indexOf('Прочее'), 1, this.other_type)
+        }
+        if (this.data.facade_type.includes('')) {
+          this.data.facade_type.splice(this.data.facade_type.indexOf(''),1)
         }
         let form_data = new FormData();
         for (let key in this.data) {
@@ -252,6 +252,7 @@ export default {
           }
         }
         this.data['id'] = id
+        this.data.facade_type = this.data.facade_type.split()
         this.loading = false
       } catch (e) {
         console.log(e)

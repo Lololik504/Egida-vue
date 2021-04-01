@@ -557,18 +557,23 @@ export default {
     async createBuild() {
       if (this.$v.$invalid) {
         this.$v.$touch()
+        this.$showMessage('fillFields')
         return
       }
       if (this.choose_purpose !== null) {
         this.data.purpose = this.choose_purpose
       }
-      let dataForm = Object.assign({}, this.data)
-      dataForm['INN'] = this.$route.params['build']
+      for (let item in this.data) {
+        if (this.data[item] === '') {
+          this.data[item] = null
+        }
+      }
+      this.data.INN = this.$route.params['build']
       try {
-        await this.$store.dispatch('createBuilding', dataForm)
+        await this.$store.dispatch('createBuilding', this.data)
       } catch (e) {
         console.log(e)
-        alert('Произошла ошибка!')
+        this.$showMessage('error')
         return
       }
       await this.$router.push(`/schoolbuilding/${this.$route.params['build']}`)
@@ -582,6 +587,7 @@ export default {
       this.loading = false
     } catch (e) {
       console.log(e)
+      this.$showMessage('error')
     }
 
   }

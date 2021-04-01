@@ -60,7 +60,7 @@
               <q-list>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="data.CCTV_is_workable" :disable="disable" val="true"/>
+                    <q-radio v-model="data.CCTV_is_workable" :disable="disable" :val="true"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Работоспособное состояние</q-item-label>
@@ -75,7 +75,7 @@
                 </q-item>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="data.CCTV_is_workable" :disable="disable" val="false"/>
+                    <q-radio v-model="data.CCTV_is_workable" :disable="disable" :val="false"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Аварийное состояние</q-item-label>
@@ -111,7 +111,6 @@
 </template>
 
 <script>
-import messages from "@/utils/messages";
 
 export default {
   name: "CCTV",
@@ -131,29 +130,18 @@ export default {
     }
   }),
   methods: {
-    onRejected(rejectedEntries) {
-      this.$q.notify({
-        type: 'negative',
-        message: `${rejectedEntries.length} file(s) did not pass validation constraints`
-      })
-    },
     async save() {
       try {
         const resp = await this.$store.dispatch('sendSecurityInfo', this.data)
         if (resp['status'] === 200) {
-          this.showMessage('saveSuccess')
+          this.$showMessage('saveSuccess')
+          this.disable = true
         }
       } catch (e) {
         console.log(e)
-        this.showMessage('error')
+        this.$showMessage('error')
       }
     },
-    showMessage(text) {
-      if (messages[text]) {
-        window.scrollTo(0, 0)
-        this.$message(messages[text])
-      }
-    }
   },
   async mounted() {
     const token = localStorage.getItem('token')

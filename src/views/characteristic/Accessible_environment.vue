@@ -6,9 +6,9 @@
       <form @submit.prevent="save">
         <div class="q-pa-md">
           <q-card bordered flat class="q-pa-sm">
-          <h6>
-            <strong>Паспорт доступности:</strong>
-          </h6>
+            <h6>
+              <strong>Паспорт доступности:</strong>
+            </h6>
             <div class="checkbox col">
               <q-checkbox v-model="data.accessibility_passport_agreed" :disable="disable" dense left-label
                           label="Согласован:"/>
@@ -86,7 +86,8 @@
                           label="Наличие поручней и перил:"/>
             </div>
             <div class="checkbox col">
-              <q-checkbox v-model="data.building_entrance_contrast_tape_on_the_steps" :disable="disable" dense left-label
+              <q-checkbox v-model="data.building_entrance_contrast_tape_on_the_steps" :disable="disable" dense
+                          left-label
                           label="Наличие контрастной ленты на ступенях:"/>
             </div>
             <div class="checkbox col">
@@ -189,7 +190,6 @@
 </template>
 
 <script>
-import messages from "@/utils/messages";
 
 export default {
   name: "Accessible_environment",
@@ -235,29 +235,17 @@ export default {
     }
   }),
   methods: {
-    onRejected(rejectedEntries) {
-      this.$q.notify({
-        type: 'negative',
-        message: `${rejectedEntries.length} file(s) did not pass validation constraints`
-      })
-    },
     async save() {
       try {
         const resp = await this.$store.dispatch('sendEnvironmentInfo', this.data)
         if (resp['status'] === 200) {
-          this.showMessage('saveSuccess')
+          this.$showMessage('saveSuccess')
         }
       } catch (e) {
         console.log(e)
-        this.showMessage('error')
+        this.$showMessage('error')
       }
     },
-    showMessage(text) {
-      if (messages[text]) {
-        window.scrollTo(0, 0)
-        this.$message(messages[text])
-      }
-    }
   },
   async mounted() {
     const token = localStorage.getItem('token')
@@ -269,7 +257,7 @@ export default {
       this.loading = false
     } catch (e) {
       console.log(e)
-      this.showMessage('error')
+      this.$showMessage('error')
     }
   }
 }

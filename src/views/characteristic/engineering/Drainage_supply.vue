@@ -63,12 +63,6 @@ export default {
     loading: true,
   }),
   methods: {
-    onRejected(rejectedEntries) {
-      this.$q.notify({
-        type: 'negative',
-        message: `${rejectedEntries.length} file(s) did not pass validation constraints`
-      })
-    },
     async save() {
       try {
         (this.data.number_of_storm_water_inlets === '' || this.data.number_of_storm_water_inlets == null) ? this.data.number_of_storm_water_inlets = 0 : null;

@@ -58,9 +58,11 @@ export default {
         if (isConfirmed) {
           await this.$store.dispatch('deleteSchool', this.$route.params['card'])
           await this.$router.push('/districts')
+          this.$message('Учреждение успешно удалено!')
         }
       } catch (e) {
         console.log(e)
+        this.$error(e)
       }
     }
   },

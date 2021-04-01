@@ -146,7 +146,31 @@ export default {
                         {
                             headers: {
                                 "Authorization": "auth " + token,
-                                'Content-Type': 'application/json'
+                                'Content-Type': 'application/json',
+                            }
+                        })
+                        .then(resp => {
+                            resolve(resp)
+                        })
+                        .catch(err => {
+                            reject(err)
+                        })
+                })
+            } catch (e) {
+                commit('setError', e)
+                throw e
+            }
+        },
+        async updatePersonalPrikaz({commit}, data) {
+            try {
+                const token = localStorage.getItem('token')
+                return await new Promise((resolve, reject) => {
+                    axios.put(server_path + "/api/personal/updater/",
+                        data,
+                        {
+                            headers: {
+                                "Authorization": "auth " + token,
+                                'Content-Type': 'multipart/form-data'
                             }
                         })
                         .then(resp => {
