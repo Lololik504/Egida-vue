@@ -216,8 +216,8 @@ export default {
         if (this.other_material) {
           this.data.roof_material = this.other_material
         }
-        if (this.data.facade_type.includes('')) {
-          this.data.facade_type.splice(this.data.facade_type.indexOf(''),1)
+        if (this.data.roof_type.includes('')) {
+          this.data.roof_type.splice(this.data.roof_type.indexOf(''),1)
         }
 
         let form_data = new FormData();
@@ -263,6 +263,9 @@ export default {
           }
         }
         this.data['id'] = id
+        if (this.data.roof_type !== null)
+          this.data.roof_type = this.data.roof_type.split()
+        else this.data.roof_type = []
         this.loading = false
       } catch (e) {
         console.log(e)
