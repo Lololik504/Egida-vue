@@ -98,7 +98,7 @@
             <label>Температурный график</label>
             <q-input outlined
                      :disable="disable"
-                     v-model.number="data.Temperature_graph"
+                     v-model="data.Temperature_graph"
                      hint="ввод цифрами в формате ххх/хx"
                      mask="###/##"
             />

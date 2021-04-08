@@ -115,6 +115,11 @@ export default {
           this.$v.$touch()
           return
         }
+        for (const key in this.requisites) {
+          if (this.requisites[key] === null)
+            this.requisites[key] = ""
+        }
+        console.log(this.requisites)
         await this.$store.dispatch('updateRequisites', this.requisites)
         await this.$router.push(`/school/${this.requisites.INN}`)
       } catch (e) {
