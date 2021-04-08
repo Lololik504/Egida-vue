@@ -3,7 +3,7 @@
     <Loader v-if="loading"/>
     <div v-else>
       <h4>Редактирование основных сведений учреждения
-        <router-link :to="`/school/${this.$route.params['inn']}`">{{ mainInfo.shortname }}</router-link>
+        <router-link :to="`/school/${this.$route.params['inn']}`">{{ shortname }}</router-link>
       </h4>
       <form @submit.prevent="submitHandler">
         <div class="q-pa-sm">
@@ -69,6 +69,7 @@ export default {
       'ДПО - дополнительное профессиональное образование',
       'Прочее'],
     other_edu_type: null,
+    shortname: null,
     loading: true,
     mainInfo: {
       INN: null,
@@ -89,6 +90,7 @@ export default {
       this.mainInfo.edu_type = info['edu_type']
       this.mainInfo.form_type = info['form_type']
       this.mainInfo.shortname = info['shortname']
+      this.shortname = info['shortname']
       this.loading = false
     } catch (e) {
       console.log(e)
@@ -100,10 +102,10 @@ export default {
     },
     async submitHandler() {
       try {
-        if (this.mainInfo.edu_type.includes('-')) {
+        if (this.mainInfo.edu_type && this.mainInfo.edu_type.includes('-')) {
           this.mainInfo.edu_type = this.mainInfo.edu_type.slice(0, this.mainInfo.edu_type.indexOf(' '))
         }
-        if (this.mainInfo.form_type.includes('-')) {
+        if (this.mainInfo.form_type && this.mainInfo.form_type.includes('-')) {
           this.mainInfo.form_type = this.mainInfo.form_type.slice(0, this.mainInfo.form_type.indexOf(' '))
         }
         if (this.other_edu_type) {
@@ -112,6 +114,11 @@ export default {
           } else
           this.mainInfo.edu_type = this.other_edu_type
         }
+        for (const key in this.mainInfo) {
+          if (this.mainInfo[key] === null)
+            this.mainInfo[key] = ""
+        }
+        console.log(this.mainInfo)
         await this.$store.dispatch('updateInfo', this.mainInfo)
         await this.$router.push(`/school/${this.mainInfo.INN}`)
       } catch (e) {
