@@ -760,11 +760,15 @@ export default {
 
         let form_data = new FormData();
         for (let key in this.data) {
+          if (this.data[key] === null) {
+            continue
+          }
           if (arrayNamesOFFiles.includes(key) && typeof this.data[key] === 'string') {
             continue
           }
-
-          arrayNamesOfNumbers.includes(key) ? this.data[key] = Number(this.data[key]) : null;
+          if (arrayNamesOfNumbers.includes(key)) {
+            this.data[key] = Number(this.data[key])
+          }
           form_data.append(key, this.data[key])
         }
 
@@ -815,9 +819,10 @@ export default {
         const info = await this.$store.dispatch('fetchEngineering', {token, id})
         const tmp = Object.keys(this.data)
         for (let item in info) {
-          info[item] === '/media/null' ? info[item] = null : null
-          info[item] === 'null' ? info[item] = null : null
           if (tmp.includes(item)) {
+            if (info[item] === '/media/null' || info[item] === 'null') {
+              info[item] = null
+            }
             this.data[item] = info[item]
           }
         }

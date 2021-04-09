@@ -52,6 +52,31 @@ export default {
                 commit('setError', e)
                 throw e
             }
+        },
+        async deleteDocs({commit}, {inn, id}) {
+            try {
+                const token = localStorage.getItem('token')
+                return await new Promise((resolve, reject) => {
+                    axios.delete(server_path + "/api/docs/",
+                        {
+                            headers: {
+                                "Authorization": "auth " + token,
+                                'Content-Type': 'application/json',
+                                'INN': inn,
+                                'doc-id': id
+                            }
+                        })
+                        .then(resp => {
+                            resolve(resp)
+                        })
+                        .catch(err => {
+                            reject(err)
+                        })
+                })
+            } catch (e) {
+                commit('setError', e)
+                throw e
+            }
         }
     }
 }

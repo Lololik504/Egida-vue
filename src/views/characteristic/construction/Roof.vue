@@ -40,6 +40,10 @@
               <q-select multiple outlined :disable="disable" v-model="data.roof_type" :options="roof_types"/>
             </div>
           </div>
+          <div v-if="data.roof_type.includes(roof_types[3])">
+            <label>Введите тип кровли</label>
+            <q-input outlined :disable="disable" v-model="other_type"/>
+          </div>
           <div class="select-material-field">
             <label>Материал кровли</label>
             <div class="select">
@@ -175,7 +179,7 @@ import {server_path} from "@/local_settings";
 export default {
   name: "Roof",
   data: () => ({
-    roof_types: ['Скатная', 'Мягкая', 'Скатная/мягкая'],
+    roof_types: ['Скатная', 'Мягкая', 'Скатная/мягкая', 'Прочее'],
     roof_materials: [
       'Битумный наплавляемый',
       'Полимерная или резиновая мембрана',
@@ -186,6 +190,7 @@ export default {
       'Прочее'
     ],
     other_material: null,
+    other_type: null,
     loading: true,
     disable: true,
     changedPhoto: false,
@@ -216,10 +221,12 @@ export default {
         if (this.other_material) {
           this.data.roof_material = this.other_material
         }
+        if (this.other_type) {
+          this.data.roof_type.splice(this.data.roof_type.indexOf('Прочее'), 1, this.other_type)
+        }
         if (this.data.roof_type.includes('')) {
           this.data.roof_type.splice(this.data.roof_type.indexOf(''),1)
         }
-
         let form_data = new FormData();
         for (let key in this.data) {
           if ((key === 'roof_photo' && typeof this.data[key] === 'string') || (key === 'roof_act' && typeof this.data[key] === 'string')) {

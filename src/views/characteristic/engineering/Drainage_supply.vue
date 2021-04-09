@@ -14,7 +14,8 @@
 
           <div class="input-field-roof-square" v-if="data.centralized_storm_sewer_system">
             <label>Количество колодцев системы ливневой канализации на территории учреждения</label>
-            <q-input outlined type="number" v-model.number="data.the_number_of_wells_of_the_storm_sewer_system" :disable="disable"/>
+            <q-input outlined type="number" v-model.number="data.the_number_of_wells_of_the_storm_sewer_system"
+                     :disable="disable"/>
           </div>
           <div class="checkbox">
             <q-checkbox v-model="data.storm_water_inlet" dense :disable="disable" left-label
@@ -65,8 +66,8 @@ export default {
   methods: {
     async save() {
       try {
-        (this.data.number_of_storm_water_inlets === '' || this.data.number_of_storm_water_inlets == null) ? this.data.number_of_storm_water_inlets = 0 : null;
-        (this.data.the_number_of_wells_of_the_storm_sewer_system === '' || this.data.the_number_of_wells_of_the_storm_sewer_system == null) ? this.data.the_number_of_wells_of_the_storm_sewer_system = 0 : null;
+        this.data.number_of_storm_water_inlets = Number(this.data.number_of_storm_water_inlets);
+        this.data.the_number_of_wells_of_the_storm_sewer_system = Number(this.data.the_number_of_wells_of_the_storm_sewer_system);
         const resp = await this.$store.dispatch('sendEngineeringInfoJSON', this.data)
         if (resp['status'] === 200) {
           this.showMessage('saveSuccess')
@@ -92,9 +93,10 @@ export default {
       const info = await this.$store.dispatch('fetchEngineering', {token, id})
       const tmp = Object.keys(this.data)
       for (let item in info) {
-        info[item] === '/media/null' ? info[item] = null : null
-        info[item] === 'null' ? info[item] = null : null
         if (tmp.includes(item)) {
+          if (info[item] === '/media/null' || info[item] === 'null') {
+            info[item] = null
+          }
           this.data[item] = info[item]
         }
       }

@@ -439,31 +439,37 @@ export default {
         if (this.other_cable) {
           this.data.electric_cable_accessory = this.other_cable
         }
+
+        const arrayNamesOFFiles = [
+          'technical_condition_of_the_internal_power_supply_system_act',
+          'technical_condition_of_the_external_power_supply_system_act',
+          'power_supply_system_odnolinein_schema',
+          'power_supply_system_scheme_balance_razgranich',
+          'power_supply_system_photo_vru',
+          'power_supply_system_act_balance_razgranich'
+
+        ]
+        const arrayNamesOfNumbers = [
+          'required_power_supply_reliability_category',
+          'actual_power_supply_reliability_category',
+          'permitted_power',
+          'count_of_energy_saving_lamps_for_indoor_lighting',
+          'count_of_incandescent_lamps_for_indoor_lighting',
+          'count_of_energy_saving_outdoor_lamps',
+          'count_of_incandescent_outdoor_lamps'
+        ]
+
         let form_data = new FormData();
         for (let key in this.data) {
-          if ((key === 'technical_condition_of_the_internal_power_supply_system_act' && typeof this.data[key] === 'string') ||
-              (key === 'technical_condition_of_the_external_power_supply_system_act' && typeof this.data[key] === 'string') ||
-              (key === 'power_supply_system_odnolinein_schema' && typeof this.data[key] === 'string') ||
-              (key === 'power_supply_system_scheme_balance_razgranich' && typeof this.data[key] === 'string') ||
-              (key === 'power_supply_system_photo_vru' && typeof this.data[key] === 'string') ||
-              (key === 'power_supply_system_act_balance_razgranich' && typeof this.data[key] === 'string')) {
+          if (this.data[key] === null) {
             continue
           }
-          (key === 'required_power_supply_reliability_category' && (this.data[key] === '' || this.data[key] == null)) ? this.data[key] = 0 : null;
-          (key === 'actual_power_supply_reliability_category' && (this.data[key] === '' || this.data[key] == null)) ? this.data[key] = 0 : null;
-          (key === 'permitted_power' && (this.data[key] === '' || this.data[key] == null)) ? this.data[key] = 0 : null;
-          (key === 'count_of_energy_saving_lamps_for_indoor_lighting' && (this.data[key] === '' || this.data[key] == null)) ? this.data[key] = 0 : null;
-          (key === 'count_of_incandescent_lamps_for_indoor_lighting' && (this.data[key] === '' || this.data[key] == null)) ? this.data[key] = 0 : null;
-          (key === 'count_of_energy_saving_outdoor_lamps' && (this.data[key] === '' || this.data[key] == null)) ? this.data[key] = 0 : null;
-          (key === 'count_of_incandescent_outdoor_lamps' && (this.data[key] === '' || this.data[key] == null)) ? this.data[key] = 0 : null;
-          // (key === 'ground_loop' && (this.data[key] === false || this.data[key] == null)) ? this.data[key] = false : null;
-          // if (key === 'ground_loop') {
-          //   if (this.data[key]) {
-          //     this.data[key] = 'True'
-          //   } else if (this.data[key] === false) {
-          //     this.data[key] = 'False'
-          //   } else this.data[key] = 'None'
-          // }
+          if (arrayNamesOFFiles.includes(key) && typeof this.data[key] === 'string') {
+            continue
+          }
+          if (arrayNamesOfNumbers.includes(key)) {
+            this.data[key] = Number(this.data[key])
+          }
           form_data.append(key, this.data[key]);
         }
         const resp = await this.$store.dispatch('sendEngineeringInfo', form_data)
@@ -506,9 +512,10 @@ export default {
         const info = await this.$store.dispatch('fetchEngineering', {token, id})
         const tmp = Object.keys(this.data)
         for (let item in info) {
-          info[item] === '/media/null' ? info[item] = null : null
-          info[item] === 'null' ? info[item] = null : null
           if (tmp.includes(item)) {
+            if (info[item] === '/media/null' || info[item] === 'null') {
+              info[item] = null
+            }
             this.data[item] = info[item]
           }
         }
