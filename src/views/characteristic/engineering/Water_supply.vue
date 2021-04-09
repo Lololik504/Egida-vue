@@ -280,12 +280,19 @@ export default {
         if (this.other_organization) {
           this.data.water_supply_organization = this.other_organization
         }
+        const arrayNamesOFFiles = [
+          'technical_condition_of_the_sewerage_system_act',
+          'technical_condition_of_the_water_supply_system_act',
+          'water_supply_act_balance_razgranich',
+          'water_supply_scheme_balance_razgranich'
+        ]
+
         let form_data = new FormData();
         for (let key in this.data) {
-          if ((key === 'technical_condition_of_the_sewerage_system_act' && typeof this.data[key] === 'string') ||
-              (key === 'technical_condition_of_the_water_supply_system_act' && typeof this.data[key] === 'string') ||
-              (key === 'water_supply_act_balance_razgranich' && typeof this.data[key] === 'string') ||
-              (key === 'water_supply_scheme_balance_razgranich' && typeof this.data[key] === 'string')) {
+          if (this.data[key] === null) {
+            continue
+          }
+          if (arrayNamesOFFiles.includes(key) && typeof this.data[key] === 'string') {
             continue
           }
           form_data.append(key, this.data[key]);
@@ -327,9 +334,10 @@ export default {
         const info = await this.$store.dispatch('fetchEngineering', {token, id})
         const tmp = Object.keys(this.data)
         for (let item in info) {
-          info[item] === '/media/null' ? info[item] = null : null
-          info[item] === 'null' ? info[item] = null : null
           if (tmp.includes(item)) {
+            if (info[item] === '/media/null' || info[item] === 'null') {
+              info[item] = null
+            }
             this.data[item] = info[item]
           }
         }

@@ -18,6 +18,10 @@
                       @click.prevent="passport_BTI.url = null; passport_BTI.hasUrl = false">
                 Изменить файл
               </button>
+              <button v-if="getPermission" class="btn waves-effect waves-light"
+                      @click.prevent="deleteDoc('passport_BTI')">
+                Удалить файл
+              </button>
             </div>
           </div>
           <div v-else>
@@ -54,6 +58,10 @@
               <button class="btn waves-effect waves-light"
                       @click.prevent="topographic_plan.url = null; topographic_plan.hasUrl = false">
                 Изменить файл
+              </button>
+              <button v-if="getPermission" class="btn waves-effect waves-light"
+                      @click.prevent="deleteDoc('topographic_plan')">
+                Удалить файл
               </button>
             </div>
           </div>
@@ -93,6 +101,10 @@
                       @click.prevent="teplosnabj_MK.url = null; teplosnabj_MK.hasUrl = false">
                 Изменить файл
               </button>
+              <button v-if="getPermission" class="btn waves-effect waves-light"
+                      @click.prevent="deleteDoc('teplosnabj_MK')">
+                Удалить файл
+              </button>
             </div>
           </div>
           <div v-else>
@@ -128,6 +140,10 @@
               <button class="btn waves-effect waves-light"
                       @click.prevent="vodosnabj_MK.url = null; vodosnabj_MK.hasUrl = false">
                 Изменить файл
+              </button>
+              <button v-if="getPermission" class="btn waves-effect waves-light"
+                      @click.prevent="deleteDoc('vodosnabj_MK')">
+                Удалить файл
               </button>
             </div>
           </div>
@@ -165,6 +181,10 @@
               <button class="btn waves-effect waves-light"
                       @click.prevent="electrosnabj_MK.url = null; electrosnabj_MK.hasUrl = false">
                 Изменить файл
+              </button>
+              <button v-if="getPermission" class="btn waves-effect waves-light"
+                      @click.prevent="deleteDoc('electrosnabj_MK')">
+                Удалить файл
               </button>
             </div>
           </div>
@@ -244,6 +264,17 @@ export default {
         this.loading = false
       }
     },
+    async deleteDoc(fileName) {
+      try {
+        await this.$store.dispatch('deleteDocs', {inn: this.$route.params['id'], id: fileName})
+        this.[fileName].hasUrl = false;
+        this.[fileName].url = null;
+        this.$showMessage('deleteSuccess')
+      } catch (e) {
+        console.log(e)
+        this.$showMessage('error')
+      }
+    },
     onRejected() {
       this.$error('Файл слишком велик!')
     },
@@ -273,6 +304,11 @@ export default {
         console.log(e)
         throw e
       }
+    }
+  },
+  computed: {
+    getPermission() {
+      return this.$store.getters.permission <= 10
     }
   },
   async mounted() {
