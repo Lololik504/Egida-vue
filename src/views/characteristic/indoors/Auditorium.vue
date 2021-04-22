@@ -15,21 +15,24 @@
                   <h6 class="col">Работоспособное состояние</h6>
                   <div class="input-field-roof-square col">
                     <label>Процент актовых залов</label>
-                    <q-input outlined type="number" step="0.001" :disable="disable" v-model="data.auditorium_ok_percent"/>
+                    <q-input outlined type="number" step="0.001" :disable="disable"
+                             v-model="data.auditorium_ok_percent"/>
                   </div>
                 </q-item>
                 <q-item class="column">
                   <h6 class="col">Ограниченно работоспособное состояние</h6>
                   <div class="input-field-roof-square col">
                     <label>Процент актовых залов</label>
-                    <q-input outlined type="number" step="0.001" :disable="disable" v-model="data.auditorium_warning_percent"/>
+                    <q-input outlined type="number" step="0.001" :disable="disable"
+                             v-model="data.auditorium_warning_percent"/>
                   </div>
                 </q-item>
                 <q-item class="column">
                   <h6 class="col">Аварийное состояние</h6>
                   <div class="input-field-roof-square col">
                     <label>Процент актовых залов</label>
-                    <q-input outlined type="number" step="0.001" :disable="disable" v-model="data.auditorium_emergency_percent"/>
+                    <q-input outlined type="number" step="0.001" :disable="disable"
+                             v-model="data.auditorium_emergency_percent"/>
                   </div>
                 </q-item>
               </q-list>
@@ -57,6 +60,10 @@
                 <button class="btn blue"
                         @click.prevent="data.auditorium_act = null;">
                   Изменить файл
+                </button>
+                <button v-if="getPermission" class="btn blue"
+                        @click.prevent="deleteDoc('auditorium_act')">
+                  Удалить файл
                 </button>
               </div>
             </div>
@@ -118,7 +125,8 @@
           <div class="select-type-field">
             <label>Тип воздухонагревателя</label>
             <div class="select">
-              <q-select outlined :disable="disable" v-model="data.auditorium_air_heater_type" :options="['Водяной', 'Электрический']"/>
+              <q-select outlined :disable="disable" v-model="data.auditorium_air_heater_type"
+                        :options="['Водяной', 'Электрический']"/>
             </div>
           </div>
           <button class="btn waves-effect waves" @click.prevent="disable = false" v-if="disable">
@@ -164,7 +172,24 @@ export default {
     },
     loading: true,
   }),
+  computed: {
+    getPermission() {
+      return this.$store.getters.permission <= 10
+    }
+  },
   methods: {
+    async deleteDoc(filename) {
+      try {
+        if (this.data.[filename]) {
+          await this.$store.dispatch('deleteIndoorsDoc', {id: this.data.id, doc_id: filename})
+          this.data.[filename] = null
+          this.$showMessage('deleteSuccess')
+        } else this.$showMessage('error')
+      } catch (e) {
+        console.log(e)
+        this.$showMessage('error')
+      }
+    },
     showDoc(url) {
       const link = document.createElement('a');
       link.href = server_path + url;

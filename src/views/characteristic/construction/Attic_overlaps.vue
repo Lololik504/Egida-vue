@@ -132,6 +132,10 @@
                       @click.prevent="data.attic_overlapping_act = null;">
                 Изменить файл
               </button>
+              <button v-if="getPermission" class="btn blue"
+                      @click.prevent="deleteDoc('attic_overlapping_act')">
+                Удалить файл
+              </button>
             </div>
           </div>
           <button class="btn waves-effect waves" @click.prevent="disable = false" v-if="disable">
@@ -185,6 +189,11 @@ export default {
       attic_overlapping_act: null,
     }
   }),
+  computed: {
+    getPermission() {
+      return this.$store.getters.permission <= 10
+    }
+  },
   methods: {
     onRejected() {
       this.$error('Файл слишком велик!')
@@ -195,6 +204,18 @@ export default {
       link.target = '_blank'
       document.body.appendChild(link);
       link.click();
+    },
+    async deleteDoc(filename) {
+      try {
+        if (this.data.[filename]) {
+          await this.$store.dispatch('deleteConstructionDoc', {id: this.data.id, doc_id: filename})
+          this.data.[filename] = null
+          this.$showMessage('deleteSuccess')
+        } else this.$showMessage('error')
+      } catch (e) {
+        console.log(e)
+        this.$showMessage('error')
+      }
     },
     async save() {
       try {

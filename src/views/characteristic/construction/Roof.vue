@@ -32,6 +32,10 @@
                       @click.prevent="data.roof_photo = null;">
                 Изменить файл
               </button>
+              <button v-if="getPermission" class="btn blue"
+                      @click.prevent="deleteDoc('roof_photo')">
+                Удалить файл
+              </button>
             </div>
           </div>
           <div class="select-type-field">
@@ -153,6 +157,10 @@
                       @click.prevent="data.roof_act = null;">
                 Изменить файл
               </button>
+              <button v-if="getPermission" class="btn blue"
+                      @click.prevent="deleteDoc('roof_act')">
+                Удалить файл
+              </button>
             </div>
           </div>
           <button class="btn waves-effect waves" @click.prevent="disable = false" v-if="disable">
@@ -205,7 +213,24 @@ export default {
       roof_photo: null
     }
   }),
+  computed: {
+    getPermission() {
+      return this.$store.getters.permission <= 10
+    }
+  },
   methods: {
+    async deleteDoc(filename) {
+      try {
+        if (this.data.[filename]) {
+          await this.$store.dispatch('deleteConstructionDoc', {id: this.data.id, doc_id: filename})
+          this.data.[filename] = null
+          this.$showMessage('deleteSuccess')
+        } else this.$showMessage('error')
+      } catch (e) {
+        console.log(e)
+        this.$showMessage('error')
+      }
+    },
     onRejected() {
       this.$error('Файл слишком велик!')
     },
@@ -225,7 +250,7 @@ export default {
           this.data.roof_type.splice(this.data.roof_type.indexOf('Прочее'), 1, this.other_type)
         }
         if (this.data.roof_type.includes('')) {
-          this.data.roof_type.splice(this.data.roof_type.indexOf(''),1)
+          this.data.roof_type.splice(this.data.roof_type.indexOf(''), 1)
         }
         let form_data = new FormData();
         for (let key in this.data) {
