@@ -13,7 +13,8 @@
           </div>
           <div class="input-field-window-percent">
             <label>Процент остекления энергосберегающими стеклопакетами , %.</label>
-            <q-input outlined type="number" :disable="disable" step="0.001" v-model.number="data.energy_saving_window_percent"/>
+            <q-input outlined type="number" :disable="disable" step="0.001"
+                     v-model.number="data.energy_saving_window_percent"/>
           </div>
           <div class="input-field-window-count">
             <label>Количество окон, шт.</label>
@@ -122,6 +123,10 @@
                       @click.prevent="data.window_act = null;">
                 Изменить файл
               </button>
+              <button v-if="getPermission" class="btn blue"
+                      @click.prevent="deleteDoc('window_act')">
+                Удалить файл
+              </button>
             </div>
           </div>
           <button class="btn waves-effect waves" @click.prevent="disable = false" v-if="disable">
@@ -162,7 +167,24 @@ export default {
       window_count: null
     }
   }),
+  computed: {
+    getPermission() {
+      return this.$store.getters.permission <= 10
+    }
+  },
   methods: {
+    async deleteDoc(filename) {
+      try {
+        if (this.data.[filename]) {
+          await this.$store.dispatch('deleteConstructionDoc', {id: this.data.id, doc_id: filename})
+          this.data.[filename] = null
+          this.$showMessage('deleteSuccess')
+        } else this.$showMessage('error')
+      } catch (e) {
+        console.log(e)
+        this.$showMessage('error')
+      }
+    },
     onRejected() {
       this.$error('Файл слишком велик!')
     },

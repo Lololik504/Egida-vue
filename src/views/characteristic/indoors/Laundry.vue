@@ -80,6 +80,10 @@
                         @click.prevent="data.laundry_act = null;">
                   Изменить файл
                 </button>
+                <button v-if="getPermission" class="btn blue"
+                        @click.prevent="deleteDoc('laundry_act')">
+                  Удалить файл
+                </button>
               </div>
             </div>
           </q-card>
@@ -152,7 +156,24 @@ export default {
     },
     loading: true,
   }),
+  computed: {
+    getPermission() {
+      return this.$store.getters.permission <= 10
+    }
+  },
   methods: {
+    async deleteDoc(filename) {
+      try {
+        if (this.data.[filename]) {
+          await this.$store.dispatch('deleteIndoorsDoc', {id: this.data.id, doc_id: filename})
+          this.data.[filename] = null
+          this.$showMessage('deleteSuccess')
+        } else this.$showMessage('error')
+      } catch (e) {
+        console.log(e)
+        this.$showMessage('error')
+      }
+    },
     showDoc(url) {
       const link = document.createElement('a');
       link.href = server_path + url;

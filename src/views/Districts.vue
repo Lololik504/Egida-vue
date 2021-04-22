@@ -203,12 +203,14 @@ export default {
       this.districts = await this.$store.dispatch('fetchDistricts')
       this.buildInfo = await this.$store.dispatch('fetchFieldsBuilding')
       this.districtInfo = await this.$store.dispatch('fetchFieldsDistricts')
+      console.log(this.districtInfo)
       this.mainInfo = await this.$store.dispatch('fetchFieldsSchool')
       this.districtInfo = this.districtInfo['district']
       this.districtStates = Object.assign({}, this.districtInfo)
       for (let key in this.districtStates) {
         this.districtStates[key] = true
       }
+
       // const test = await this.$store.dispatch('fetchAllModels')
 
       this.mainStates = Object.assign({}, this.mainInfo)

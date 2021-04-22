@@ -19,7 +19,6 @@
 </template>
 
 <script>
-import messages from "@/utils/messages";
 export default {
   name: "Login",
   data() {
@@ -42,21 +41,13 @@ export default {
         } else if (permission <= '10') {
           await this.$router.push('/districts')
         } else await this.$router.push('/')
+        this.$message('Авторизация прошла успешна!')
       } catch (e) {
         console.log(e)
-        await this.$router.push('/login?message=wrong-password')
-        this.showMessage()
-      }
-    },
-    showMessage() {
-      if (messages[this.$route.query.message]) {
-        this.$message(messages[this.$route.query.message])
+        this.$error('Введены неверные данные!')
       }
     }
-  },
-  mounted() {
-    this.showMessage()
-  },
+  }
 }
 </script>
 

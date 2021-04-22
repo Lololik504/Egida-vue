@@ -215,6 +215,10 @@
                         @click.prevent="data.technical_condition_of_the_heating_system_act = null;">
                   Изменить файл
                 </button>
+                <button v-if="getPermission" class="btn blue"
+                        @click.prevent="deleteDoc('technical_condition_of_the_heating_system_act')">
+                  Удалить файл
+                </button>
               </div>
             </div>
           </q-card>
@@ -292,6 +296,10 @@
                 <button class="btn blue"
                         @click.prevent="data.technical_condition_of_the_ventilation_system_act = null;">
                   Изменить файл
+                </button>
+                <button v-if="getPermission" class="btn blue"
+                        @click.prevent="deleteDoc('technical_condition_of_the_ventilation_system_act')">
+                  Удалить файл
                 </button>
               </div>
             </div>
@@ -371,6 +379,10 @@
                         @click.prevent="data.technical_condition_of_the_hot_water_supply_system_act = null;">
                   Изменить файл
                 </button>
+                <button v-if="getPermission" class="btn blue"
+                        @click.prevent="deleteDoc('technical_condition_of_the_hot_water_supply_system_act')">
+                  Удалить файл
+                </button>
               </div>
             </div>
           </q-card>
@@ -401,6 +413,10 @@
                         @click.prevent="data.passport_vvoda = null;">
                   Изменить файл
                 </button>
+                <button v-if="getPermission" class="btn blue"
+                        @click.prevent="deleteDoc('passport_vvoda')">
+                  Удалить файл
+                </button>
               </div>
             </div>
             <div v-if="!data.schema_vvoda" class="col">
@@ -427,6 +443,10 @@
                         @click.prevent="data.schema_vvoda = null;">
                   Изменить файл
                 </button>
+                <button v-if="getPermission" class="btn blue"
+                        @click.prevent="deleteDoc('schema_vvoda')">
+                  Удалить файл
+                </button>
               </div>
             </div>
             <div v-if="!data.passport_itp" class="col">
@@ -452,6 +472,10 @@
                 <button class="btn blue"
                         @click.prevent="data.passport_itp = null;">
                   Изменить файл
+                </button>
+                <button v-if="getPermission" class="btn blue"
+                        @click.prevent="deleteDoc('passport_itp')">
+                  Удалить файл
                 </button>
               </div>
             </div>
@@ -481,6 +505,10 @@
                         @click.prevent="data.schema_itp = null;">
                   Изменить файл
                 </button>
+                <button v-if="getPermission" class="btn blue"
+                        @click.prevent="deleteDoc('schema_itp')">
+                  Удалить файл
+                </button>
               </div>
             </div>
             <div v-if="!data.act_balance_razgranich" class="col">
@@ -507,6 +535,10 @@
                         @click.prevent="data.act_balance_razgranich = null;">
                   Изменить файл
                 </button>
+                <button v-if="getPermission" class="btn blue"
+                        @click.prevent="deleteDoc('act_balance_razgranich')">
+                  Удалить файл
+                </button>
               </div>
             </div>
             <div v-if="!data.schema_balance_razgranich" class="col">
@@ -532,6 +564,10 @@
                 <button class="btn blue"
                         @click.prevent="data.schema_balance_razgranich = null;">
                   Изменить файл
+                </button>
+                <button v-if="getPermission" class="btn blue"
+                        @click.prevent="deleteDoc('schema_balance_razgranich')">
+                  Удалить файл
                 </button>
               </div>
             </div>
@@ -561,6 +597,10 @@
                         @click.prevent="data.spravka_teplov_nagruz = null;">
                   Изменить файл
                 </button>
+                <button v-if="getPermission" class="btn blue"
+                        @click.prevent="deleteDoc('spravka_teplov_nagruz')">
+                  Удалить файл
+                </button>
               </div>
             </div>
             <div v-if="!data.raschet_teplov_poter" class="col">
@@ -587,6 +627,10 @@
                         @click.prevent="data.raschet_teplov_poter = null;">
                   Изменить файл
                 </button>
+                <button v-if="getPermission" class="btn blue"
+                        @click.prevent="deleteDoc('raschet_teplov_poter')">
+                  Удалить файл
+                </button>
               </div>
             </div>
             <div v-if="!data.toposnova" class="col">
@@ -612,6 +656,10 @@
                 <button class="btn blue"
                         @click.prevent="data.toposnova = null;">
                   Изменить файл
+                </button>
+                <button v-if="getPermission" class="btn blue"
+                        @click.prevent="deleteDoc('toposnova')">
+                  Удалить файл
                 </button>
               </div>
             </div>
@@ -720,7 +768,24 @@ export default {
     },
     loading: true,
   }),
+  computed: {
+    getPermission() {
+      return this.$store.getters.permission <= 10
+    }
+  },
   methods: {
+    async deleteDoc(filename) {
+      try {
+        if (this.data.[filename]) {
+          await this.$store.dispatch('deleteEngineeringDoc', {id: this.data.id, doc_id: filename})
+          this.data.[filename] = null
+          this.$showMessage('deleteSuccess')
+        } else this.$showMessage('error')
+      } catch (e) {
+        console.log(e)
+        this.$showMessage('error')
+      }
+    },
     onRejected() {
       this.$error('Файл слишком велик!')
     },

@@ -91,6 +91,10 @@
                         @click.prevent="data.technical_condition_of_the_water_supply_system_act = null;">
                   Изменить файл
                 </button>
+                <button v-if="getPermission" class="btn blue"
+                        @click.prevent="deleteDoc('technical_condition_of_the_water_supply_system_act')">
+                  Удалить файл
+                </button>
               </div>
             </div>
           </q-card>
@@ -169,6 +173,10 @@
                         @click.prevent="data.technical_condition_of_the_sewerage_system_act = null;">
                   Изменить файл
                 </button>
+                <button v-if="getPermission" class="btn blue"
+                        @click.prevent="deleteDoc('technical_condition_of_the_sewerage_system_act')">
+                  Удалить файл
+                </button>
               </div>
             </div>
           </q-card>
@@ -199,6 +207,10 @@
                         @click.prevent="data.water_supply_act_balance_razgranich = null;">
                   Изменить файл
                 </button>
+                <button v-if="getPermission" class="btn blue"
+                        @click.prevent="deleteDoc('water_supply_act_balance_razgranich')">
+                  Удалить файл
+                </button>
               </div>
             </div>
             <div v-if="!data.water_supply_scheme_balance_razgranich" class="col">
@@ -224,6 +236,10 @@
                 <button class="btn blue"
                         @click.prevent="data.water_supply_scheme_balance_razgranich = null;">
                   Изменить файл
+                </button>
+                <button v-if="getPermission" class="btn blue"
+                        @click.prevent="deleteDoc('water_supply_scheme_balance_razgranich')">
+                  Удалить файл
                 </button>
               </div>
             </div>
@@ -271,7 +287,24 @@ export default {
     },
     loading: true,
   }),
+  computed: {
+    getPermission() {
+      return this.$store.getters.permission <= 10
+    }
+  },
   methods: {
+    async deleteDoc(filename) {
+      try {
+        if (this.data.[filename]) {
+          await this.$store.dispatch('deleteEngineeringDoc', {id: this.data.id, doc_id: filename})
+          this.data.[filename] = null
+          this.$showMessage('deleteSuccess')
+        } else this.$showMessage('error')
+      } catch (e) {
+        console.log(e)
+        this.$showMessage('error')
+      }
+    },
     onRejected() {
       this.$error('Файл слишком велик!')
     },

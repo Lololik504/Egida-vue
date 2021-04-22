@@ -189,6 +189,31 @@ export default {
                 throw e
             }
         },
+        async deleteConstructionDoc({dispatch, commit}, {id, doc_id}) {
+            try {
+                const token = localStorage.getItem('token')
+                return await new Promise((resolve, reject) => {
+                    axios.delete(server_path + "/api/building/building_construction/",
+                        {
+                            headers: {
+                                'Content-Type': 'application/json',
+                                "Authorization": "auth " + token,
+                                id,
+                                doc_id
+                            }
+                        })
+                        .then(resp => {
+                            resolve(resp)
+                        })
+                        .catch(err => {
+                            reject(err)
+                        })
+                })
+            } catch (e) {
+                commit('setError', e)
+                throw e
+            }
+        },
         async sendEngineeringInfo({dispatch, commit}, data) {
             try {
                 const token = localStorage.getItem('token')
@@ -237,6 +262,31 @@ export default {
                 throw e
             }
         },
+        async deleteEngineeringDoc({dispatch, commit}, {id, doc_id}) {
+            try {
+                const token = localStorage.getItem('token')
+                return await new Promise((resolve, reject) => {
+                    axios.delete(server_path + "/api/building/engineering_communication/",
+                        {
+                            headers: {
+                                'Content-Type': 'application/json',
+                                "Authorization": "auth " + token,
+                                id,
+                                doc_id
+                            }
+                        })
+                        .then(resp => {
+                            resolve(resp)
+                        })
+                        .catch(err => {
+                            reject(err)
+                        })
+                })
+            } catch (e) {
+                commit('setError', e)
+                throw e
+            }
+        },
         async sendIndoorInfo({dispatch, commit}, data) {
             try {
                 const token = localStorage.getItem('token')
@@ -247,6 +297,31 @@ export default {
                             headers: {
                                 "Authorization": "auth " + token,
                                 'Content-Type': 'multipart/form-data'
+                            }
+                        })
+                        .then(resp => {
+                            resolve(resp)
+                        })
+                        .catch(err => {
+                            reject(err)
+                        })
+                })
+            } catch (e) {
+                commit('setError', e)
+                throw e
+            }
+        },
+        async deleteIndoorsDoc({dispatch, commit}, {id, doc_id}) {
+            try {
+                const token = localStorage.getItem('token')
+                return await new Promise((resolve, reject) => {
+                    axios.delete(server_path + "/api/building/indoor_areas/",
+                        {
+                            headers: {
+                                'Content-Type': 'application/json',
+                                "Authorization": "auth " + token,
+                                id,
+                                doc_id
                             }
                         })
                         .then(resp => {
