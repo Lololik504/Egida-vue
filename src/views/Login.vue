@@ -19,6 +19,8 @@
 </template>
 
 <script>
+import messages from "@/utils/messages";
+
 export default {
   name: "Login",
   data() {
@@ -44,10 +46,21 @@ export default {
         this.$message('Авторизация прошла успешна!')
       } catch (e) {
         console.log(e)
-        this.$error('Введены неверные данные!')
+        this.$message('Введены неверные данные!')
+        if (this.$route.query.message) {
+          await this.$router.push('/login')
+        }
+      }
+    },
+    showMessage() {
+      if (messages[this.$route.query.message]) {
+        this.$message(messages[this.$route.query.message])
       }
     }
-  }
+  },
+  mounted() {
+    this.showMessage()
+  },
 }
 </script>
 
