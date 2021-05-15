@@ -189,7 +189,7 @@ export default {
                 throw e
             }
         },
-        async deleteConstructionDoc({dispatch, commit}, {id, doc_id}) {
+        async deleteConstructionDoc({dispatch, commit}, {id, docId}) {
             try {
                 const token = localStorage.getItem('token')
                 return await new Promise((resolve, reject) => {
@@ -199,7 +199,7 @@ export default {
                                 'Content-Type': 'application/json',
                                 "Authorization": "auth " + token,
                                 id,
-                                doc_id
+                                docId
                             }
                         })
                         .then(resp => {
@@ -262,7 +262,7 @@ export default {
                 throw e
             }
         },
-        async deleteEngineeringDoc({dispatch, commit}, {id, doc_id}) {
+        async deleteEngineeringDoc({dispatch, commit}, {id, docId}) {
             try {
                 const token = localStorage.getItem('token')
                 return await new Promise((resolve, reject) => {
@@ -272,7 +272,7 @@ export default {
                                 'Content-Type': 'application/json',
                                 "Authorization": "auth " + token,
                                 id,
-                                doc_id
+                                docId
                             }
                         })
                         .then(resp => {
@@ -311,7 +311,7 @@ export default {
                 throw e
             }
         },
-        async deleteIndoorsDoc({dispatch, commit}, {id, doc_id}) {
+        async deleteIndoorsDoc({dispatch, commit}, {id, docId}) {
             try {
                 const token = localStorage.getItem('token')
                 return await new Promise((resolve, reject) => {
@@ -321,7 +321,7 @@ export default {
                                 'Content-Type': 'application/json',
                                 "Authorization": "auth " + token,
                                 id,
-                                doc_id
+                                docId
                             }
                         })
                         .then(resp => {

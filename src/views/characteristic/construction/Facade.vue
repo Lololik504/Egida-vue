@@ -200,14 +200,16 @@ export default {
   }),
   computed: {
     getPermission() {
-      return this.$store.getters.permission <= 10
+      if (this.$store.getters.permission)
+        return this.$store.getters.permission <= 10
+      else return localStorage.getItem('permission') <= 10
     }
   },
   methods: {
     async deleteDoc(filename) {
       try {
         if (this.data.[filename]) {
-          await this.$store.dispatch('deleteConstructionDoc', {id: this.data.id, doc_id: filename})
+          await this.$store.dispatch('deleteConstructionDoc', {id: this.data.id, docId: filename})
           this.data.[filename] = null
           this.$showMessage('deleteSuccess')
         } else this.$showMessage('error')
