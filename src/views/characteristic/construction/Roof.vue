@@ -16,7 +16,7 @@
                 outlined
                 :disable="disable"
                 hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"
-                max-total-size="25165824"
+                max-file-size="25165824"
                 accept=".jpg, image/jpeg, .pdf"
                 @rejected="onRejected"
                 @input="changedPhoto = true"
@@ -140,7 +140,7 @@
                 :disable="disable"
                 outlined
                 hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"
-                max-total-size="25165824"
+                max-file-size="25165824"
                 accept=".jpg, image/jpeg, .pdf"
                 @rejected="onRejected"
                 @input="changedAct = true"
@@ -221,9 +221,9 @@ export default {
   methods: {
     async deleteDoc(filename) {
       try {
-        if (this.data.[filename]) {
+        if (this.data[filename]) {
           await this.$store.dispatch('deleteConstructionDoc', {id: this.data.id, docId: filename})
-          this.data.[filename] = null
+          this.data[filename] = null
           this.$showMessage('deleteSuccess')
         } else this.$showMessage('error')
       } catch (e) {

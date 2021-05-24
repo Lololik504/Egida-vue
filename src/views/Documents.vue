@@ -308,7 +308,9 @@ export default {
   },
   computed: {
     getPermission() {
-      return this.$store.getters.permission <= 10
+      if (this.$store.getters.permission)
+        return this.$store.getters.permission <= 10
+      else return localStorage.getItem('permission') <= 10
     }
   },
   async mounted() {

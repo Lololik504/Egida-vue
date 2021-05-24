@@ -776,9 +776,9 @@ export default {
   methods: {
     async deleteDoc(filename) {
       try {
-        if (this.data.[filename]) {
+        if (this.data[filename]) {
           await this.$store.dispatch('deleteEngineeringDoc', {id: this.data.id, docId: filename})
-          this.data.[filename] = null
+          this.data[filename] = null
           this.$showMessage('deleteSuccess')
         } else this.$showMessage('error')
       } catch (e) {
