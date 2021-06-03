@@ -267,4 +267,5 @@ export default {
 .select {
   margin-bottom: 1px;
 }
+
 </style>

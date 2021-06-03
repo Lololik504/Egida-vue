@@ -10,15 +10,18 @@
       </div>
       <div class="second-row">
         <div class="btn-container q-pa-md q-gutter-sm">
-            <button v-if="isLoggedIn" class="btn waves-effect blue darken-4" @click.prevent="toMain">На главную</button>
-            <button v-if="isLoggedIn && getPermission === '15'" class="btn waves-effect blue darken-4"
-                    @click.prevent="toCard">Карточка
-            </button>
-            <button v-if="isLoggedIn && getPermission < 15" class="btn waves-effect blue darken-4"
-                    @click.prevent="toDistr">Районы
-            </button>
-            <button v-if="!isLoggedIn" class="btn waves-effect blue darken-4" @click.prevent="toLogin">Войти</button>
-            <button v-else class="btn waves-effect blue darken-4" @click.prevent="logout">Выйти</button>
+          <button v-if="isLoggedIn" class="btn waves-effect blue darken-4" @click.prevent="toMain">На главную</button>
+          <button v-if="isLoggedIn && getPermission === '15'" class="btn waves-effect blue darken-4"
+                  @click.prevent="toCard">Карточка
+          </button>
+          <button v-if="isLoggedIn && getPermission === '10'" class="btn waves-effect blue darken-4"
+                  @click.prevent="toDistr">Школы
+          </button>
+          <button v-if="isLoggedIn && getPermission < 10" class="btn waves-effect blue darken-4"
+                  @click.prevent="toDistr">Районы
+          </button>
+          <button v-if="!isLoggedIn" class="btn waves-effect blue darken-4" @click.prevent="toLogin">Войти</button>
+          <button v-else class="btn waves-effect blue darken-4" @click.prevent="logout">Выйти</button>
         </div>
         <div class="to-home-text">
           <router-link to="/" class="router-text">
@@ -141,6 +144,7 @@ export default {
     display: flex;
     flex-direction: column;
   }
+
   /*.router-text {*/
   /*  font-size: medium;*/
   /*}*/

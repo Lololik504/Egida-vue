@@ -10,10 +10,8 @@
           <div class="input-field-shortname">
             <label>Официальный сайт учреждения</label>
             <q-input outlined placeholder="Введите официальный сайт учреждения" type="url"
-                     v-model="$v.requisites.official_site.$model"
-                     :class="{invalid: (!$v.requisites.official_site.url && $v.requisites.official_site.$dirty)}"
+                     v-model="requisites.official_site"
                      error-message="Введите корректный URL (формат: https://site.ru)"
-                     :error="(!$v.requisites.official_site.url && $v.requisites.official_site.$dirty)"
                      hint="Формат: https://site.ru"
             />
           </div>
@@ -50,7 +48,6 @@
 </template>
 
 <script>
-import {url} from 'vuelidate/lib/validators'
 
 export default {
   name: "UpdateRequisites",
@@ -67,13 +64,6 @@ export default {
       formation_date: null
     }
   }),
-  validations: {
-    requisites: {
-      official_site: {
-        url
-      }
-    }
-  },
   async mounted() {
     try {
       let info = this.$store.getters.info
@@ -111,15 +101,10 @@ export default {
     },
     async submitHandler() {
       try {
-        if (this.$v.$invalid) {
-          this.$v.$touch()
-          return
-        }
         for (const key in this.requisites) {
           if (this.requisites[key] === null)
             this.requisites[key] = ""
         }
-        console.log(this.requisites)
         await this.$store.dispatch('updateRequisites', this.requisites)
         await this.$router.push(`/school/${this.requisites.INN}`)
       } catch (e) {

@@ -244,5 +244,9 @@ export default {
 </script>
 
 <style scoped>
-
+.my-card {
+  border-width: 2px;
+  border-color: #999999;
+  padding-left: 10px;
+}
 </style>
