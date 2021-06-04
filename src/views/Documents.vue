@@ -29,10 +29,10 @@
             <q-file
                 v-model="passport_BTI.url"
                 outlined
-                hint="Выберите файл с расширением pdf размером не более 50МБ"
+                hint="Выберите файл размером не более 50МБ"
                 max-total-size="52428800"
                 counter
-                accept=".pdf"
+                accept=".jpg, .pdf, image/*"
                 @rejected="onRejected"
             />
             <div class="q-gutter-sm">
@@ -70,10 +70,10 @@
             <q-file
                 v-model="topographic_plan.url"
                 outlined
-                hint="Выберите файл с расширением pdf размером не более 50МБ"
+                hint="Выберите файл размером не более 50МБ"
                 max-total-size="52428800"
                 counter
-                accept=".pdf"
+                accept=".jpg, .pdf, image/*"
                 @rejected="onRejected"
             />
             <div class="q-gutter-sm">
@@ -112,9 +112,9 @@
             <q-file
                 v-model="teplosnabj_MK.url"
                 outlined
-                hint="Выберите файл с расширением pdf размером не более 50МБ"
+                hint="Выберите файл размером не более 50МБ"
                 max-total-size="52428800"
-                accept=".pdf"
+                accept=".jpg, .pdf, image/*"
                 @rejected="onRejected"
             />
             <div class="q-gutter-sm">
@@ -152,10 +152,10 @@
             <q-file
                 v-model="vodosnabj_MK.url"
                 outlined
-                hint="Выберите файл с расширением pdf размером не более 50МБ"
+                hint="Выберите файл размером не более 50МБ"
                 max-total-size="52428800"
                 counter
-                accept=".pdf"
+                accept=".jpg, .pdf, image/*"
                 @rejected="onRejected"
             />
             <div class="q-gutter-sm">
@@ -193,9 +193,9 @@
             <q-file
                 v-model="electrosnabj_MK.url"
                 outlined
-                hint="Выберите файл с расширением pdf размером не более 50МБ"
+                hint="Выберите файл размером не более 50МБ"
                 max-total-size="52428800"
-                accept=".pdf"
+                accept=".jpg, .pdf, image/*"
                 @rejected="onRejected"
             />
             <div class="q-gutter-sm">
@@ -267,8 +267,8 @@ export default {
     async deleteDoc(fileName) {
       try {
         await this.$store.dispatch('deleteDocs', {inn: this.$route.params['id'], id: fileName})
-        this.[fileName].hasUrl = false;
-        this.[fileName].url = null;
+        this[fileName].hasUrl = false;
+        this[fileName].url = null;
         this.$showMessage('deleteSuccess')
       } catch (e) {
         console.log(e)
