@@ -10,12 +10,15 @@
         <button class="btn waves-effect waves-light" @click="toBuilding">
           Здания
         </button>
-<!--        <button class="btn waves-effect waves-light" @click="toOrders">-->
-<!--          Наказы-->
-<!--        </button>-->
+        <button class="btn waves-effect waves-light" @click="toOrders">
+          Наказы
+        </button>
         <button class="btn waves-effect waves-light" @click="toPrescriptions">
           Предписания надзорных органов / судебные решения
         </button>
+<!--        <button class="btn waves-effect waves-light" @click="toMunicipalTask">-->
+<!--          Муниципальное задание на содержание здания-->
+<!--        </button>-->
         <button class="btn waves-effect waves-light" @click="toDocs">
           Документация
         </button>
@@ -51,6 +54,9 @@ export default {
     },
     toPrescriptions() {
       this.$router.push(`/prescriptions/${this.$route.params['card']}`)
+    },
+    toMunicipalTask() {
+      this.$router.push(`/municipal_task/${this.$route.params['card']}`)
     },
     async deleteSchool() {
       try {

@@ -151,6 +151,14 @@ let router = new Router({
             component: () => import('./views/AllPrescriptions'),
         },
         {
+            path: '/municipal_task/:id',
+            name: 'MunicipalTask',
+            meta: {
+                requiresAuth: true
+            },
+            component: () => import('./views/MunicipalTask'),
+        },
+        {
             path: '/orders/:id',
             name: 'Orders',
             meta: {
@@ -184,11 +192,19 @@ let router = new Router({
         },
         {
             path: '/update_prescription/:source/:id',
-            name: 'CreatePrescription',
+            name: 'UpdatePrescription',
             meta: {
                 requiresAuth: true
             },
             component: () => import('./views/UpdatePrescription'),
+        },
+        {
+            path: '/update_order/:source/:id',
+            name: 'UpdateOrder',
+            meta: {
+                requiresAuth: true
+            },
+            component: () => import('./views/UpdateOrder'),
         },
         {
             path: '/characteristic/:id',

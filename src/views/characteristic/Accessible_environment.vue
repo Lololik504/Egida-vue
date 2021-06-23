@@ -264,8 +264,4 @@ export default {
 </script>
 
 <style scoped>
-.select {
-  margin-bottom: 1px;
-}
-
 </style>

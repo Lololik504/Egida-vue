@@ -2,7 +2,7 @@
   <div class="container">
     <Loader v-if="loading"/>
     <div v-else>
-      <h4>Предписания учреждений</h4>
+      <h4>Наказы учреждений</h4>
       <DistrictList
           :districts="districts"
           url="orders"

@@ -175,9 +175,6 @@ export default {
 </script>
 
 <style scoped>
-.select {
-  margin-bottom: 1px;
-}
 .my-card {
   border-width: 2px;
   border-color: #999999;

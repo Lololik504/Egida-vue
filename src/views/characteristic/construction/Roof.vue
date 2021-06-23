@@ -41,7 +41,7 @@
           <div class="select-type-field">
             <label>Тип кровли</label>
             <div class="select">
-              <q-select multiple outlined :disable="disable" v-model="data.roof_type" :options="roof_types"/>
+              <q-select v-model="data.roof_type" multiple outlined :disable="disable" :options="roof_types"/>
             </div>
           </div>
           <div v-if="data.roof_type.includes(roof_types[3])">
@@ -307,16 +307,17 @@ export default {
   async mounted() {
     await this.loadingPage()
   }
-
 }
 </script>
 
 <style scoped>
 .select {
   margin-bottom: 1px;
-}.my-card {
-   border-width: 2px;
-   border-color: #999999;
-   padding-left: 10px;
- }
+}
+
+.my-card {
+  border-width: 2px;
+  border-color: #999999;
+  padding-left: 10px;
+}
 </style>

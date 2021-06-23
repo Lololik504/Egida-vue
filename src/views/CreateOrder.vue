@@ -8,6 +8,8 @@
           <div class="select-district q-gutter-md">
             <label>Реализация наказов</label>
             <q-select outlined hint="Выберите реализацию наказов" v-model="$v.order.$model"
+                      emit-value
+                      map-options
                       :behavior="$q.platform.is.ios === true ? 'dialog' : 'menu'"
                       :options="allOrders"
                       :class="{invalid: (!$v.order.required && $v.order.$dirty)}"
@@ -17,15 +19,15 @@
           </div>
           <div class="input-field-date">
             <label>ФИО депутата</label>
-            <q-input v-model="data.FIO" outlined/>
+            <q-input v-model="data.deputy" outlined/>
           </div>
           <div class="input-field-date">
             <label>№ наказа</label>
-            <q-input v-model="data.number_order" outlined/>
+            <q-input v-model="data.number" outlined/>
           </div>
           <div class="input-field-date">
             <label>Округ</label>
-            <q-input v-model="data.okrug" outlined/>
+            <q-input v-model="data.region" outlined/>
           </div>
           <div class="input-field-date">
             <label>Общая стоимость реализации наказа избирателей (тыс.руб.)</label>
@@ -37,7 +39,7 @@
           </div>
           <div class="input-field-date">
             <label>Областной бюджет (тыс.руб.)</label>
-            <q-input v-model.number="data.region_budget" type="number" step="0.00001" outlined/>
+            <q-input v-model.number="data.regional_budget" type="number" step="0.00001" outlined/>
           </div>
           <div class="input-field-date">
             <label>Федеральный бюджет (тыс.руб.)</label>
@@ -46,39 +48,39 @@
           <div class="select-repair">
             <label>Предмет наказа</label>
             <q-select outlined hint="Выберите предмет ремонта" v-model="itemOrder" :options="itemsRepair"
-                      @input="data.type_order = null"/>
+                      @input="data.appointment = null"/>
           </div>
           <div class="select-repair" v-if="itemOrder">
             <label>Назначение наказа</label>
-            <q-select v-if="itemOrder === itemsRepair[0]" outlined hint="Выберите вид работ" v-model="data.type_order"
+            <q-select v-if="itemOrder === itemsRepair[0]" outlined hint="Выберите вид работ" v-model="data.appointment"
                       :options="repairConstruction"/>
             <q-select v-else-if="itemOrder === itemsRepair[1]" outlined hint="Выберите вид работ"
-                      v-model="data.type_order"
+                      v-model="data.appointment"
                       :options="engineerConstruction"/>
             <q-select v-else-if="itemOrder === itemsRepair[2]" outlined hint="Выберите вид работ"
-                      v-model="data.type_order"
+                      v-model="data.appointment"
                       :options="insideRooms"/>
             <q-select v-else-if="itemOrder === itemsRepair[3]" outlined hint="Выберите вид работ"
-                      v-model="data.type_order"
+                      v-model="data.appointment"
                       :options="systemSecurity"/>
             <q-select v-else-if="itemOrder === itemsRepair[4]" outlined hint="Выберите вид работ"
-                      v-model="data.type_order"
+                      v-model="data.appointment"
                       :options="landscaping"/>
             <q-select v-else-if="itemOrder === itemsRepair[5]" outlined hint="Выберите вид работ"
-                      v-model="data.type_order"
+                      v-model="data.appointment"
                       :options="sportItems"/>
           </div>
           <div class="input-field-date">
             <label>Содержание наказа избирателей</label>
-            <q-input v-model="data.order_idea" outlined/>
+            <q-input v-model="data.content" outlined/>
           </div>
           <div class="input-field-date">
-            <label>Мероприятия по реализации наказа избирателей </label>
-            <q-input v-model="data.order_activity" outlined/>
+            <label>Мероприятия по реализации наказа избирателей</label>
+            <q-input v-model="data.event" outlined/>
           </div>
           <div>
             <label>Срок исполнения наказа</label>
-            <q-input outlined v-model.number="data.order_execution"
+            <q-input outlined v-model.number="data.period_execution"
                      placeholder="гггг"
                      type="tel"
                      hint="в формате гггг"
@@ -88,18 +90,18 @@
             />
           </div>
           <div class="checkbox">
-            <q-checkbox v-model="data.vkluchenie" dense left-label
+            <q-checkbox v-model="data.current_year" dense left-label
                         label="Включение в приказ текущего года по ремонтным работам:"/>
           </div>
           <div class="input-field-date">
             <label>Ответственный исполнитель за выполнение мероприятий по реализации наказа избирателей</label>
-            <q-input v-model="data.order_executor" outlined/>
+            <q-input v-model="data.executor" outlined/>
           </div>
           <q-card>
             <label>Согласование наказа</label>
             <div class="q-ma-md row">
               <div class="checkbox col ">
-                <q-checkbox v-model="data.agreement" dense left-label
+                <q-checkbox v-model="data.agreed" dense left-label
                             label="Согласован:"/>
               </div>
               <div class="input-file col">
@@ -121,17 +123,17 @@
             <div class="q-ma-md">
               <div class="row">
                 <div class="checkbox col ">
-                  <q-checkbox v-model="data.full_complete" dense left-label
+                  <q-checkbox v-model="data.fully_executed" dense left-label
                               label="Исполнено полностью:"/>
                 </div>
                 <div class="checkbox col ">
-                  <q-checkbox v-model="data.part_complete" dense left-label
+                  <q-checkbox v-model="data.particially_executed" dense left-label
                               label="Исполнено частично по плану текущего года:"/>
                 </div>
               </div>
-              <div v-if="data.full_complete || data.part_complete" class="input-field-date">
+              <div v-if="data.fully_executed || data.particially_executed" class="input-field-date">
                 <label>Фактическая стоимость реализации наказа избирателей</label>
-                <q-input v-model.number="data.fact_price" type="number" step="0.00001" outlined/>
+                <q-input v-model.number="data.actual_cost" type="number" step="0.00001" outlined/>
               </div>
             </div>
           </q-card>
@@ -157,7 +159,10 @@ export default {
   name: "CreateOrder",
   data: () => ({
     loading: false,
-    allOrders: [{label: 'Реализация наказов избирателей Совета депутатов г. Новосибирска', value: 'sovdep'}, {label: 'Реализация наказов избирателей депутатов Законодательного собрания НСО', value: 'nso'}],
+    allOrders: [{
+      label: 'Реализация наказов избирателей Совета депутатов г. Новосибирска',
+      value: 'mandatecouncil'
+    }, {label: 'Реализация наказов избирателей депутатов Законодательного собрания НСО', value: 'mandateassembly'}],
     itemOrder: null,
     itemsRepair: ['Строительные конструкции', 'Инженерные коммуникации', 'Внутренние помещения', 'Система безопасности', 'Благоустройство территории', 'Спортивные сооружения/теневые навесы'],
     repairConstruction: [
@@ -207,32 +212,31 @@ export default {
     ],
     order: null,
     data: {
-      FIO: null,
+      deputy: "",
       executed: false,
-      number_order: null,
-      okrug: null,
+      number: "",
+      region: "",
       total_price: null,
       local_budget: null,
       federal_budget: null,
-      region_budget: null,
-      period_execution: null,
-      order_idea: null,
-      order_activity: null,
-      order_execution: null,
-      order_executor: null,
-      type_order: null,
-      vkluchenie: false,
+      regional_budget: null,
+      period_execution: "",
+      content: "",
+      event: "",
+      executor: "",
+      appointment: "",
+      current_year: false,
       file: null,
-      full_complete: false,
-      part_complete: false,
-      fact_price: null,
-      agreement: false,
+      fully_executed: false,
+      particially_executed: false,
+      actual_cost: null,
+      agreed: false,
     },
   }),
   validations: {
-      order: {
-        required
-      }
+    order: {
+      required
+    }
   },
   computed: {
     getPermission: function () {
@@ -262,24 +266,27 @@ export default {
           this.showMessage('fillFields')
           return
         }
+        const arrayNamesOfNumbers = [
+          'local_budget',
+          'regional_budget',
+          'federal_budget',
+          'actual_cost'
+        ]
 
         const token = localStorage.getItem('token')
         const inn = this.$route.params['id']
-        let form_data = new FormData();
+        let file = new FormData();
         for (let key in this.data) {
           if (key === 'file' && typeof this.data[key] === 'string') {
             continue
           }
-          (key === 'total_price' && (this.data[key] === '' || this.data[key] == null)) ? this.data[key] = 0 : null;
-          (key === 'local_budget' && (this.data[key] === '' || this.data[key] == null)) ? this.data[key] = 0 : null;
-          (key === 'region_budget' && (this.data[key] === '' || this.data[key] == null)) ? this.data[key] = 0 : null;
-          (key === 'federal_budget' && (this.data[key] === '' || this.data[key] == null)) ? this.data[key] = 0 : null;
-          (key === 'order_execution' && (this.data[key] === '' || this.data[key] == null)) ? this.data[key] = 0 : null;
-          (key === 'fact_price' && (this.data[key] === '' || this.data[key] == null)) ? this.data[key] = 0 : null;
-          form_data.append(key, this.data[key]);
+          if (arrayNamesOfNumbers.includes(key)) {
+            this.data[key] = Number(this.data[key])
+          }
+          file.append(key, this.data[key]);
         }
-        await this.$store.dispatch('createPrescription', {
-          form_data,
+        await this.$store.dispatch('createOrder', {
+          file,
           url: this.order,
           token,
           inn
