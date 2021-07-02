@@ -347,14 +347,19 @@ export default {
       this.$error('Файл слишком велик!')
     },
     async save() {
+      const arrayOfNumbersVars = ['food_block_project_seat_count', 'food_block_fact_seat_count', 'food_block_combine_count', 'food_block_dining_count', 'food_block_production_count', 'food_block_equipment_cost_number', 'food_block_building_year', 'food_block_refactoring_year']
       try {
         let form_data = new FormData()
         for (let key in this.data) {
           if (key === 'food_block_act' && typeof this.data[key] === 'string') {
             continue
           }
+          if (arrayOfNumbersVars.includes(key)) {
+            this.data[key] = Number(this.data[key])
+          }
           form_data.append(key, this.data[key])
         }
+        console.log(this.data)
         const resp = await this.$store.dispatch('sendIndoorInfo', form_data)
         if (resp['status'] === 200) {
           this.showMessage('saveSuccess')
@@ -379,6 +384,7 @@ export default {
       const id = this.$route.params['id']
       try {
         const info = await this.$store.dispatch('fetchIndoors', {token, id})
+        console.log(info)
         const tmp = Object.keys(this.data)
         for (let item in info) {
           info[item] === '/media/null' ? info[item] = null : null
