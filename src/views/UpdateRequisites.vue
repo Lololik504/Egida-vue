@@ -74,7 +74,10 @@ export default {
       const requisite = await this.$store.dispatch('fetchRequisites', inn)
 
       for (let key in resp) {
-        this.districts.push(resp[key].attributes.name)
+        if (resp[key].attributes.name === 'Центральный')
+          this.districts.push(resp[key].attributes.name + " округ")
+        else
+          this.districts.push(resp[key].attributes.name)
       }
 
       this.shortname = info['shortname']

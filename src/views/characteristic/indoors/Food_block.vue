@@ -7,13 +7,128 @@
       </h5>
       <form @submit.prevent="save">
         <div class="q-pa-md">
+          <div class="select-type-field">
+            <label>Тип пищеблока по проектной документации</label>
+            <div class="select">
+              <q-select outlined v-model="data.food_block_project_type"
+                        :disable="disable"
+                        :options="['Полного цикла', 'Доготовочный', 'Раздаточный']"/>
+            </div>
+          </div>
+          <div class="select-type-field">
+            <label>Тип фактического использования пищеблока</label>
+            <div class="select">
+              <q-select outlined v-model="data.food_block_fact_type"
+                        :disable="disable"
+                        :options="['Полного цикла', 'Доготовочный', 'Раздаточный']"/>
+            </div>
+          </div>
+          <div class="input-field-year">
+            <label>Год строительства пищеблока</label>
+            <q-input outlined
+                     v-model.number="data.food_block_building_year"
+                     placeholder="гггг"
+                     type="tel"
+                     mask="####"
+                     unmasked-value
+            />
+          </div>
+          <div class="input-field-year">
+            <label>Год последнего капитального ремонта пищеблока</label>
+            <q-input outlined
+                     v-model.number="data.food_block_refactoring_year"
+                     placeholder="гггг"
+                     type="tel"
+                     mask="####"
+                     unmasked-value
+            />
+          </div>
+          <div class="select-type-field">
+            <label>Требуется ли переоснащение, дооснащение производственного оборудования</label>
+            <div class="select">
+              <q-select outlined v-model="data.food_block_equipment"
+                        :disable="disable"
+                        :options="['Переоснащение', 'Дооснащение']"/>
+            </div>
+          </div>
+          <div class="select-type-field">
+            <label>Оценочная стоимость переоснащения/дооснащения</label>
+            <div class="select">
+              <q-select outlined v-model="data.food_block_equipment_cost"
+                        :disable="disable"
+                        :options="['Не проводилась', 'Проводилась']"/>
+            </div>
+          </div>
+          <div v-if="data.food_block_equipment_cost === 'Проводилась'">
+            <label>Сумма переоснащения/дооснащения (руб.)</label>
+            <q-input outlined type="number" step="0.001" v-model.number="data.food_block_equipment_cost_number"/>
+          </div>
+          <div>
+            <label>Проектное количество посадочных мест в зале приема пищи</label>
+            <q-input outlined type="number" v-model.number="data.food_block_project_seat_count"/>
+          </div>
+          <div>
+            <label>Фактическое количество посадочных мест в зале приема пищи</label>
+            <q-input outlined type="number" v-model.number="data.food_block_fact_seat_count"/>
+          </div>
+          <div class="select-type-field">
+            <label>Наличие комбината питания</label>
+            <div class="select">
+              <q-select outlined v-model="data.food_block_combine_availability"
+                        emit-value
+                        map-options
+                        :disable="disable"
+                        :options="[{label: 'Есть', value: true}, {label: 'Нет', value: false}]"/>
+            </div>
+          </div>
+          <div v-if="data.food_block_combine_availability">
+            <label>Количество комбинатов питания</label>
+            <q-input outlined type="number" v-model.number="data.food_block_combine_count"/>
+          </div>
+          <div class="select-type-field">
+            <label>Наличие школьно-базовых столовых</label>
+            <div class="select">
+              <q-select outlined v-model="data.food_block_dining_availability"
+                        emit-value
+                        map-options
+                        :disable="disable"
+                        :options="[{label: 'Есть', value: true}, {label: 'Нет', value: false}]"/>
+            </div>
+          </div>
+          <div v-if="data.food_block_dining_availability">
+            <label>Количество школьно-базовых столовых</label>
+            <q-input outlined type="number" v-model.number="data.food_block_dining_count"/>
+          </div>
+          <div class="select-type-field">
+            <label>Наличие производства полуфабрикатов и заготовок</label>
+            <div class="select">
+              <q-select outlined v-model="data.food_block_production_availability"
+                        emit-value
+                        map-options
+                        :disable="disable"
+                        :options="[{label: 'Есть', value: true}, {label: 'Нет', value: false}]"/>
+            </div>
+          </div>
+          <div v-if="data.food_block_production_availability">
+            <label>Количество производств полуфабрикатов и заготовок</label>
+            <q-input outlined type="number" v-model.number="data.food_block_production_count"/>
+          </div>
+          <div class="select-type-field">
+            <label>Форма организации питания</label>
+            <div class="select">
+              <q-select outlined v-model="data.food_block_organization_form"
+                        :disable="disable"
+                        :options="['Аутсорсинг', 'Собственная служба']"/>
+            </div>
+          </div>
           <q-card flat bordered class="my-card">
             <label>Техническое состояние пищеблока:</label>
             <div class="q-pa-md">
               <q-list>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="data.food_block_technical_condition" val="Работоспособное состояние" :disable="disable"/>
+                    <q-radio v-model="data.food_block_technical_condition" val="Работоспособное состояние"
+                             :disable="disable"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Работоспособное состояние</q-item-label>
@@ -28,7 +143,8 @@
                 </q-item>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="data.food_block_technical_condition" val="Ограниченно работоспособное состояние" :disable="disable"/>
+                    <q-radio v-model="data.food_block_technical_condition" val="Ограниченно работоспособное состояние"
+                             :disable="disable"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Ограниченно работоспособное состояние</q-item-label>
@@ -42,7 +158,8 @@
                 </q-item>
                 <q-item tag="label" v-ripple>
                   <q-item-section avatar top>
-                    <q-radio v-model="data.food_block_technical_condition" val="Аварийное состояние" :disable="disable"/>
+                    <q-radio v-model="data.food_block_technical_condition" val="Аварийное состояние"
+                             :disable="disable"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Аварийное состояние</q-item-label>
@@ -137,7 +254,8 @@
           <div class="select-type-field">
             <label>Тип воздухонагревателя</label>
             <div class="select">
-              <q-select outlined :disable="disable" v-model="data.food_block_air_heater_type" :options="['Водяной', 'Электрический']"/>
+              <q-select outlined :disable="disable" v-model="data.food_block_air_heater_type"
+                        :options="['Водяной', 'Электрический']"/>
             </div>
           </div>
           <button class="btn waves-effect waves" @click.prevent="disable = false" v-if="disable">
@@ -177,6 +295,22 @@ export default {
       food_block_ventilation_type: null,
       food_block_air_heater_type: null,
       food_block_act: null,
+      food_block_project_type: null,
+      food_block_fact_type: null,
+      food_block_building_year: null,
+      food_block_refactoring_year: null,
+      food_block_equipment: null,
+      food_block_equipment_cost: null,
+      food_block_equipment_cost_number: null,
+      food_block_project_seat_count: null,
+      food_block_fact_seat_count: null,
+      food_block_combine_availability: null,
+      food_block_combine_count: null,
+      food_block_dining_availability: null,
+      food_block_dining_count: null,
+      food_block_production_availability: null,
+      food_block_production_count: null,
+      food_block_organization_form: null,
     },
     loading: false,
   }),
@@ -219,10 +353,6 @@ export default {
           if (key === 'food_block_act' && typeof this.data[key] === 'string') {
             continue
           }
-          (key === 'total_classroom_count' && (this.data[key] === '' || this.data[key] == null)) ? this.data[key] = 0 : null;
-          (key === 'classroom_ok_count' && (this.data[key] === '' || this.data[key] == null)) ? this.data[key] = 0 : null;
-          (key === 'classroom_warning_count' && (this.data[key] === '' || this.data[key] == null)) ? this.data[key] = 0 : null;
-          (key === 'classroom_emergency_count' && (this.data[key] === '' || this.data[key] == null)) ? this.data[key] = 0 : null;
           form_data.append(key, this.data[key])
         }
         const resp = await this.$store.dispatch('sendIndoorInfo', form_data)
@@ -239,7 +369,7 @@ export default {
     },
     showMessage(text) {
       if (messages[text]) {
-        window.scrollTo(0,0)
+        window.scrollTo(0, 0)
         this.$message(messages[text])
       }
     },

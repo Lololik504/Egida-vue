@@ -40,8 +40,7 @@
               </div>
               <div class="input-field-year">
                 <label>Год постройки здания</label>
-                <q-input ref="y"
-                         outlined
+                <q-input outlined
                          v-model.number="data.construction_year"
                          placeholder="гггг"
                          type="tel"
@@ -50,7 +49,6 @@
                          unmasked-value
                          :rules="[val => val > 1899 && val <= new Date().getFullYear() || 'начиная от 1900 г, не ранее, до текущего']"
                 />
-
               </div>
               <div class="input-field-building-square">
                 <label>Площадь здания, Кв. м.</label>
@@ -875,6 +873,7 @@ export default {
 .select {
   margin-bottom: 1px;
 }
+
 .my-card {
   border-width: 2px;
   border-color: #999999;
