@@ -148,7 +148,9 @@ export default {
   methods: {
     async exportData() {
       try {
+        this.loading = true
         await this.$store.dispatch('exportInfo')
+        this.loading = false
       } catch (e) {
         console.log(e)
       }
@@ -203,7 +205,7 @@ export default {
       this.districts = await this.$store.dispatch('fetchDistricts')
       this.buildInfo = await this.$store.dispatch('fetchFieldsBuilding')
       this.districtInfo = await this.$store.dispatch('fetchFieldsDistricts')
-      console.log(this.districtInfo)
+      // console.log(this.districtInfo)
       this.mainInfo = await this.$store.dispatch('fetchFieldsSchool')
       this.districtInfo = this.districtInfo['district']
       this.districtStates = Object.assign({}, this.districtInfo)
