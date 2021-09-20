@@ -9,9 +9,9 @@
       />
       <br/>
       <div class="q-gutter-md">
-        <!--        <button class="btn waves-effect waves-light" v-on:click="exportData">-->
-        <!--          Экспорт данных-->
-        <!--        </button>-->
+                <button class="btn waves-effect waves-light" v-on:click="exportData">
+                  Экспорт данных
+                </button>
         <button class="btn waves-effect waves-light" v-on:click="dialog = true">
           Мастер выгрузки
         </button>
