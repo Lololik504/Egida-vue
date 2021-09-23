@@ -209,6 +209,86 @@
           </div>
         </q-card>
       </div>
+      <div class="input land_title container center">
+        <q-card flat bordered>
+          <h5><b>Правоустанавливающие документы на землю</b></h5>
+          <div v-if="land_title.hasUrl">
+            <h6>Документ загружен</h6>
+            <div class="q-gutter-sm">
+              <button class="btn waves-effect waves-light" @click.prevent="showDoc(land_title.url)">
+                Просмотреть файл
+              </button>
+              <button class="btn waves-effect waves-light"
+                      @click.prevent="land_title.url = null; land_title.hasUrl = false">
+                Изменить файл
+              </button>
+              <button v-if="getPermission" class="btn waves-effect waves-light"
+                      @click.prevent="deleteDoc('land_title')">
+                Удалить файл
+              </button>
+            </div>
+          </div>
+          <div v-else>
+            <h6>Документ не загружен</h6>
+            <q-file
+                v-model="land_title.url"
+                outlined
+                hint="Выберите файл размером не более 50МБ"
+                max-total-size="52428800"
+                accept=".jpg, .pdf, image/*"
+                @rejected="onRejected"
+            />
+            <div class="q-gutter-sm">
+              <button class="btn waves-effect waves-light" @click.prevent="sendDoc(land_title, 'land_title')">
+                Сохранить
+              </button>
+              <button class="btn waves-effect waves" @click.prevent="land_title.url = null">
+                Отменить
+              </button>
+            </div>
+          </div>
+        </q-card>
+      </div>
+      <div class="input building_title container center">
+        <q-card flat bordered>
+          <h5><b>Правоустанавливающие документы на землю</b></h5>
+          <div v-if="building_title.hasUrl">
+            <h6>Документ загружен</h6>
+            <div class="q-gutter-sm">
+              <button class="btn waves-effect waves-light" @click.prevent="showDoc(building_title.url)">
+                Просмотреть файл
+              </button>
+              <button class="btn waves-effect waves-light"
+                      @click.prevent="building_title.url = null; building_title.hasUrl = false">
+                Изменить файл
+              </button>
+              <button v-if="getPermission" class="btn waves-effect waves-light"
+                      @click.prevent="deleteDoc('building_title')">
+                Удалить файл
+              </button>
+            </div>
+          </div>
+          <div v-else>
+            <h6>Документ не загружен</h6>
+            <q-file
+                v-model="building_title.url"
+                outlined
+                hint="Выберите файл размером не более 50МБ"
+                max-total-size="52428800"
+                accept=".jpg, .pdf, image/*"
+                @rejected="onRejected"
+            />
+            <div class="q-gutter-sm">
+              <button class="btn waves-effect waves-light" @click.prevent="sendDoc(building_title, 'building_title')">
+                Сохранить
+              </button>
+              <button class="btn waves-effect waves" @click.prevent="building_title.url = null">
+                Отменить
+              </button>
+            </div>
+          </div>
+        </q-card>
+      </div>
     </div>
   </div>
 </template>
@@ -239,6 +319,14 @@ export default {
       hasUrl: false
     },
     vodosnabj_MK: {
+      url: null,
+      hasUrl: false
+    },
+    land_title: {
+      url: null,
+      hasUrl: false
+    },
+    building_title: {
       url: null,
       hasUrl: false
     }
@@ -290,6 +378,7 @@ export default {
         const token = localStorage.getItem('token')
         const inn = this.$route.params['id']
         const docs = await this.$store.dispatch('fetchDocs', {token, inn})
+        console.log(docs)
         this.passport_BTI.url = docs['passport_BTI']
         this.passport_BTI.url ? this.passport_BTI.hasUrl = true : this.passport_BTI.hasUrl = false
         this.electrosnabj_MK.url = docs['electrosnabj_MK']
@@ -300,6 +389,10 @@ export default {
         this.topographic_plan.url ? this.topographic_plan.hasUrl = true : this.topographic_plan.hasUrl = false
         this.vodosnabj_MK.url = docs['vodosnabj_MK']
         this.vodosnabj_MK.url ? this.vodosnabj_MK.hasUrl = true : this.vodosnabj_MK.hasUrl = false
+        this.building_title.url = docs['building_title']
+        this.building_title.url ? this.building_title.hasUrl = true : this.building_title.hasUrl = false
+        this.land_title.url = docs['land_title']
+        this.land_title.url ? this.land_title.hasUrl = true : this.land_title.hasUrl = false
       } catch (e) {
         console.log(e)
         throw e

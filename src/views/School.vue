@@ -129,6 +129,40 @@
             </tbody>
           </table>
         </div>
+        <div class="plumberloc">
+          <h5 class="center-align">Слесарь-сантехник</h5>
+          <table class="main-info">
+            <tbody>
+            <tr class="fio">
+              <th>ФИО</th>
+              <td>{{ contactInfo.plumberloc.last_name }} {{ contactInfo.plumberloc.first_name }}
+                {{ contactInfo.plumberloc.patronymic }}
+              </td>
+            </tr>
+            <tr class="phone">
+              <th>Телефон рабочий</th>
+              <td>{{ contactInfo.plumberloc.phone }}</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="electrician">
+          <h5 class="center-align">Электрик</h5>
+          <table class="main-info">
+            <tbody>
+            <tr class="fio">
+              <th>ФИО</th>
+              <td>{{ contactInfo.electrician.last_name }} {{ contactInfo.electrician.first_name }}
+                {{ contactInfo.electrician.patronymic }}
+              </td>
+            </tr>
+            <tr class="phone">
+              <th>Телефон рабочий</th>
+              <td>{{ contactInfo.electrician.phone }}</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
         <br>
         <button class="btn waves-effect waves-light center" @click.prevent="toUpdateContacts">
           Редактировать контактные данные
@@ -216,7 +250,19 @@ export default {
         patronymic: null,
         phone: null,
         email: null
-      }
+      },
+      plumberloc: {
+        first_name: null,
+        last_name: null,
+        patronymic: null,
+        phone: null,
+      },
+      electrician: {
+        first_name: null,
+        last_name: null,
+        patronymic: null,
+        phone: null,
+      },
     },
     loading: true
   }),
@@ -238,6 +284,8 @@ export default {
       this.contactInfo.zavhoz = personal['zavhoz']
       this.contactInfo.updater = personal['updater']
       this.contactInfo.bookkeeper = personal['bookkeeper']
+      this.contactInfo.plumberloc = personal['plumberlocksmith']
+      this.contactInfo.electrician = personal['electrician']
 
       if (requisite.requisites.district) {
         this.requisites.district = requisite.requisites.district.name

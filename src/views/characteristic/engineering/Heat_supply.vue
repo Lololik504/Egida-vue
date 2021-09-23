@@ -387,280 +387,286 @@
             </div>
           </q-card>
           <br/>
-          <h5><strong>Документация</strong></h5>
-          <div class="row">
-            <div v-if="!data.passport_vvoda" class="col">
-              <label>Паспорт ввода</label>
-              <q-file
-                  v-model="data.passport_vvoda"
-                  :disable="disable"
-                  outlined
-                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"
-                  max-total-size="25165824"
-                  accept=".jpg, image/jpeg, .pdf"
-                  @rejected="onRejected"
-                  @input="changedPassVvoda = true"
-              />
-            </div>
-            <div v-else class="col">
-              <label>Паспорт ввода загружен</label>
-              <div class="q-gutter-sm column">
-                <button v-if="!changedPassVvoda" class="btn blue"
-                        @click.prevent="showDoc(data.passport_vvoda)">
-                  Просмотреть файл
-                </button>
-                <button class="btn blue"
-                        @click.prevent="data.passport_vvoda = null;">
-                  Изменить файл
-                </button>
-                <button v-if="getPermission" class="btn blue"
-                        @click.prevent="deleteDoc('passport_vvoda')">
-                  Удалить файл
-                </button>
-              </div>
-            </div>
-            <div v-if="!data.schema_vvoda" class="col">
-              <label>Схема ввода</label>
-              <q-file
-                  v-model="data.schema_vvoda"
-                  :disable="disable"
-                  outlined
-                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"
-                  max-total-size="25165824"
-                  accept=".jpg, image/jpeg, .pdf"
-                  @rejected="onRejected"
-                  @input="changedSchemaVvoda = true"
-              />
-            </div>
-            <div v-else class="col">
-              <label>Схема ввода загружена</label>
-              <div class="q-gutter-sm column">
-                <button v-if="!changedSchemaVvoda" class="btn blue"
-                        @click.prevent="showDoc(data.schema_vvoda)">
-                  Просмотреть файл
-                </button>
-                <button class="btn blue"
-                        @click.prevent="data.schema_vvoda = null;">
-                  Изменить файл
-                </button>
-                <button v-if="getPermission" class="btn blue"
-                        @click.prevent="deleteDoc('schema_vvoda')">
-                  Удалить файл
-                </button>
-              </div>
-            </div>
-            <div v-if="!data.passport_itp" class="col">
-              <label>Паспорт ИТП</label>
-              <q-file
-                  v-model="data.passport_itp"
-                  :disable="disable"
-                  outlined
-                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"
-                  max-total-size="25165824"
-                  accept=".jpg, image/jpeg, .pdf"
-                  @rejected="onRejected"
-                  @input="changedPassITP = true"
-              />
-            </div>
-            <div v-else class="col">
-              <label>Паспорт ИТП загружен</label>
-              <div class="q-gutter-sm column">
-                <button v-if="!changedPassITP" class="btn blue"
-                        @click.prevent="showDoc(data.passport_itp)">
-                  Просмотреть файл
-                </button>
-                <button class="btn blue"
-                        @click.prevent="data.passport_itp = null;">
-                  Изменить файл
-                </button>
-                <button v-if="getPermission" class="btn blue"
-                        @click.prevent="deleteDoc('passport_itp')">
-                  Удалить файл
-                </button>
-              </div>
-            </div>
+          <div class="input-field-roof-square">
+            <label>Организация, обслуживающая приборы учеты тепловой энергии</label>
+            <q-input outlined :disable="disable" v-model="data.obsluzh_organization"/>
           </div>
-          <div class="row">
-            <div v-if="!data.schema_itp" class="col">
-              <label>Схема ИТП</label>
-              <q-file
-                  v-model="data.schema_itp"
-                  :disable="disable"
-                  outlined
-                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"
-                  max-total-size="25165824"
-                  accept=".jpg, image/jpeg, .pdf"
-                  @rejected="onRejected"
-                  @input="changedSchemaITP = true"
-              />
-            </div>
-            <div v-else class="col">
-              <label>Схема ИТП загружена</label>
-              <div class="q-gutter-sm column">
-                <button v-if="!changedSchemaITP" class="btn blue"
-                        @click.prevent="showDoc(data.schema_itp)">
-                  Просмотреть файл
-                </button>
-                <button class="btn blue"
-                        @click.prevent="data.schema_itp = null;">
-                  Изменить файл
-                </button>
-                <button v-if="getPermission" class="btn blue"
-                        @click.prevent="deleteDoc('schema_itp')">
-                  Удалить файл
-                </button>
+          <div class="documents">
+            <h5><strong>Документация</strong></h5>
+            <div class="row">
+              <div v-if="!data.passport_vvoda" class="col">
+                <label>Паспорт ввода</label>
+                <q-file
+                    v-model="data.passport_vvoda"
+                    :disable="disable"
+                    outlined
+                    hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"
+                    max-total-size="25165824"
+                    accept=".jpg, image/jpeg, .pdf"
+                    @rejected="onRejected"
+                    @input="changedPassVvoda = true"
+                />
+              </div>
+              <div v-else class="col">
+                <label>Паспорт ввода загружен</label>
+                <div class="q-gutter-sm column">
+                  <button v-if="!changedPassVvoda" class="btn blue"
+                          @click.prevent="showDoc(data.passport_vvoda)">
+                    Просмотреть файл
+                  </button>
+                  <button class="btn blue"
+                          @click.prevent="data.passport_vvoda = null;">
+                    Изменить файл
+                  </button>
+                  <button v-if="getPermission" class="btn blue"
+                          @click.prevent="deleteDoc('passport_vvoda')">
+                    Удалить файл
+                  </button>
+                </div>
+              </div>
+              <div v-if="!data.schema_vvoda" class="col">
+                <label>Схема ввода</label>
+                <q-file
+                    v-model="data.schema_vvoda"
+                    :disable="disable"
+                    outlined
+                    hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"
+                    max-total-size="25165824"
+                    accept=".jpg, image/jpeg, .pdf"
+                    @rejected="onRejected"
+                    @input="changedSchemaVvoda = true"
+                />
+              </div>
+              <div v-else class="col">
+                <label>Схема ввода загружена</label>
+                <div class="q-gutter-sm column">
+                  <button v-if="!changedSchemaVvoda" class="btn blue"
+                          @click.prevent="showDoc(data.schema_vvoda)">
+                    Просмотреть файл
+                  </button>
+                  <button class="btn blue"
+                          @click.prevent="data.schema_vvoda = null;">
+                    Изменить файл
+                  </button>
+                  <button v-if="getPermission" class="btn blue"
+                          @click.prevent="deleteDoc('schema_vvoda')">
+                    Удалить файл
+                  </button>
+                </div>
+              </div>
+              <div v-if="!data.passport_itp" class="col">
+                <label>Паспорт ИТП</label>
+                <q-file
+                    v-model="data.passport_itp"
+                    :disable="disable"
+                    outlined
+                    hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"
+                    max-total-size="25165824"
+                    accept=".jpg, image/jpeg, .pdf"
+                    @rejected="onRejected"
+                    @input="changedPassITP = true"
+                />
+              </div>
+              <div v-else class="col">
+                <label>Паспорт ИТП загружен</label>
+                <div class="q-gutter-sm column">
+                  <button v-if="!changedPassITP" class="btn blue"
+                          @click.prevent="showDoc(data.passport_itp)">
+                    Просмотреть файл
+                  </button>
+                  <button class="btn blue"
+                          @click.prevent="data.passport_itp = null;">
+                    Изменить файл
+                  </button>
+                  <button v-if="getPermission" class="btn blue"
+                          @click.prevent="deleteDoc('passport_itp')">
+                    Удалить файл
+                  </button>
+                </div>
               </div>
             </div>
-            <div v-if="!data.act_balance_razgranich" class="col">
-              <label>Акт балансового разграничения</label>
-              <q-file
-                  :disable="disable"
-                  v-model="data.act_balance_razgranich"
-                  outlined
-                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"
-                  max-total-size="25165824"
-                  accept=".jpg, image/jpeg, .pdf"
-                  @rejected="onRejected"
-                  @input="changedBalanceAct = true"
-              />
-            </div>
-            <div v-else class="col">
-              <label>Акт балансового разграничения загружен</label>
-              <div class="q-gutter-sm column">
-                <button v-if="!changedBalanceAct" class="btn blue"
-                        @click.prevent="showDoc(data.act_balance_razgranich)">
-                  Просмотреть файл
-                </button>
-                <button class="btn blue"
-                        @click.prevent="data.act_balance_razgranich = null;">
-                  Изменить файл
-                </button>
-                <button v-if="getPermission" class="btn blue"
-                        @click.prevent="deleteDoc('act_balance_razgranich')">
-                  Удалить файл
-                </button>
+            <div class="row">
+              <div v-if="!data.schema_itp" class="col">
+                <label>Схема ИТП</label>
+                <q-file
+                    v-model="data.schema_itp"
+                    :disable="disable"
+                    outlined
+                    hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"
+                    max-total-size="25165824"
+                    accept=".jpg, image/jpeg, .pdf"
+                    @rejected="onRejected"
+                    @input="changedSchemaITP = true"
+                />
+              </div>
+              <div v-else class="col">
+                <label>Схема ИТП загружена</label>
+                <div class="q-gutter-sm column">
+                  <button v-if="!changedSchemaITP" class="btn blue"
+                          @click.prevent="showDoc(data.schema_itp)">
+                    Просмотреть файл
+                  </button>
+                  <button class="btn blue"
+                          @click.prevent="data.schema_itp = null;">
+                    Изменить файл
+                  </button>
+                  <button v-if="getPermission" class="btn blue"
+                          @click.prevent="deleteDoc('schema_itp')">
+                    Удалить файл
+                  </button>
+                </div>
+              </div>
+              <div v-if="!data.act_balance_razgranich" class="col">
+                <label>Акт балансового разграничения</label>
+                <q-file
+                    :disable="disable"
+                    v-model="data.act_balance_razgranich"
+                    outlined
+                    hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"
+                    max-total-size="25165824"
+                    accept=".jpg, image/jpeg, .pdf"
+                    @rejected="onRejected"
+                    @input="changedBalanceAct = true"
+                />
+              </div>
+              <div v-else class="col">
+                <label>Акт балансового разграничения загружен</label>
+                <div class="q-gutter-sm column">
+                  <button v-if="!changedBalanceAct" class="btn blue"
+                          @click.prevent="showDoc(data.act_balance_razgranich)">
+                    Просмотреть файл
+                  </button>
+                  <button class="btn blue"
+                          @click.prevent="data.act_balance_razgranich = null;">
+                    Изменить файл
+                  </button>
+                  <button v-if="getPermission" class="btn blue"
+                          @click.prevent="deleteDoc('act_balance_razgranich')">
+                    Удалить файл
+                  </button>
+                </div>
+              </div>
+              <div v-if="!data.schema_balance_razgranich" class="col">
+                <label>Схема балансового разграничения</label>
+                <q-file
+                    v-model="data.schema_balance_razgranich"
+                    :disable="disable"
+                    outlined
+                    hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"
+                    max-total-size="25165824"
+                    accept=".jpg, image/jpeg, .pdf"
+                    @rejected="onRejected"
+                    @input="changedBalanceSchema = true"
+                />
+              </div>
+              <div v-else class="col">
+                <label>Схема разграничения загружена</label>
+                <div class="q-gutter-sm column">
+                  <button v-if="!changedBalanceSchema" class="btn blue"
+                          @click.prevent="showDoc(data.schema_balance_razgranich)">
+                    Просмотреть файл
+                  </button>
+                  <button class="btn blue"
+                          @click.prevent="data.schema_balance_razgranich = null;">
+                    Изменить файл
+                  </button>
+                  <button v-if="getPermission" class="btn blue"
+                          @click.prevent="deleteDoc('schema_balance_razgranich')">
+                    Удалить файл
+                  </button>
+                </div>
               </div>
             </div>
-            <div v-if="!data.schema_balance_razgranich" class="col">
-              <label>Схема балансового разграничения</label>
-              <q-file
-                  v-model="data.schema_balance_razgranich"
-                  :disable="disable"
-                  outlined
-                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"
-                  max-total-size="25165824"
-                  accept=".jpg, image/jpeg, .pdf"
-                  @rejected="onRejected"
-                  @input="changedBalanceSchema = true"
-              />
-            </div>
-            <div v-else class="col">
-              <label>Схема разграничения загружена</label>
-              <div class="q-gutter-sm column">
-                <button v-if="!changedBalanceSchema" class="btn blue"
-                        @click.prevent="showDoc(data.schema_balance_razgranich)">
-                  Просмотреть файл
-                </button>
-                <button class="btn blue"
-                        @click.prevent="data.schema_balance_razgranich = null;">
-                  Изменить файл
-                </button>
-                <button v-if="getPermission" class="btn blue"
-                        @click.prevent="deleteDoc('schema_balance_razgranich')">
-                  Удалить файл
-                </button>
+            <div class="row">
+              <div v-if="!data.spravka_teplov_nagruz" class="col">
+                <label>Справка о тепловых нагрузках</label>
+                <q-file
+                    v-model="data.spravka_teplov_nagruz"
+                    :disable="disable"
+                    outlined
+                    hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"
+                    max-total-size="25165824"
+                    accept=".jpg, image/jpeg, .pdf"
+                    @rejected="onRejected"
+                    @input="changedSpravka = true"
+                />
               </div>
-            </div>
-          </div>
-          <div class="row">
-            <div v-if="!data.spravka_teplov_nagruz" class="col">
-              <label>Справка о тепловых нагрузках</label>
-              <q-file
-                  v-model="data.spravka_teplov_nagruz"
-                  :disable="disable"
-                  outlined
-                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"
-                  max-total-size="25165824"
-                  accept=".jpg, image/jpeg, .pdf"
-                  @rejected="onRejected"
-                  @input="changedSpravka = true"
-              />
-            </div>
-            <div v-else class="col">
-              <label>Справка о тепловых нагрузках загружена</label>
-              <div class="q-gutter-sm column">
-                <button v-if="!changedSpravka" class="btn blue"
-                        @click.prevent="showDoc(data.spravka_teplov_nagruz)">
-                  Просмотреть файл
-                </button>
-                <button class="btn blue"
-                        @click.prevent="data.spravka_teplov_nagruz = null;">
-                  Изменить файл
-                </button>
-                <button v-if="getPermission" class="btn blue"
-                        @click.prevent="deleteDoc('spravka_teplov_nagruz')">
-                  Удалить файл
-                </button>
+              <div v-else class="col">
+                <label>Справка о тепловых нагрузках загружена</label>
+                <div class="q-gutter-sm column">
+                  <button v-if="!changedSpravka" class="btn blue"
+                          @click.prevent="showDoc(data.spravka_teplov_nagruz)">
+                    Просмотреть файл
+                  </button>
+                  <button class="btn blue"
+                          @click.prevent="data.spravka_teplov_nagruz = null;">
+                    Изменить файл
+                  </button>
+                  <button v-if="getPermission" class="btn blue"
+                          @click.prevent="deleteDoc('spravka_teplov_nagruz')">
+                    Удалить файл
+                  </button>
+                </div>
               </div>
-            </div>
-            <div v-if="!data.raschet_teplov_poter" class="col">
-              <label>Расчет тепловых потерь</label>
-              <q-file
-                  v-model="data.raschet_teplov_poter"
-                  :disable="disable"
-                  outlined
-                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"
-                  max-total-size="25165824"
-                  accept=".jpg, image/jpeg, .pdf"
-                  @rejected="onRejected"
-                  @input="changedRaschet = true"
-              />
-            </div>
-            <div v-else class="col">
-              <label>Расчет тепловых потерь загружен</label>
-              <div class="q-gutter-sm column">
-                <button v-if="!changedRaschet" class="btn blue"
-                        @click.prevent="showDoc(data.raschet_teplov_poter)">
-                  Просмотреть файл
-                </button>
-                <button class="btn blue"
-                        @click.prevent="data.raschet_teplov_poter = null;">
-                  Изменить файл
-                </button>
-                <button v-if="getPermission" class="btn blue"
-                        @click.prevent="deleteDoc('raschet_teplov_poter')">
-                  Удалить файл
-                </button>
+              <div v-if="!data.raschet_teplov_poter" class="col">
+                <label>Расчет тепловых потерь</label>
+                <q-file
+                    v-model="data.raschet_teplov_poter"
+                    :disable="disable"
+                    outlined
+                    hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"
+                    max-total-size="25165824"
+                    accept=".jpg, image/jpeg, .pdf"
+                    @rejected="onRejected"
+                    @input="changedRaschet = true"
+                />
               </div>
-            </div>
-            <div v-if="!data.toposnova" class="col">
-              <label>Топоснова</label>
-              <q-file
-                  v-model="data.toposnova"
-                  :disable="disable"
-                  outlined
-                  hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"
-                  max-total-size="25165824"
-                  accept=".jpg, image/jpeg, .pdf"
-                  @rejected="onRejected"
-                  @input="changedToposnova = true"
-              />
-            </div>
-            <div v-else class="col">
-              <label>Топоснова загружена</label>
-              <div class="q-gutter-sm column">
-                <button v-if="!changedToposnova" class="btn blue"
-                        @click.prevent="showDoc(data.toposnova)">
-                  Просмотреть файл
-                </button>
-                <button class="btn blue"
-                        @click.prevent="data.toposnova = null;">
-                  Изменить файл
-                </button>
-                <button v-if="getPermission" class="btn blue"
-                        @click.prevent="deleteDoc('toposnova')">
-                  Удалить файл
-                </button>
+              <div v-else class="col">
+                <label>Расчет тепловых потерь загружен</label>
+                <div class="q-gutter-sm column">
+                  <button v-if="!changedRaschet" class="btn blue"
+                          @click.prevent="showDoc(data.raschet_teplov_poter)">
+                    Просмотреть файл
+                  </button>
+                  <button class="btn blue"
+                          @click.prevent="data.raschet_teplov_poter = null;">
+                    Изменить файл
+                  </button>
+                  <button v-if="getPermission" class="btn blue"
+                          @click.prevent="deleteDoc('raschet_teplov_poter')">
+                    Удалить файл
+                  </button>
+                </div>
+              </div>
+              <div v-if="!data.toposnova" class="col">
+                <label>Топоснова</label>
+                <q-file
+                    v-model="data.toposnova"
+                    :disable="disable"
+                    outlined
+                    hint="Выберите файл с расширением jpg, jpeg, pdf размером не более 3МБ"
+                    max-total-size="25165824"
+                    accept=".jpg, image/jpeg, .pdf"
+                    @rejected="onRejected"
+                    @input="changedToposnova = true"
+                />
+              </div>
+              <div v-else class="col">
+                <label>Топоснова загружена</label>
+                <div class="q-gutter-sm column">
+                  <button v-if="!changedToposnova" class="btn blue"
+                          @click.prevent="showDoc(data.toposnova)">
+                    Просмотреть файл
+                  </button>
+                  <button class="btn blue"
+                          @click.prevent="data.toposnova = null;">
+                    Изменить файл
+                  </button>
+                  <button v-if="getPermission" class="btn blue"
+                          @click.prevent="deleteDoc('toposnova')">
+                    Удалить файл
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -733,6 +739,7 @@ export default {
     data: {
       id: null,
       heating_system_connection_type: null,
+      obsluzh_organization: null,
       hot_water_connection_diagram: null,
       heat_point_type: null,
       operational_responsibility_boundary: null,

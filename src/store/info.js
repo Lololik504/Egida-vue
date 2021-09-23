@@ -281,7 +281,7 @@ export default {
                             const url = window.URL.createObjectURL(new Blob([resp.data]));
                             const link = document.createElement('a');
                             link.href = url;
-                            link.setAttribute('download', `Export_${new Date().toUTCString()}.xls`); //or any other extension
+                            link.setAttribute('download', `Export_${new Date().toUTCString()}.xlsx`); //or any other extension
                             document.body.appendChild(link);
                             link.click();
                             resolve(resp)

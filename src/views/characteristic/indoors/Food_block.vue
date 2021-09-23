@@ -384,7 +384,6 @@ export default {
       const id = this.$route.params['id']
       try {
         const info = await this.$store.dispatch('fetchIndoors', {token, id})
-        console.log(info)
         const tmp = Object.keys(this.data)
         for (let item in info) {
           info[item] === '/media/null' ? info[item] = null : null

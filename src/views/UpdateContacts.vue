@@ -177,6 +177,62 @@
               </div>
             </div>
           </div>
+          <div class="card">
+            <div class="q-ma-md">
+              <h5><strong>Слесарь-сантехник</strong></h5>
+              <div class="row">
+                <div class="col">
+                  <label>Фамилия</label>
+                  <q-input outlined placeholder="Введите фамилию" v-model="contactInfo.plumberlocksmith.last_name"/>
+                </div>
+                <div class="col">
+                  <label>Имя</label>
+                  <q-input outlined placeholder="Введите имя" v-model="contactInfo.plumberlocksmith.first_name"/>
+                </div>
+                <div class="col">
+                  <label>Отчество</label>
+                  <q-input outlined placeholder="Введите отчество" v-model="contactInfo.plumberlocksmith.patronymic"/>
+                </div>
+              </div>
+              <div class="input-field-phone">
+                <label>Телефон рабочий</label>
+                <q-input outlined placeholder="Введите телефон"
+                         v-model="contactInfo.plumberlocksmith.phone"
+                         mask="# (###) ### - ####"
+                         fill-mask
+                         type="tel"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="q-ma-md">
+              <h5><strong>Электрик</strong></h5>
+              <div class="row">
+                <div class="col">
+                  <label>Фамилия</label>
+                  <q-input outlined placeholder="Введите фамилию" v-model="contactInfo.electrician.last_name"/>
+                </div>
+                <div class="col">
+                  <label>Имя</label>
+                  <q-input outlined placeholder="Введите имя" v-model="contactInfo.electrician.first_name"/>
+                </div>
+                <div class="col">
+                  <label>Отчество</label>
+                  <q-input outlined placeholder="Введите отчество" v-model="contactInfo.electrician.patronymic"/>
+                </div>
+              </div>
+              <div class="input-field-phone">
+                <label>Телефон рабочий</label>
+                <q-input outlined placeholder="Введите телефон"
+                         v-model="contactInfo.electrician.phone"
+                         mask="# (###) ### - ####"
+                         fill-mask
+                         type="tel"
+                />
+              </div>
+            </div>
+          </div>
         </div>
         <div class="q-gutter-md">
           <button class="btn waves-effect waves-light" type="submit">
@@ -232,6 +288,18 @@ export default {
         patronymic: null,
         phone: null,
         email: null
+      },
+      plumberlocksmith: {
+        first_name: null,
+        last_name: null,
+        patronymic: null,
+        phone: null,
+      },
+      electrician: {
+        first_name: null,
+        last_name: null,
+        patronymic: null,
+        phone: null,
       }
     },
   }),
@@ -262,6 +330,8 @@ export default {
       this.contactInfo.zavhoz = personal['zavhoz']
       this.contactInfo.updater = personal['updater']
       this.contactInfo.bookkeeper = personal['bookkeeper']
+      this.contactInfo.plumberlocksmith = personal['plumberlocksmith']
+      this.contactInfo.electrician = personal['electrician']
       this.contactInfo.INN = info['INN']
       this.shortname = info['shortname']
       for (let i in this.contactInfo) {

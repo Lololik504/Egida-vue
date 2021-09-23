@@ -393,6 +393,13 @@ let router = new Router({
                                 requiresAuth: true
                             },
                             component: () => import('./views/characteristic/indoors/Training_rooms')
+                        },
+                        {
+                            path: 'pool',
+                            meta: {
+                                requiresAuth: true
+                            },
+                            component: () => import('./views/characteristic/indoors/Pool')
                         }
                     ]
                 },

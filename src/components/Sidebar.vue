@@ -179,6 +179,10 @@ export default {
           {
             name: 'Эвакуационные выходы',
             path: 'evacuation_exits'
+          },
+          {
+            name: 'Бассейны',
+            path: 'pool'
           }
         ]
       },
