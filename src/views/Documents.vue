@@ -378,7 +378,6 @@ export default {
         const token = localStorage.getItem('token')
         const inn = this.$route.params['id']
         const docs = await this.$store.dispatch('fetchDocs', {token, inn})
-        console.log(docs)
         this.passport_BTI.url = docs['passport_BTI']
         this.passport_BTI.url ? this.passport_BTI.hasUrl = true : this.passport_BTI.hasUrl = false
         this.electrosnabj_MK.url = docs['electrosnabj_MK']

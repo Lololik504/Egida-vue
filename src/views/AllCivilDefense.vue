@@ -2,10 +2,10 @@
   <div class="container">
     <Loader v-if="loading"/>
     <div v-else>
-      <h4>Наказы учреждений</h4>
+      <h4>Гражданская оборона</h4>
       <DistrictList
           :districts="districts"
-          url="orders"
+          url="civil_defense"
       />
     </div>
   </div>
@@ -16,7 +16,7 @@ import DistrictList from "@/components/DistrictList";
 
 export default {
   components: {DistrictList},
-  name: "AllOrders",
+  name: "AllCivilDefense",
   data: () => ({
     districts: [],
     loading: true,

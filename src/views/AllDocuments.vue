@@ -26,6 +26,7 @@ export default {
       this.districts = await this.$store.dispatch('fetchDistricts')
       this.loading = false
     } catch (e) {
+      await this.$router.push('*')
       console.log(e)
     }
   }

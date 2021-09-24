@@ -159,6 +159,38 @@ let router = new Router({
             component: () => import('./views/MunicipalTask'),
         },
         {
+            path: '/civil_defense/:id',
+            name: 'CivilDefense',
+            meta: {
+                requiresAuth: true
+            },
+            component: () => import('./views/CivilDefense'),
+        },
+        {
+            path: '/civil_defense',
+            name: 'AllCivilDefense',
+            meta: {
+                requiresAuth: true
+            },
+            component: () => import('./views/AllCivilDefense'),
+        },
+        {
+            path: '/create_zppp/:id',
+            name: 'CreateZPPP',
+            meta: {
+                requiresAuth: true
+            },
+            component: () => import('./views/CreateZPPP'),
+        },
+        {
+            path: '/zppp/:inn/:id',
+            name: 'ZPPP',
+            meta: {
+                requiresAuth: true
+            },
+            component: () => import('./views/ZPPP'),
+        },
+        {
             path: '/orders/:id',
             name: 'Orders',
             meta: {

@@ -9,6 +9,7 @@ import character from './character'
 import docs from "./docs";
 import prescriptions from "./prescriptions";
 import orders from "./orders";
+import civil_defense from "./civil_defense";
 
 Vue.use(Vuex)
 
@@ -54,6 +55,6 @@ export default new Vuex.Store({
         permission: state => state.permission
     },
     modules: {
-        auth, info, building, school, temperature, character, docs, prescriptions, orders
+        auth, info, building, school, temperature, character, docs, prescriptions, orders, civil_defense
     }
 })

@@ -22,6 +22,9 @@
         <button class="btn waves-effect waves-light" @click="toDocs">
           Документация
         </button>
+        <button class="btn waves-effect waves-light" @click="toCivilDefense">
+          Гражданская оборона
+        </button>
         <button v-if="permission" class="btn waves-effect waves-light" @click="deleteSchool">
           Удалить учреждение
         </button>
@@ -57,6 +60,9 @@ export default {
     },
     toMunicipalTask() {
       this.$router.push(`/municipal_task/${this.$route.params['card']}`)
+    },
+    toCivilDefense() {
+      this.$router.push(`/civil_defense/${this.$route.params['card']}`)
     },
     async deleteSchool() {
       try {
