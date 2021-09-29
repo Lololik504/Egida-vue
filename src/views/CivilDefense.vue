@@ -3,14 +3,14 @@
     <Loader v-if="loading"/>
     <div v-else>
       <h4 class="center">Гражданская оборона</h4>
-      <h5>Защитные сооружения учреждения
+      <h5>ЗППП учреждения
         <router-link :to="`/schoolcard/${this.$route.params['id']}`">{{ shortname }}</router-link>
       </h5>
       <button class="btn waves-effect waves-light" @click="createBuilding">
-        Добавить сооружение
+        Добавить объект
       </button>
       <div class="buildings" v-if="data.length">
-        <h5>Существующие защитные сооружения</h5>
+        <h5>Существующие ЗППП</h5>
         <ol>
           <li v-for="d in data"
               :key="d.id"
@@ -18,7 +18,7 @@
             <router-link
                 :to="`/zppp/${inn}/${d.id}`"
             >
-              Адрес здания: {{ d.zppp_adress }}
+              Адрес объекта: {{ d.zppp_adress }}
             </router-link>
           </li>
         </ol>
@@ -94,7 +94,7 @@ export default {
 
 <style>
 .requirements {
-  margin: 30px 0px;
+  margin: 30px 0;
   border: #818181 1px solid;
 }
 </style>

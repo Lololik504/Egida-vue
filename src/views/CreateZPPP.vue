@@ -2,7 +2,7 @@
   <div class="container">
     <Loader v-if="loading"/>
     <div v-else>
-      <h4>Добавление защитного сооружения</h4>
+      <h4>Добавление ЗППП</h4>
       <form @submit.prevent="submitHandler">
         <div class="q-pa-sm">
           <div class="input-field-other">
@@ -24,7 +24,7 @@
             <label>Группа ЗППП</label>
             <div class="select">
               <q-select outlined v-model="data.zppp_group"
-                        :options="[1, 2, 3, 4, 5]"/>
+                        :options="[0, 1]"/>
             </div>
           </div>
           <div class="input-field-height">

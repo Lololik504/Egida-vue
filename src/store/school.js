@@ -24,6 +24,27 @@ export default {
                 throw e
             }
         },
+        async fetchFieldsZPPP({commit}){
+            try {
+                return await new Promise((resolve, reject) => {
+                    axios.get(server_path + "/api/fields/zppp",
+                        {
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                        })
+                        .then(resp => {
+                            resolve(resp.data.data)
+                        })
+                        .catch(err => {
+                            reject(err)
+                        })
+                })
+            } catch (e) {
+                commit('setError', e)
+                throw e
+            }
+        },
         async createSchool({commit}, data) {
             try {
                 const token = localStorage.getItem('token')

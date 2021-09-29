@@ -251,7 +251,7 @@
       </div>
       <div class="input building_title container center">
         <q-card flat bordered>
-          <h5><b>Правоустанавливающие документы на землю</b></h5>
+          <h5><b>Правоустанавливающие документы на здание</b></h5>
           <div v-if="building_title.hasUrl">
             <h6>Документ загружен</h6>
             <div class="q-gutter-sm">

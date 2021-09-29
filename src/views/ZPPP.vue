@@ -2,7 +2,7 @@
   <div class="container">
     <Loader v-if="loading"/>
     <div v-else>
-      <h4>Защитное сооружение</h4>
+      <h4>ЗППП</h4>
       <form @submit.prevent="submitHandler">
         <div class="q-pa-sm">
           <div class="input-field-other">
@@ -26,7 +26,7 @@
             <div class="select">
               <q-select outlined v-model="data.zppp_group"
                         :disable="disable"
-                        :options="[1, 2, 3, 4, 5]"/>
+                        :options="[0, 1]"/>
             </div>
           </div>
           <div class="input-field-height">
@@ -173,6 +173,8 @@ export default {
     async submitHandler() {
       try {
         if (this.other_material) this.data.zppp_material = this.other_material
+        this.data.zppp_square = Number(this.data.zppp_square)
+        this.data.zppp_height = Number(this.data.zppp_height)
         await this.$store.dispatch('updateZPPP', {file: this.data, inn: this.inn, id: this.id})
         this.$showMessage('saveSuccess')
         await this.$router.go(-1)
