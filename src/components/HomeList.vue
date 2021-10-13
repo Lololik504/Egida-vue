@@ -10,7 +10,8 @@
     <router-link v-else class="list-item" :to="'/orders'">Наказы</router-link>
     <router-link v-if="getPermission > 10" class="list-item" :to="`/prescriptions/${getInn}`">Предписания надзорных органов/судебные решения</router-link>
     <router-link v-else class="list-item" :to="'/prescriptions'">Предписания надзорных органов/судебные решения</router-link>
-    <router-link class="list-item" to="/">Еженедельные параметры теплоносителя и внутреннего воздуха помещений</router-link>
+    <router-link v-if="getPermission > 10" class="list-item" :to="`/schoolcard/${getInn}`">Еженедельные параметры теплоносителя и внутреннего воздуха помещений</router-link>
+    <router-link v-else class="list-item" :to="'/districts'">Еженедельные параметры теплоносителя и внутреннего воздуха помещений</router-link>
     <router-link v-if="getPermission > 10" class="list-item" :to="`/civil_defense/${getInn}`">Гражданская оборона</router-link>
     <router-link v-else class="list-item" :to="'/civil_defense'">Гражданская оборона</router-link>
   </div>

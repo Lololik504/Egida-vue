@@ -8,7 +8,7 @@
           Сведения о здании
         </button>
         <button class="btn waves-effect waves-light" @click="temperature">
-          Температурный режим
+          Еженедельные параметры теплоносителя и внутреннего воздуха помещений
         </button>
         <button class="btn waves-effect waves-light" @click="characteristic">
           Характеристика здания

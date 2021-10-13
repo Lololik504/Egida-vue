@@ -119,6 +119,34 @@
                         :options="['Естественная', 'С механическим побуждением']"/>
             </div>
           </div>
+          <div class="select-type-field">
+            <label>Наличие приточной вентиляции</label>
+            <div class="select">
+              <q-select outlined v-model="data.laundry_supply_ventilation"
+                        emit-value
+                        map-options
+                        :disable="disable"
+                        :options="[{label: 'Есть', value: true}, {label: 'Нет', value: false}]"/>
+            </div>
+          </div>
+          <div v-if="data.laundry_supply_ventilation" class="select-type-field">
+            <label>Техническое состояние приточной вентиляции</label>
+            <div class="select">
+              <q-select outlined v-model="data.laundry_supply_ventilation_is_workable"
+                        :disable="disable"
+                        emit-value
+                        map-options
+                        :options="[{label: 'Работоспособное', value: true}, {label: 'Неисправное', value: false}]"/>
+            </div>
+          </div>
+          <div class="select-type-field">
+            <label>Тип воздухонагревателя</label>
+            <div class="select">
+              <q-select outlined v-model="data.laundry_air_heater_type"
+                        :disable="disable"
+                        :options="['Водяной', 'Электрический']"/>
+            </div>
+          </div>
           <button class="btn waves-effect waves" @click.prevent="disable = false" v-if="disable">
             Редактирование
           </button>
@@ -149,9 +177,12 @@ export default {
     data: {
       id: null,
       laundry_technical_condition: null,
+      laundry_supply_ventilation_is_workable: null,
       laundry_exhaust_ventilation: null,
+      laundry_supply_ventilation: null,
       laundry_exhaust_ventilation_is_workable: null,
       laundry_ventilation_type: null,
+      laundry_air_heater_type: null,
       laundry_act: null
     },
     loading: true,

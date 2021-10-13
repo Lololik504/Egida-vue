@@ -108,7 +108,7 @@
                         :options="['Ежедневно', 'Еженедельно', 'Ежемесячно', '1 раз в полугодие', '1 раз в год', 'Свой вариант']"/>
             </div>
           </div>
-          <div class="input" v-if="data.pool_bowl_schedule == 'Свой вариант'">
+          <div class="input" v-if="data.pool_bowl_schedule === 'Свой вариант'">
             <label>Введите свой вариант</label>
             <q-input outlined v-model="other_pool_bowl_schedule"/>
           </div>
@@ -129,11 +129,55 @@
             </div>
           </div>
           <div class="select-type-field">
-            <label>Состояние системы вентиляции в помещении бассейна</label>
+            <label>Наличие вытяжной вентиляции</label>
             <div class="select">
-              <q-select outlined v-model="data.ventilation_system_condition"
+              <q-select outlined v-model="data.pool_exhaust_ventilation"
+                        emit-value
+                        map-options
                         :disable="disable"
-                        :options="['Удовлетворительно', 'Неудовлетворительно']"/>
+                        :options="[{label: 'Есть', value: true}, {label: 'Нет', value: false}]"/>
+            </div>
+          </div>
+          <div v-if="data.pool_exhaust_ventilation" class="select-type-field">
+            <label>Техническое состояние вытяжной вентиляции</label>
+            <div class="select">
+              <q-select outlined v-model="data.pool_exhaust_ventilation_condition"
+                        :disable="disable"
+                        :options="['Работоспособное', 'Неисправное']"/>
+            </div>
+          </div>
+          <div class="select-type-field">
+            <label>Тип вентиляции</label>
+            <div class="select">
+              <q-select outlined v-model="data.pool_ventilation_type"
+                        :disable="disable"
+                        :options="['Естественная', 'С механическим побуждением']"/>
+            </div>
+          </div>
+          <div class="select-type-field">
+            <label>Наличие приточной вентиляции</label>
+            <div class="select">
+              <q-select outlined v-model="data.pool_supply_ventilation"
+                        emit-value
+                        map-options
+                        :disable="disable"
+                        :options="[{label: 'Есть', value: true}, {label: 'Нет', value: false}]"/>
+            </div>
+          </div>
+          <div v-if="data.pool_supply_ventilation" class="select-type-field">
+            <label>Техническое состояние приточной вентиляции</label>
+            <div class="select">
+              <q-select outlined v-model="data.pool_supply_ventilation_condition"
+                        :disable="disable"
+                        :options="['Работоспособное', 'Неисправное']"/>
+            </div>
+          </div>
+          <div class="select-type-field">
+            <label>Тип воздухонагревателя</label>
+            <div class="select">
+              <q-select outlined v-model="data.pool_air_heater_type"
+                        :disable="disable"
+                        :options="['Водяной', 'Электрический']"/>
             </div>
           </div>
           <button class="btn waves-effect waves" @click.prevent="disable = false" v-if="disable">
@@ -163,7 +207,12 @@ export default {
     disable: true,
     data: {
       id: null,
-      ventilation_system_condition: null,
+      pool_exhaust_ventilation: null,
+      pool_supply_ventilation: null,
+      pool_exhaust_ventilation_condition: null,
+      pool_supply_ventilation_condition: null,
+      pool_ventilation_type: null,
+      pool_air_heater_type: null,
       heating_lines_system_condition: null,
       pool_bowl_schedule: null,
       heating_system_condition: null,
